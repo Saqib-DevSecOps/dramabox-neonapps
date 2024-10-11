@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="footer-social-box">
-                        <h2>follow ticsTube on social</h2>
+                        <h2>follow DramaBox on social</h2>
                         <div class="social-icon d-flex align-items-center">
                             <a href="#"><i class="fa-brands fa-tiktok"></i></a>
                             <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -28,7 +28,7 @@
                 <div class="col-lg-6">
                     <div class="footer-social-box scaner-box">
                         <div class="content">
-                            <h2>Get the ticsTube app</h2>
+                            <h2>Get the DramaBox app</h2>
                             <p>for android AND ISO</p>
                         </div>
                         <img src="{% static 'website/img/scaner.png' %}" alt="img">
@@ -38,7 +38,7 @@
             <ul class="footer-list-2">
                 <li><a href="#">Terms and Condition</a></li>
                 <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Account Activate/Deactivate</a></li>
+                <li><a href="{% url 'accounts:deactivate-account' %}">Account Activate/Deactivate</a></li>
 
             </ul>
         </div>

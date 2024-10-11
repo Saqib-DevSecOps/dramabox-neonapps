@@ -16,6 +16,7 @@ from .models import (
     Like, DramaSeriesCategory,
 )
 
+
 # ---------------------------- Utility Models ---------------------------- #
 
 @admin.register(Category)
@@ -58,14 +59,63 @@ class DirectorAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 
+# ---------------------------- Inline Models ---------------------------- #
+
+# Inline model for DramaSeries Tags
+class DramaSeriesTagInline(admin.TabularInline):
+    model = DramaSeriesTag
+    extra = 1
+
+
+# Inline model for DramaSeries Category
+class DramaSeriesCategoryInline(admin.TabularInline):
+    model = DramaSeriesCategory
+    extra = 1
+
+
+# Inline model for DramaSeries Language
+class DramaSeriesLanguageInline(admin.TabularInline):
+    model = DramaSeriesLanguage
+    extra = 1
+
+
+# Inline model for DramaSeries Cast
+class DramaSeriesCastInline(admin.TabularInline):
+    model = DramaSeriesCast
+    extra = 1
+
+
+# Inline model for Episode under Season
+class EpisodeInline(admin.TabularInline):
+    model = Episode
+    extra = 1
+
+
 # ---------------------------- Main Content Models ---------------------------- #
 
 @admin.register(DramaSeries)
 class DramaSeriesAdmin(admin.ModelAdmin):
     list_display = ('title', 'director', 'rating', 'release_date', 'is_featured', 'view_count', 'created_at')
-    list_filter = ( 'director', 'rating', 'is_featured')
+    list_filter = ('director', 'rating', 'is_featured')
     search_fields = ('title', 'description')
     prepopulated_fields = {'slug': ('title',)}
+    inlines = [DramaSeriesTagInline, DramaSeriesCategoryInline, DramaSeriesLanguageInline, DramaSeriesCastInline]
+
+
+@admin.register(Season)
+class SeasonAdmin(admin.ModelAdmin):
+    list_display = ('series', 'season_number', 'release_date', 'created_at')
+    list_filter = ('series',)
+    search_fields = ('series__title',)
+    inlines = [EpisodeInline]  # Add episodes inline under Season
+
+
+@admin.register(Episode)
+class EpisodeAdmin(admin.ModelAdmin):
+    list_display = (
+    'title', 'season', 'episode_number', 'release_date', 'duration', 'is_free', 'view_count', 'created_at')
+    list_filter = ('season', 'is_free')
+    search_fields = ('title', 'description')
 
 
 @admin.register(DramaSeriesTag)
@@ -96,20 +146,6 @@ class DramaSeriesCastAdmin(admin.ModelAdmin):
     search_fields = ('drama_series__title', 'actor__name')
 
 
-@admin.register(Season)
-class SeasonAdmin(admin.ModelAdmin):
-    list_display = ('series', 'season_number', 'release_date', 'created_at')
-    list_filter = ('series',)
-    search_fields = ('series__title',)
-
-
-@admin.register(Episode)
-class EpisodeAdmin(admin.ModelAdmin):
-    list_display = ('title', 'season', 'episode_number', 'release_date', 'duration', 'is_free', 'view_count', 'created_at')
-    list_filter = ('season', 'is_free')
-    search_fields = ('title', 'description')
-
-
 # ---------------------------- User Interaction Models ---------------------------- #
 
 @admin.register(Review)
@@ -124,4 +160,3 @@ class LikeAdmin(admin.ModelAdmin):
     list_display = ('user', 'episode', 'series', 'liked_on')
     list_filter = ('liked_on',)
     search_fields = ('user__username', 'episode__title', 'series__title')
-

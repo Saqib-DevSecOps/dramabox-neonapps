@@ -1,11 +1,16 @@
-from django.urls import path, include
-from .views import LogoutView, CrossAuthView, UserUpdateView
+from django.urls import path
 
-app_name = 'users'
+from .urls_disabled import disabled_all_auth_url_patterns
+from .views import (
+    CrossAuthView, DeactivateUserView, DeleteUserView
+)
+
+app_name = 'accounts'
 urlpatterns = [
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path('user/change/', UserUpdateView.as_view(), name='user-change'),
-    path('cross-auth/', CrossAuthView.as_view(), name='cross-auth')
+
+    path('cross-auth/', CrossAuthView.as_view(), name='cross-auth'),
+    path('deactivate-account/', DeactivateUserView.as_view(), name='deactivate-account'),
+    path('delete-account/', DeleteUserView.as_view(), name='delete-account'),
 ]
 
-
+urlpatterns += disabled_all_auth_url_patterns

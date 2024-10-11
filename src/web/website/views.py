@@ -16,3 +16,10 @@ class PricingView(TemplateView):
 
 class ContactUs(TemplateView):
     template_name = 'website/contact.html'
+
+
+class PrivacyPolicyView(TemplateView):
+    template_name = 'website/privacy_policy.html'
+
+class TermsAndConditionView(TemplateView):
+    template_name = 'website/terms_and_condition.html'
