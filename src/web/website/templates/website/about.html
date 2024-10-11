@@ -1,0 +1,208 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% block content %}
+    <style>
+        .counter {
+            background-color: rgb(34, 31, 31);
+            padding: 20px 0;
+            border-radius: 5px;
+        }
+
+        .count-title {
+            font-size: 40px;
+            font-weight: normal;
+            margin-top: 10px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .count-text {
+            font-size: 13px;
+            font-weight: normal;
+            margin-top: 10px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .fa-2x {
+            margin: 0 auto;
+            float: none;
+            display: table;
+            color: #b62525;
+        }
+
+    </style>
+
+    <!-- breadcrumb -->
+    <div class="gen-breadcrumb" style="background-image: url('{% static 'website/images/background/asset-25.jpg' %}');">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-12">
+                    <nav aria-label="breadcrumb">
+                        <div class="gen-breadcrumb-title">
+                            <h1>
+                                About Us
+                            </h1>
+                        </div>
+                        <div class="gen-breadcrumb-container">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{% url 'website:home' %}"><i
+                                        class="fas fa-home mr-2"></i>Home</a></li>
+                                <li class="breadcrumb-item active">About us</li>
+                            </ol>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb -->
+
+    <!-- about-us-cont-area -->
+    <div class="container">
+        <div class="row align-items-center mt-4 mb-4">
+            <div class="col-lg-6  mt-4 mb-4">
+                <div class="about-us-title">
+                    <h2>Why Choose Us</h2>
+                    <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut laqua. Ut enim ad
+                        minim veniam, quis </p>
+                </div>
+
+
+                <p>Lorem ipsut amet, consectetur adipisicing elit, sed do irure dolor in reprehenderit in
+                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint oecat
+                    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    Sed ut perspiciatis unde omnis </p>
+                <p>Lorem ipsut amet, consectetur adipisicing elit, sed do irure dolor in reprehenderit in
+                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint oecat
+                    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    Sed ut perspiciatis unde omnis </p>
+                <p>Lorem ipsut amet, consectetur adipisicing elit, sed do irure dolor in reprehenderit in
+                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint oecat
+                    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    Sed ut perspiciatis unde omnis </p>
+            </div>
+            <div class="col-lg-6 mt-4 mb-4">
+                <img class="ml-4" src="{% static 'website/images/DRAMABOX.png' %}" style="height: 350px;" alt="">
+            </div>
+        </div>
+
+        <div class="row about-list-content">
+            <div class="col-lg-4">
+                <div class="gen-icon-box-style-1">
+                    <div class="gen-icon-box-icon">
+                        <h4>Our Mission</h4>
+
+                    </div>
+                    <div class="gen-icon-box-content">
+                        <p>Lorem ipsut amet, consectetur adipisicing elit, sed do irure dolor in reprehenderit in
+                            cupidatat non proident, sununt .</p>
+                        <p>Lorem ipsut amet, consectetur adipisicing elit, sed do irure dolor in reprehenderit in
+                            cupidatat non proident, sununt .</p>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="gen-icon-box-style-1">
+                    <div class="gen-icon-box-icon">
+                        <h4>Our Objective</h4>
+
+                    </div>
+                    <div class="gen-icon-box-content">
+                        <p>Lorem ipsut amet, consectetur adipisicing elit, sed do irure dolor in reprehenderit in
+                            cupidatat non proident, sununt .</p>
+                        <p>Lorem ipsut amet, consectetur adipisicing elit, sed do irure dolor in reprehenderit in
+                            cupidatat non proident, sununt .</p>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="gen-icon-box-style-1">
+                    <div class="gen-icon-box-icon">
+                        <h4>Our Achievement</h4>
+                    </div>
+                    <div class="gen-icon-box-content">
+                        <p>Lorem ipsut amet, consectetur adipisicing elit, sed do irure dolor in reprehenderit in
+                            cupidatat non proident, sununt .</p>
+                        <p>Lorem ipsut amet, consectetur adipisicing elit, sed do irure dolor in reprehenderit in
+                            cupidatat non proident, sununt .</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--// about-us-cont-area -->
+
+
+
+    <div class="container mt-4">
+        <br/>
+        <div class="col text-center">
+            <h2>Our Statistics</h2>
+            <p>some statistics about our clients</p>
+        </div>
+
+        <div class="row text-center">
+            <div class="col">
+                <div class="counter">
+                    <i class="fa fa-code fa-2x"></i>
+                    <h2 class="timer count-title count-number" data-to="100" data-speed="1500">1000</h2>
+                    <p class="count-text ">Our Customer</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="counter">
+                    <i class="fa fa-coffee fa-2x"></i>
+                    <h2 class="timer count-title count-number" data-to="1700" data-speed="1500">3000</h2>
+                    <p class="count-text ">Happy Clients</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="counter">
+                    <i class="fa fa-lightbulb fa-2x"></i>
+                    <h2 class="timer count-title count-number" data-to="11900" data-speed="1500">5000</h2>
+                    <p class="count-text ">Project Complete</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="counter">
+                    <i class="fa fa-bug fa-2x"></i>
+                    <h2 class="timer count-title count-number" data-to="157" data-speed="1500">2000</h2>
+                    <p class="count-text ">Coffee With Clients</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Our Best Team -->
+    <div class="container">
+        <br/>
+        <div class="col text-center">
+            <h2>Our Team</h2>
+            <p>Our Team member who manage the system</p>
+        </div>
+        <div class="row justify-content-center mt-3 mb-4">
+            {% for object in '12345' %}
+                <div class="col-lg-2 m-3 text-center ">
+                    <div class="card" style="width: 18rem; background-color: #221F1F;">
+                        <img src="{% static 'website/images/team-01.webp' %}"
+                             style="height: auto; width: 50%; display: block; margin: 0 auto;" class="card-img-top"
+                             alt="...">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Mari Joni</h5>
+                            <p class="card-text">Designer</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    <!--// Our Best Team -->
+
+{% endblock content %}

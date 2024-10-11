@@ -2350,7 +2350,7 @@ header#gen-header .gen-bottom-header .navbar {
 
 header#gen-header .gen-bottom-header .navbar .gen-menu-contain {
     display: inline-block;
-    width: 100%;
+    width: 50%;
 }
 
 header#gen-header .gen-bottom-header .navbar .navbar-nav {
