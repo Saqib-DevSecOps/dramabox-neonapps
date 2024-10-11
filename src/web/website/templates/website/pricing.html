@@ -1,300 +1,167 @@
 {% extends 'website/base.html' %}
 {% load static %}
 {% block content %}
-    <!-- breadcrumb -->
-    <div class="gen-breadcrumb" style="background-image: url('{% static 'website/images/background/asset-25.jpg' %}')">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-12">
-                    <nav aria-label="breadcrumb">
-                        <div class="gen-breadcrumb-title">
-                            <h1>
-                                Pricing Table
-                            </h1>
-                        </div>
-                        <div class="gen-breadcrumb-container">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html"><i
-                                        class="fas fa-home mr-2"></i>Home</a></li>
-                                <li class="breadcrumb-item active">Pricing Table</li>
-                            </ol>
-                        </div>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- breadcrumb -->
 
-    <!-- Pricing Table Start -->
-    <div class="gen-section-padding-3">
-        <div class="container container-2">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="gen-comparison-table table-style-1 table-responsive">
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                            <tr>
-                                <th>
-                                    <div class="cell-inner">
+        <!-- Pricing Section Start -->
+        <section class="pricing-section section-padding pb-0 mt-4">
+            <div class="container-fluid mt-4">
+                <div class="section-title-area justify-content-center">
+                    <ul class="nav" role="tablist">
+                        <li class="nav-item">
+                            <a href="#monthly" data-bs-toggle="tab" class="nav-link active" aria-selected="true" role="tab">
+                            Monthly
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#yearly" data-bs-toggle="tab" class="nav-link" aria-selected="false" role="tab" tabindex="-1">
+                            Yearly
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div id="monthly" class="tab-pane fade show active" role="tabpanel">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay=".3s">
+                                <div class="pricing-box-items">
+                                    <h3>Basic Plan</h3>
+                                    <p>Enjoy an extensive library of movies and shows, featuring a range of content, including recently released titles.</p>
+                                    <h2>$9.99 <sub>/month</sub></h2>
+                                    <div class="pricing-button">
+                                        <a href="pricing.html" class="theme-btn style-2">Start Free Trial</a>
+                                        <a href="pricing.html" class="theme-btn">Choose Plan</a>
                                     </div>
-                                    <div class="cell-tag">
-                                        <span></span>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay=".5s">
+                                <div class="pricing-box-items">
+                                    <h3>Standard Plan</h3>
+                                    <p>Access to a wider selection of movies and shows, including most new releases and exclusive content</p>
+                                    <h2>$12.99 <sub>/month</sub></h2>
+                                    <div class="pricing-button">
+                                        <a href="pricing.html" class="theme-btn style-2">Start Free Trial</a>
+                                        <a href="pricing.html" class="theme-btn">Choose Plan</a>
                                     </div>
-                                </th>
-                                <th>
-                                    <div class="cell-inner">
-                                        <span>Basic</span>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay=".7s">
+                                <div class="pricing-box-items">
+                                    <h3>Premium Plan</h3>
+                                    <p>Access to a widest selection of movies and shows, including all new releases and Offline Viewing</p>
+                                    <h2>$14.99 <sub>/month</sub></h2>
+                                    <div class="pricing-button">
+                                        <a href="pricing.html" class="theme-btn style-2">Start Free Trial</a>
+                                        <a href="pricing.html" class="theme-btn">Choose Plan</a>
                                     </div>
-                                    <div class="cell-tag">
-                                        <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="yearly" class="tab-pane fade" role="tabpanel">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-6 col-md-6">
+                                <div class="pricing-box-items">
+                                    <h3>Basic Plan</h3>
+                                    <p>Enjoy an extensive library of movies and shows, featuring a range of content, including recently released titles.</p>
+                                    <h2>$9.99 <sub>/month</sub></h2>
+                                    <div class="pricing-button">
+                                        <a href="pricing.html" class="theme-btn style-2">Start Free Trial</a>
+                                        <a href="pricing.html" class="theme-btn">Choose Plan</a>
                                     </div>
-                                </th>
-                                <th>
-                                    <div class="cell-inner">
-                                        <span>Standard</span>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-6 col-md-6">
+                                <div class="pricing-box-items">
+                                    <h3>Standard Plan</h3>
+                                    <p>Access to a wider selection of movies and shows, including most new releases and exclusive content</p>
+                                    <h2>$12.99 <sub>/month</sub></h2>
+                                    <div class="pricing-button">
+                                        <a href="pricing.html" class="theme-btn style-2">Start Free Trial</a>
+                                        <a href="pricing.html" class="theme-btn">Choose Plan</a>
                                     </div>
-                                    <div class="cell-tag">
-                                        <span></span>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-6 col-md-6">
+                                <div class="pricing-box-items">
+                                    <h3>Premium Plan</h3>
+                                    <p>Access to a widest selection of movies and shows, including all new releases and Offline Viewing</p>
+                                    <h2>$14.99 <sub>/month</sub></h2>
+                                    <div class="pricing-button">
+                                        <a href="pricing.html" class="theme-btn style-2">Start Free Trial</a>
+                                        <a href="pricing.html" class="theme-btn">Choose Plan</a>
                                     </div>
-                                </th>
-                                <th>
-                                    <div class="cell-inner">
-                                        <span>Premium</span>
-                                    </div>
-                                    <div class="cell-tag">
-                                        <span></span>
-                                    </div>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <div class="cell-inner">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <span>49$</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <span>99$</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <span>199$</span><span> / Month</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="cell-inner">
-                                        <span>Number Of Screen</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <span>1</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <span>2</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <span>4</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="cell-inner">
-                                        <span>On how many device you can Download</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <span>1</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <span>2</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <span>4</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="cell-inner">
-                                        <span>Unlimited TV shows and movies </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <i class="far fa-check-circle"></i>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <i class="far fa-check-circle"></i>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <i class="far fa-check-circle"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="cell-inner">
-                                        <span>watch on mobile and tablet</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <i class="far fa-check-circle"></i>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <i class="far fa-check-circle"></i>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <i class="far fa-check-circle"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="cell-inner">
-                                        <span>watch on laptop and tv</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <i class="far fa-check-circle"></i>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <i class="far fa-check-circle"></i>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <i class="far fa-check-circle"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="cell-inner">
-                                        <span>HD available</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <i class="fas fa-times-circle"></i>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <i class="far fa-check-circle"></i>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <i class="far fa-check-circle"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="cell-inner">
-                                        <span>ultra HD available</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <i class="fas fa-times-circle"></i>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <i class="far fa-check-circle"></i>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                        <i class="far fa-check-circle"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="cell-inner">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                    </div>
-                                    <div class="cell-btn-holder">
-                                        <div class="gen-btn-container">
-                                            <div class="gen-button-block">
-                                                <a class="gen-button" href="register.html">
-                                                    <span class="text">Subscribe</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                    </div>
-                                    <div class="cell-btn-holder">
-                                        <div class="gen-btn-container">
-                                            <div class="gen-button-block">
-                                                <a class="gen-button" href="register.html">
-                                                    <span class="text">Subscribe</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cell-inner">
-                                    </div>
-                                    <div class="cell-btn-holder">
-                                        <div class="gen-btn-container">
-                                            <div class="gen-button-block">
-                                                <a class="gen-button" href="register.html">
-                                                    <span class="text">Subscribe</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- Pricing Table End -->
+        </section>
+
+        <!-- Faq Section Start -->
+        <section class="faq-section fix section-padding pb-0 mb-4">
+            <div class="container-fluid">
+                <div class="section-title-area">
+                    <div class="section-title">
+                        <h3>Frequently Asked Questions</h3>
+                        <p>Got questions? We've got answers! Check out our FAQ section to find answers to the most common questions about StreamVibe.</p>
+                    </div>
+                    <a href="pricing.html" class="theme-btn">Ask a Question</a>
+                </div>
+                <div class="faq-items-2">
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                   <span>01</span> What is Stremker?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p>
+                                        Why doesn't Netflix, Hulu, or any streaming service have every show and movie available for streaming? Because of licensing rights. A streaming service has to pay for the right to stream movies and TV shows, or in some cases, entire libraries of movies and TV shows.Why doesn't Netflix, Hulu, or any streaming service have every show and movie available for streaming? Because of licensing rights. A streaming service has to pay for the right to stream movies and TV shows, or in some cases, entire libraries of movies and TV shows.
+                                    </p>
+                                 </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <span>02</span> How much does TicsTube cost?
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show"
+                                aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p>
+                                        Why doesn't Netflix, Hulu, or any streaming service have every show and movie available for streaming? Because of licensing rights. A streaming service has to pay for the right to stream movies and TV shows, or in some cases, entire libraries of movies and TV shows.Why doesn't Netflix, Hulu, or any streaming service have every show and movie available for streaming? Because of licensing rights. A streaming service has to pay for the right to stream movies and TV shows, or in some cases, entire libraries of movies and TV shows.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item mb-0">
+                            <h2 class="accordion-header" id="headingthree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapsethree" aria-expanded="false"
+                                    aria-controls="collapsethree">
+                                    <span>03</span> What content is available on TicsTube?
+                                </button>
+                            </h2>
+                            <div id="collapsethree" class="accordion-collapse collapse"
+                                aria-labelledby="headingthree" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p>
+                                        Why doesn't Netflix, Hulu, or any streaming service have every show and movie available for streaming? Because of licensing rights. A streaming service has to pay for the right to stream movies and TV shows, or in some cases, entire libraries of movies and TV shows.Why doesn't Netflix, Hulu, or any streaming service have every show and movie available for streaming? Because of licensing rights. A streaming service has to pay for the right to stream movies and TV shows, or in some cases, entire libraries of movies and TV shows.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 {% endblock %}

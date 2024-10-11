@@ -1,66 +1,108 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-
-
+<!--<< Header Area >>-->
 <head>
-    <meta charset="utf-8">
-    <meta name="keywords" content="DramaBox"/>
-    <meta name="description" content="DramaBox"/>
-    <meta name="author" content="DramaBox"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>DramaBox</title>
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="{%  static 'website/images/favicon.png' %}">
-    <!-- CSS bootstrap-->
-    <link rel="stylesheet" href="{%  static 'website/css/bootstrap.min.css' %}"/>
-    <!--  Style -->
-    <link rel="stylesheet" href="{%  static 'website/css/style.css' %}"/>
-    <!--  Responsive -->
-    <link rel="stylesheet" href="{%  static 'website/css/responsive.css' %}"/>
+    <!-- ========== Meta Tags ========== -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Namespace-IT">
+    <meta name="description" content="WowTube - OTT Platform and Video Streaming HTML Template">
+    <!-- ======== Page title ============ -->
+    <title>WowTube - OTT Platform and Video Streaming HTML Template</title>
+    <link rel="shortcut icon" href="{% static 'website/img/favicon.svg' %}">
+    <link rel="stylesheet" href="{% static 'website/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/meanmenu.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/color.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/main.css' %}">
 </head>
+<body class="body-bg">
 
-<body>
-
-<!--=========== Loader =============-->
-<div id="gen-loading">
-    <div id="gen-loading-center">
-        <img src="{% static 'website/images/logo-1.png' %}" alt="loading">
+<!-- Preloader Start -->
+<div id="preloader" class="preloader">
+    <div class="animation-preloader">
+        <div class="spinner">
+        </div>
+        <div class="txt-loading">
+                    <span data-text-preloader="D" class="letters-loading">
+                        D
+                    </span>
+            <span data-text-preloader="R" class="letters-loading">
+                        R
+                    </span>
+            <span data-text-preloader="A" class="letters-loading">
+                        A
+                    </span>
+            <span data-text-preloader="M" class="letters-loading">
+                        M
+                    </span>
+            <span data-text-preloader="A" class="letters-loading">
+                        A
+                    </span>
+            <span data-text-preloader="B" class="letters-loading">
+                        B
+                    </span>
+            <span data-text-preloader="O" class="letters-loading">
+                        O
+                    </span>
+            <span data-text-preloader="X" class="letters-loading">
+                        X
+                    </span>
+        </div>
+        <p class="text-center">Loading</p>
+    </div>
+    <div class="loader">
+        <div class="row">
+            <div class="col-3 loader-section section-left">
+                <div class="bg"></div>
+            </div>
+            <div class="col-3 loader-section section-left">
+                <div class="bg"></div>
+            </div>
+            <div class="col-3 loader-section section-right">
+                <div class="bg"></div>
+            </div>
+            <div class="col-3 loader-section section-right">
+                <div class="bg"></div>
+            </div>
+        </div>
     </div>
 </div>
-<!--=========== Loader =============-->
+
+<!--<< Mouse Cursor Start >>-->
+<div class="mouse-cursor cursor-outer"></div>
+<div class="mouse-cursor cursor-inner"></div>
+
+<!-- Back To Top start -->
+<button id="back-top" class="back-to-top">
+    <i class="fa-solid fa-chevron-up"></i>
+</button>
+
 {% include 'website/include/header.html' %}
-
 {% block content %}
+
 {% endblock content %}
-
-{% block content-without-footer %}
 {% include 'website/include/footer.html' %}
-{% endblock content-without-footer %}
 
-<!-- Back-to-Top start -->
-<div id="back-to-top">
-    <a class="top" id="top" href="#top"> <i class="ion-ios-arrow-up"></i> </a>
-</div>
-<!-- Back-to-Top end -->
 
-<script src="{% static 'website/js/jquery-3.6.0.min.js' %}"></script>
-<script src="{% static 'website/js/asyncloader.min.js' %}"></script>
-<script src="{% static 'website/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'website/js/owl.carousel.min.js' %}"></script>
-<script src="{% static 'website/js/jquery.waypoints.min.js' %}"></script>
+<!--<< All JS Plugins >>-->
+<script src="{% static 'website/js/jquery-3.7.1.min.js' %}"></script>
+<script src="{% static 'website/js/viewport.jquery.js' %}"></script>
+<script src="{% static 'website/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'website/js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'website/js/jquery.waypoints.js' %}"></script>
 <script src="{% static 'website/js/jquery.counterup.min.js' %}"></script>
-<script src="{% static 'website/js/popper.min.js' %}"></script>
 <script src="{% static 'website/js/swiper-bundle.min.js' %}"></script>
-<script src="{% static 'website/js/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'website/js/jquery.meanmenu.min.js' %}"></script>
 <script src="{% static 'website/js/jquery.magnific-popup.min.js' %}"></script>
-<script src="{% static 'website/js/slick.min.js' %}"></script>
-<script src="{% static 'website/js/streamlab-core.js' %}"></script>
-<script src="{% static 'website/js/script.js' %}"></script>
-
-
+<script src="{% static 'website/js/wow.min.js' %}"></script>
+<script src="{% static 'website/js/main.js' %}"></script>
 </body>
-
-
-<!-- Mirrored from template.gentechtreedesign.com/html/streamlab/red-html/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 11 Oct 2024 09:34:36 GMT -->
 </html>
