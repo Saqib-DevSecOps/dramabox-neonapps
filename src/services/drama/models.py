@@ -145,6 +145,13 @@ class DramaSeries(models.Model):
         """
         return self.view_count >= self.trending_threshold
 
+    @property
+    def upcoming_series(self):
+        """
+        Returns upcoming series based on release date.
+        """
+        return self.release_date > timezone.now().date()
+
 
 class DramaSeriesTag(models.Model):
     """
