@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 # ---------------------------- Utility Models ---------------------------- #
@@ -114,8 +115,12 @@ class DramaSeries(models.Model):
                                      help_text="Poster image of the drama series.")
     trailer_url = models.URLField(blank=True, null=True, help_text="Trailer URL for the drama series.")
     slug = models.SlugField(max_length=255, unique=True, help_text="URL-friendly identifier for the drama series.")
-    is_featured = models.BooleanField(default=False, help_text="Mark as featured for promotional purposes.")
     view_count = models.PositiveIntegerField(default=0, help_text="Number of views the drama series has received.")
+
+    is_featured = models.BooleanField(default=False, help_text="Mark as featured for promotional purposes.")
+    featured_until = models.DateField(blank=True, null=True, help_text="Date until this drama is featured.")
+
+    trending_threshold = models.PositiveIntegerField(default=100, help_text="Minimum views to be considered trending.")
 
     created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the drama series was added.")
     updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the drama series was last updated.")
@@ -125,6 +130,20 @@ class DramaSeries(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def is_currently_featured(self):
+        if self.is_featured and self.featured_until:
+            return self.featured_until >= timezone.now().date()
+        return False
+
+    @property
+    def is_trending(self):
+        """
+        Determines if the drama series is trending based on the view count and the trending threshold.
+        Returns True if view_count exceeds the trending_threshold.
+        """
+        return self.view_count >= self.trending_threshold
 
 
 class DramaSeriesTag(models.Model):
