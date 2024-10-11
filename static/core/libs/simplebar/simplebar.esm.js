@@ -189,7 +189,7 @@ function () {
 
       var dragPos = eventOffset - track.rect[_this.axis[_this.draggedAxis].offsetAttr] - _this.axis[_this.draggedAxis].dragOffset; // Convert the mouse position into a percentage of the scrollbar height/width.
 
-      var dragPerc = dragPos / (trackSize - scrollbar.size); // Scroll the content by the same percentage.
+      var dragPerc = dragPos / (trackSize - scrollbar.size); // Scroll the drama by the same percentage.
 
       var scrollPos = dragPerc * (contentSize - hostSize); // Fix browsers inconsistency on RTL
 
@@ -539,7 +539,7 @@ function () {
     this.contentWrapperEl.style.height = isHeightAuto ? 'auto' : '100%'; // Determine placeholder size
 
     this.placeholderEl.style.width = isWidthAuto ? this.contentEl.offsetWidth + "px" : 'auto';
-    this.placeholderEl.style.height = this.contentEl.scrollHeight + "px"; // Set isOverflowing to false if scrollbar is not necessary (content is shorter than offset)
+    this.placeholderEl.style.height = this.contentEl.scrollHeight + "px"; // Set isOverflowing to false if scrollbar is not necessary (drama is shorter than offset)
 
     this.axis.x.isOverflowing = this.contentWrapperEl.scrollWidth > this.contentWrapperEl.offsetWidth;
     this.axis.y.isOverflowing = this.contentWrapperEl.scrollHeight > this.contentWrapperEl.offsetHeight; // Set isOverflowing to false if user explicitely set hidden overflow
@@ -732,7 +732,7 @@ function () {
   ;
 
   /**
-   * Getter for content element
+   * Getter for drama element
    */
   _proto.getContentElement = function getContentElement() {
     return this.contentEl;
@@ -826,8 +826,8 @@ SimpleBar.defaultOptions = {
   autoHide: true,
   forceVisible: false,
   classNames: {
-    contentEl: 'simplebar-content',
-    contentWrapper: 'simplebar-content-wrapper',
+    contentEl: 'simplebar-drama',
+    contentWrapper: 'simplebar-drama-wrapper',
     offset: 'simplebar-offset',
     mask: 'simplebar-mask',
     wrapper: 'simplebar-wrapper',

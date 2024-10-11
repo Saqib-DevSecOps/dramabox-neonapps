@@ -82,7 +82,7 @@ class NotificationService:
                     "from_email": MAILCHIMP_FROM_EMAIL,
                     "subject": self.heading,
                     "to": email_list,
-                    "global_merge_vars": [{"name": "description", "content": self.description}],
+                    "global_merge_vars": [{"name": "description", "drama": self.description}],
                     "template_name": template,
                     "html": render_to_string(template, context)
                 }

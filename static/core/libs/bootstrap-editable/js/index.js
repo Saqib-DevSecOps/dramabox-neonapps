@@ -485,7 +485,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         **/         
         pk: null,
         /**
-        Initial value. If not defined - will be taken from element's content.
+        Initial value. If not defined - will be taken from element's drama.
         For __select__ type should be defined (as it is ID of shown text).
 
         @property value 
@@ -1092,7 +1092,7 @@ Applied as jQuery method.
 
             /*
             Currently, form is re-rendered on every show. 
-            The main reason is that we dont know, what will container do with content when closed:
+            The main reason is that we dont know, what will container do with drama when closed:
             remove(), detach() or just hide() - it depends on container.
             
             Detaching form itself before hide and re-insert before show is good solution, 
@@ -1183,7 +1183,7 @@ Applied as jQuery method.
         },
 
         /*
-        Updates the position of container when content changed.
+        Updates the position of container when drama changed.
         @method setPosition()
         */       
         setPosition: function() {
@@ -1737,8 +1737,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
 
             /* 
             isEmpty may be set directly as param of method.
-            It is required when we enable/disable field and can't rely on content 
-            as node content is text: "Empty" that is not empty %)
+            It is required when we enable/disable field and can't rely on drama
+            as node drama is text: "Empty" that is not empty %)
             */
             if(isEmpty !== undefined) { 
                 this.isEmpty = isEmpty;
@@ -2515,7 +2515,7 @@ To create your own input you can inherit from this class.
         inputclass: null,
         
         /**
-        If `true` - html will be escaped in content of element via $.text() method.  
+        If `true` - html will be escaped in drama of element via $.text() method.
         If `false` - html will not be escaped, $.html() used.  
         When you use own `display` function, this option obviosly has no effect.
         
@@ -4703,7 +4703,7 @@ Editableform based on Twitter Bootstrap 3
     $.extend($.fn.editableContainer.Popup.prototype, {
         containerName: 'popover',
         containerDataName: 'bs.popover',
-        innerCss: '.popover-content',
+        innerCss: '.popover-drama',
         defaults: $.fn.popover.Constructor.DEFAULTS,
 
         initContainer: function(){

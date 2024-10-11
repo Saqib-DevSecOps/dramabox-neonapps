@@ -1,10 +1,65 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="keywords" content="DramaBox"/>
+    <meta name="description" content="DramaBox"/>
+    <meta name="author" content="DramaBox"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>DramaBox</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{%  static 'website/images/favicon.png' %}">
+    <!-- CSS bootstrap-->
+    <link rel="stylesheet" href="{%  static 'website/css/bootstrap.min.css' %}"/>
+    <!--  Style -->
+    <link rel="stylesheet" href="{%  static 'website/css/style.css' %}"/>
+    <!--  Responsive -->
+    <link rel="stylesheet" href="{%  static 'website/css/responsive.css' %}"/>
 </head>
+
 <body>
 
+<!--=========== Loader =============-->
+<div id="gen-loading">
+    <div id="gen-loading-center">
+        <img src="{% static 'website/images/logo-1.png' %}" alt="loading">
+    </div>
+</div>
+<!--=========== Loader =============-->
+{% include 'website/include/header.html' %}
+
+{% block content %}
+{% endblock content %}
+
+{% include 'website/include/footer.html' %}
+
+
+<!-- Back-to-Top start -->
+<div id="back-to-top">
+    <a class="top" id="top" href="#top"> <i class="ion-ios-arrow-up"></i> </a>
+</div>
+<!-- Back-to-Top end -->
+
+<script src="{% static 'website/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'website/js/asyncloader.min.js' %}"></script>
+<script src="{% static 'website/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'website/js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'website/js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'website/js/jquery.counterup.min.js' %}"></script>
+<script src="{% static 'website/js/popper.min.js' %}"></script>
+<script src="{% static 'website/js/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'website/js/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'website/js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'website/js/slick.min.js' %}"></script>
+<script src="{% static 'website/js/streamlab-core.js' %}"></script>
+<script src="{% static 'website/js/script.js' %}"></script>
+
+
 </body>
+
+
+<!-- Mirrored from template.gentechtreedesign.com/html/streamlab/red-html/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 11 Oct 2024 09:34:36 GMT -->
 </html>

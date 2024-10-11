@@ -4155,7 +4155,7 @@ var Map = Evented.extend({
 			._moveEnd(zoomChanged);
 
 		// @event viewreset: Event
-		// Fired when the map needs to redraw its content (this usually happens
+		// Fired when the map needs to redraw its drama (this usually happens
 		// on map zoom or load). Very useful for creating custom overlays.
 		this.fire('viewreset');
 
@@ -9499,13 +9499,13 @@ var DivOverlay = Layer.extend({
 	},
 
 	// @method getContent: String|HTMLElement
-	// Returns the content of the popup.
+	// Returns the drama of the popup.
 	getContent: function () {
 		return this._content;
 	},
 
 	// @method setContent(htmlContent: String|HTMLElement|Function): this
-	// Sets the HTML content of the popup. If a function is passed the source layer will be passed to the function. The function should return a `String` or `HTMLElement` to be used in the popup.
+	// Sets the HTML drama of the popup. If a function is passed the source layer will be passed to the function. The function should return a `String` or `HTMLElement` to be used in the popup.
 	setContent: function (content) {
 		this._content = content;
 		this.update();
@@ -9519,7 +9519,7 @@ var DivOverlay = Layer.extend({
 	},
 
 	// @method update: null
-	// Updates the popup content, layout and position. Useful for updating the popup after something inside changed, e.g. image loaded.
+	// Updates the popup drama, layout and position. Useful for updating the popup after something inside changed, e.g. image loaded.
 	update: function () {
 		if (!this._map) { return; }
 
@@ -9596,7 +9596,7 @@ var DivOverlay = Layer.extend({
 		// set overlay source to this layer
 		this._source = layer;
 
-		// update the overlay (content, layout, ect...)
+		// update the overlay (drama, layout, ect...)
 		this.update();
 
 		return latlng;
@@ -9689,7 +9689,7 @@ var Popup = DivOverlay.extend({
 
 		// @option maxHeight: Number = null
 		// If set, creates a scrollable container of the given height
-		// inside a popup if its content exceeds it.
+		// inside a popup if its drama exceeds it.
 		maxHeight: null,
 
 		// @option autoPan: Boolean = true
@@ -9817,8 +9817,8 @@ var Popup = DivOverlay.extend({
 			prefix + ' ' + (this.options.className || '') +
 			' leaflet-zoom-animated');
 
-		var wrapper = this._wrapper = create$1('div', prefix + '-content-wrapper', container);
-		this._contentNode = create$1('div', prefix + '-content', wrapper);
+		var wrapper = this._wrapper = create$1('div', prefix + '-drama-wrapper', container);
+		this._contentNode = create$1('div', prefix + '-drama', wrapper);
 
 		disableClickPropagation(container);
 		disableScrollPropagation(this._contentNode);
@@ -9952,8 +9952,8 @@ Map.include({
 	// @method openPopup(popup: Popup): this
 	// Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).
 	// @alternative
-	// @method openPopup(content: String|HTMLElement, latlng: LatLng, options?: Popup options): this
-	// Creates a popup with the specified content and options and opens it in the given point on a map.
+	// @method openPopup(drama: String|HTMLElement, latlng: LatLng, options?: Popup options): this
+	// Creates a popup with the specified drama and options and opens it in the given point on a map.
 	openPopup: function (popup, latlng, options) {
 		if (!(popup instanceof Popup)) {
 			popup = new Popup(options).setContent(popup);
@@ -10007,8 +10007,8 @@ Map.include({
 // @section Popup methods
 Layer.include({
 
-	// @method bindPopup(content: String|HTMLElement|Function|Popup, options?: Popup options): this
-	// Binds a popup to the layer with the passed `content` and sets up the
+	// @method bindPopup(drama: String|HTMLElement|Function|Popup, options?: Popup options): this
+	// Binds a popup to the layer with the passed `drama` and sets up the
 	// necessary event listeners. If a `Function` is passed it will receive
 	// the layer as the first argument and should return a `String` or `HTMLElement`.
 	bindPopup: function (content, options) {
@@ -10094,8 +10094,8 @@ Layer.include({
 		return (this._popup ? this._popup.isOpen() : false);
 	},
 
-	// @method setPopupContent(content: String|HTMLElement|Popup): this
-	// Sets the content of the popup bound to this layer.
+	// @method setPopupContent(drama: String|HTMLElement|Popup): this
+	// Sets the drama of the popup bound to this layer.
 	setPopupContent: function (content) {
 		if (this._popup) {
 			this._popup.setContent(content);
@@ -10359,8 +10359,8 @@ Map.include({
 	// @method openTooltip(tooltip: Tooltip): this
 	// Opens the specified tooltip.
 	// @alternative
-	// @method openTooltip(content: String|HTMLElement, latlng: LatLng, options?: Tooltip options): this
-	// Creates a tooltip with the specified content and options and open it.
+	// @method openTooltip(drama: String|HTMLElement, latlng: LatLng, options?: Tooltip options): this
+	// Creates a tooltip with the specified drama and options and open it.
 	openTooltip: function (tooltip, latlng, options) {
 		if (!(tooltip instanceof Tooltip)) {
 			tooltip = new Tooltip(options).setContent(tooltip);
@@ -10404,8 +10404,8 @@ Map.include({
 // @section Tooltip methods
 Layer.include({
 
-	// @method bindTooltip(content: String|HTMLElement|Function|Tooltip, options?: Tooltip options): this
-	// Binds a tooltip to the layer with the passed `content` and sets up the
+	// @method bindTooltip(drama: String|HTMLElement|Function|Tooltip, options?: Tooltip options): this
+	// Binds a tooltip to the layer with the passed `drama` and sets up the
 	// necessary event listeners. If a `Function` is passed it will receive
 	// the layer as the first argument and should return a `String` or `HTMLElement`.
 	bindTooltip: function (content, options) {
@@ -10517,8 +10517,8 @@ Layer.include({
 		return this._tooltip.isOpen();
 	},
 
-	// @method setTooltipContent(content: String|HTMLElement|Tooltip): this
-	// Sets the content of the tooltip bound to this layer.
+	// @method setTooltipContent(drama: String|HTMLElement|Tooltip): this
+	// Sets the drama of the tooltip bound to this layer.
 	setTooltipContent: function (content) {
 		if (this._tooltip) {
 			this._tooltip.setContent(content);

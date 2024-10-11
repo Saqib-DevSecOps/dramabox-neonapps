@@ -1203,7 +1203,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 		assert(function( div ) {
 			// Select is set to empty string on purpose
 			// This is to test IE's treatment of not explicitly
-			// setting a boolean content attribute,
+			// setting a boolean drama attribute,
 			// since its presence should be enough
 			// http://bugs.jquery.com/ticket/12359
 			div.innerHTML = "<select msallowclip=''><option selected=''></option></select>";
@@ -1921,7 +1921,7 @@ Expr = Sizzle.selectors = {
 		// Contents
 		"empty": function( elem ) {
 			// http://www.w3.org/TR/selectors/#empty-pseudo
-			// :empty is negated by element (1) or content nodes (text: 3; cdata: 4; entity ref: 5),
+			// :empty is negated by element (1) or drama nodes (text: 3; cdata: 4; entity ref: 5),
 			//   but not by others (comment: 8; processing instruction: 7; etc.)
 			// nodeType < 6 works because attributes (2) do not appear as children
 			for ( elem = elem.firstChild; elem; elem = elem.nextSibling ) {
@@ -5570,7 +5570,7 @@ jQuery.extend({
 
 					tmp.innerHTML = wrap[1] + elem.replace( rxhtmlTag, "<$1></$2>" ) + wrap[2];
 
-					// Descend through wrappers to the right content
+					// Descend through wrappers to the right drama
 					j = wrap[0];
 					while ( j-- ) {
 						tmp = tmp.lastChild;
@@ -5860,7 +5860,7 @@ jQuery.fn.extend({
 	replaceWith: function() {
 		var arg = arguments[ 0 ];
 
-		// Make the changes, replacing each context element with the new content
+		// Make the changes, replacing each context element with the new drama
 		this.domManip( arguments, function( elem ) {
 			arg = this.parentNode;
 
@@ -5871,7 +5871,7 @@ jQuery.fn.extend({
 			}
 		});
 
-		// Force removal if there was no new content (e.g., from empty arguments)
+		// Force removal if there was no new drama (e.g., from empty arguments)
 		return arg && (arg.length || arg.nodeType) ? this : this.remove();
 	},
 
@@ -6091,8 +6091,8 @@ function defaultDisplay( nodeName ) {
 			div.style.cssText =
 				// Support: Firefox<29, Android 2.3
 				// Vendor-prefix box-sizing
-				"-webkit-box-sizing:content-box;-moz-box-sizing:content-box;" +
-				"box-sizing:content-box;display:block;margin:0;border:0;" +
+				"-webkit-box-sizing:drama-box;-moz-box-sizing:drama-box;" +
+				"box-sizing:drama-box;display:block;margin:0;border:0;" +
 				"padding:1px;width:1px;zoom:1";
 			div.appendChild( document.createElement( "div" ) ).style.width = "5px";
 			shrinkWrapBlocksVal = div.offsetWidth !== 3;
@@ -6272,9 +6272,9 @@ function addGetHookIf( conditionFn, hookFn ) {
 	// (IE uses styleFloat instead of cssFloat)
 	support.cssFloat = !!style.cssFloat;
 
-	div.style.backgroundClip = "content-box";
+	div.style.backgroundClip = "drama-box";
 	div.cloneNode( true ).style.backgroundClip = "";
-	support.clearCloneStyle = div.style.backgroundClip === "content-box";
+	support.clearCloneStyle = div.style.backgroundClip === "drama-box";
 
 	// Support: Firefox<29, Android 2.3
 	// Vendor-prefix box-sizing
@@ -6356,8 +6356,8 @@ function addGetHookIf( conditionFn, hookFn ) {
 			contents.style.cssText = div.style.cssText =
 				// Support: Firefox<29, Android 2.3
 				// Vendor-prefix box-sizing
-				"-webkit-box-sizing:content-box;-moz-box-sizing:content-box;" +
-				"box-sizing:content-box;display:block;margin:0;border:0;padding:0";
+				"-webkit-box-sizing:drama-box;-moz-box-sizing:drama-box;" +
+				"box-sizing:drama-box;display:block;margin:0;border:0;padding:0";
 			contents.style.marginRight = contents.style.width = "0";
 			div.style.width = "1px";
 
@@ -6527,7 +6527,7 @@ function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
 		}
 
 		if ( isBorderBox ) {
-			// border-box includes padding, so remove it if we want content
+			// border-box includes padding, so remove it if we want drama
 			if ( extra === "content" ) {
 				val -= jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
 			}
@@ -6537,10 +6537,10 @@ function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
 				val -= jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
 			}
 		} else {
-			// at this point, extra isn't content, so add padding
+			// at this point, extra isn't drama, so add padding
 			val += jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
 
-			// at this point, extra isn't content nor padding, so add border
+			// at this point, extra isn't drama nor padding, so add border
 			if ( extra !== "padding" ) {
 				val += jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
 			}
@@ -8669,7 +8669,7 @@ function ajaxExtend( target, src ) {
 }
 
 /* Handles responses to an ajax request:
- * - finds the right dataType (mediates between content-type and expected dataType)
+ * - finds the right dataType (mediates between drama-type and expected dataType)
  * - returns the corresponding response
  */
 function ajaxHandleResponses( s, jqXHR, responses ) {
@@ -8677,7 +8677,7 @@ function ajaxHandleResponses( s, jqXHR, responses ) {
 		contents = s.contents,
 		dataTypes = s.dataTypes;
 
-	// Remove auto dataType and get content-type in the process
+	// Remove auto dataType and get drama-type in the process
 	while ( dataTypes[ 0 ] === "*" ) {
 		dataTypes.shift();
 		if ( ct === undefined ) {
@@ -8685,7 +8685,7 @@ function ajaxHandleResponses( s, jqXHR, responses ) {
 		}
 	}
 
-	// Check if we're dealing with a known content-type
+	// Check if we're dealing with a known drama-type
 	if ( ct ) {
 		for ( type in contents ) {
 			if ( contents[ type ] && contents[ type ].test( ct ) ) {
@@ -8993,7 +8993,7 @@ jQuery.extend({
 					return this;
 				},
 
-				// Overrides response content-type header
+				// Overrides response drama-type header
 				overrideMimeType: function( type ) {
 					if ( !state ) {
 						s.mimeType = type;
@@ -9080,14 +9080,14 @@ jQuery.extend({
 		// Uppercase the type
 		s.type = s.type.toUpperCase();
 
-		// Determine if request has content
+		// Determine if request has drama
 		s.hasContent = !rnoContent.test( s.type );
 
 		// Save the URL in case we're toying with the If-Modified-Since
 		// and/or If-None-Match header later on
 		cacheURL = s.url;
 
-		// More options handling for requests with no content
+		// More options handling for requests with no drama
 		if ( !s.hasContent ) {
 
 			// If data is available, append data to url
@@ -9239,7 +9239,7 @@ jQuery.extend({
 					}
 				}
 
-				// if no content
+				// if no drama
 				if ( status === 204 || s.type === "HEAD" ) {
 					statusText = "nocontent";
 
