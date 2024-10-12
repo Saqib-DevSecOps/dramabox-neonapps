@@ -11,33 +11,35 @@ from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-
-from root.settings import  GOOGLE_CALLBACK_ADDRESS, APPLE_CALLBACK_ADDRESS
+from root.settings import GOOGLE_CALLBACK_ADDRESS, APPLE_CALLBACK_ADDRESS
 from src.api.auth.serializer import PasswordSerializer, UserSerializer
 
-
 class GoogleLogin(SocialLoginView):
+    """ Handles Google social login """
     adapter_class = GoogleOAuth2Adapter
     callback_url = GOOGLE_CALLBACK_ADDRESS
     client_class = OAuth2Client
 
 class GoogleConnect(SocialConnectView):
+    """ Handles Google social account connection """
     adapter_class = GoogleOAuth2Adapter
     callback_url = GOOGLE_CALLBACK_ADDRESS
     client_class = OAuth2Client
 
 class AppleLogin(SocialLoginView):
+    """ Handles Apple social login """
     adapter_class = AppleOAuth2Adapter
     callback_url = APPLE_CALLBACK_ADDRESS
     client_class = OAuth2Client
 
 class AppleConnect(SocialConnectView):
+    """ Handles Apple social account connection """
     adapter_class = AppleOAuth2Adapter
     callback_url = APPLE_CALLBACK_ADDRESS
     client_class = OAuth2Client
 
-
 class CustomLoginView(LoginView):
+    """ Custom login view that generates a new auth token for the user """
     serializer_class = LoginSerializer
 
     def finalize_response(self, request, response, *args, **kwargs):
@@ -49,29 +51,30 @@ class CustomLoginView(LoginView):
             response.data['key'] = new_token.key
         return response
 
-
 class UserRetrieveChangeAPIView(RetrieveUpdateAPIView):
+    """ Retrieve and update user account information """
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
+        """ Get the current authenticated user """
         return self.request.user
-
 
 class DeactivateUserAPIView(APIView):
     """ Deactivate user account """
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = PasswordSerializer
 
-    def post(self, request, *args, **kwargs):
+    def _validate_password(self, request):
+        """ Validate the user's password """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-
         password = serializer.validated_data['password']
-        user = request.user
+        user = authenticate(email=request.user.email, password=password)
+        return user
 
-        # Validate the password
-        user = authenticate(email=user.email, password=password)
+    def post(self, request, *args, **kwargs):
+        user = self._validate_password(request)
         if user is None:
             return Response(
                 data={'error': 'Enter a Valid Password'},
@@ -79,38 +82,38 @@ class DeactivateUserAPIView(APIView):
             )
 
         # Deactivate the user account
-        user.is_active = False
-        user.save()
+        request.user.is_active = False
+        request.user.save()
 
         return Response(
             data={'message': 'User account has been deactivated'},
             status=status.HTTP_200_OK
         )
 
-
 class DeleteUserAPIView(APIView):
     """ Delete user account """
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = PasswordSerializer
 
-    def post(self, request, *args, **kwargs):
+    def _validate_password(self, request):
+        """ Validate the user's password """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-
         password = serializer.validated_data['password']
-        user = request.user
+        user = authenticate(email=request.user.email, password=password)
+        return user
 
-        # Validate the password
-        user = authenticate(email=user.email, password=password)
+    def post(self, request, *args, **kwargs):
+        user = self._validate_password(request)
         if user is None:
             return Response(
                 data={'error': 'Enter a Valid Password'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        user.delete()
+        request.user.delete()
 
         return Response(
-            data={'message': 'User account has been deactivated'},
+            data={'message': 'User account has been deleted'},
             status=status.HTTP_200_OK
         )

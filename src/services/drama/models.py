@@ -153,6 +153,8 @@ class DramaSeries(models.Model):
         return self.release_date > timezone.now().date()
 
 
+
+
 class DramaSeriesTag(models.Model):
     """
     Normalized Many-to-Many relation for Drama Series and Tags.
@@ -163,7 +165,7 @@ class DramaSeriesTag(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, help_text="Date when this tag was added to the series")
 
     def __str__(self):
-        return f"{self.drama_series.title} - {self.tag.name}"
+        return f"{self.tag.name}"
 
 
 class DramaSeriesLanguage(models.Model):
@@ -177,7 +179,7 @@ class DramaSeriesLanguage(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, help_text="Date when this language was added to the series")
 
     def __str__(self):
-        return f"{self.drama_series.title} - {self.language.name}"
+        return f"{self.language.name}"
 
 
 class DramaSeriesCast(models.Model):
@@ -190,7 +192,7 @@ class DramaSeriesCast(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, help_text="Date when this actor was added to the series")
 
     def __str__(self):
-        return f"{self.drama_series.title} - {self.actor.name}"
+        return f"{self.actor.name}"
 
 
 class DramaSeriesCategory(models.Model):
@@ -204,7 +206,7 @@ class DramaSeriesCategory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, help_text="Date when this actor was added to the series")
 
     def __str__(self):
-        return f"{self.drama_series.title} - {self.category.name}"
+        return f"{self.category.name}"
 
     class Meta:
         verbose_name = "Drama Series Category"
@@ -215,7 +217,6 @@ class Season(models.Model):
     """
     Represents a season within a drama series.
     """
-    slug = models.SlugField(max_length=255, unique=True, help_text="URL-friendly identifier for the season.")
     series = models.ForeignKey(DramaSeries, on_delete=models.CASCADE, related_name='seasons',
                                help_text="The drama series this season belongs to.")
     season_number = models.IntegerField(help_text="Season number within the drama series.")
@@ -238,7 +239,6 @@ class Episode(models.Model):
     Represents individual episodes in a specific season of a drama series.
     """
     title = models.CharField(max_length=255, help_text="Title of the episode.")
-    slug = models.SlugField(max_length=255, unique=True, help_text="URL-friendly identifier for the episode.")
     season = models.ForeignKey(Season, on_delete=models.CASCADE, related_name='episodes',
                                help_text="Season the episode belongs to.")
     episode_number = models.IntegerField(help_text="Episode number within the season.")
