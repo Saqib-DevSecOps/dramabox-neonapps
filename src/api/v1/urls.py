@@ -1,7 +1,8 @@
 from django.urls import path
 
-from src.services.drama.views import (HomeDramaListAPIView, DramaSeriesListAPIView, DramaSeriesDetailAPIView
-                                      )
+from src.api.v1.views import (HomeDramaListAPIView, DramaSeriesListAPIView, DramaSeriesDetailAPIView
+                              )
+
 app_name = 'v1'
 urlpatterns = [
     path('home/', HomeDramaListAPIView.as_view(), name='home-drama-list'),
