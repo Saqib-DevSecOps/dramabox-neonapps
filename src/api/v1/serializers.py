@@ -1,7 +1,8 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from src.services.drama.models import Category, Tag, Language, ContentRating, Actor, Director, DramaSeries, \
-    DramaSeriesTag, DramaSeriesLanguage, DramaSeriesCast, DramaSeriesCategory, Season, Episode
+    DramaSeriesTag, DramaSeriesLanguage, DramaSeriesCast, DramaSeriesCategory, Season, Episode, Review
 
 
 # -------------------------GenericSerializer--------------------------------------------
@@ -163,3 +164,25 @@ class DramaSeriesDetailSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'description', 'release_date', 'director', 'rating', 'poster_image',
                   'trailer_url', 'slug', 'view_count', 'categories', 'tags', 'cast', 'languages', 'seasons',
                   'is_trending', 'is_currently_featured', 'created_at', 'updated_at']
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'  # Adjust the fields as necessary
+        read_only_fields = ('user', 'created_at', 'updated_at')
+
+    def validate(self, data):
+        """
+        Check that the user has not already submitted a review for the specified drama series.
+        """
+        drama_series = data.get('drama_series')
+        user = self.context['request'].user  # Get the authenticated user
+
+        if not drama_series:
+            raise ValidationError("Drama series ID is required.")
+
+        if Review.objects.filter(user=user, drama_series=drama_series).exists():
+            raise ValidationError("You have already submitted a review for this drama series.")
+
+        return data

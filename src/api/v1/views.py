@@ -1,13 +1,18 @@
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status
+from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.filters import SearchFilter
-from rest_framework.generics import ListAPIView, RetrieveAPIView
-from rest_framework.permissions import AllowAny
+from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView, CreateAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from src.api.v1.pagination import DramaSeriesPagination
-from src.api.v1.serializers import HomeDramaSeriesListSerializer, DramaSeriesSerializer, DramaSeriesDetailSerializer
-from src.services.drama.models import DramaSeries
+from src.api.v1.serializers import HomeDramaSeriesListSerializer, DramaSeriesSerializer, DramaSeriesDetailSerializer, \
+    ReviewSerializer
+from src.services.drama.models import DramaSeries, Review
+
 
 # Create your views here.
 
@@ -78,3 +83,30 @@ class DramaSeriesDetailAPIView(RetrieveAPIView):
         Retrieves all drama series for detail view.
         """
         return DramaSeries.objects.all()
+
+
+class ReviewListView(ListAPIView):
+    """
+    API view to list all reviews for a specific drama series.
+    """
+    serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Filter reviews by drama series using the ID provided in the URL
+        drama_series_id = self.kwargs.get('drama_series_id')
+        if drama_series_id:
+            return Review.objects.filter(drama_series_id=drama_series_id)
+        return Review.objects.none()  # Return an empty queryset if no drama series is provided
+
+
+class ReviewCreateView(CreateAPIView):
+    """
+    API view to create a new review.
+    """
+    serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
