@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from src.services.drama.models import Category, Tag, Language, ContentRating, Actor, Director, DramaSeries, \
-    DramaSeriesTag, DramaSeriesLanguage, DramaSeriesCast, DramaSeriesCategory, Season, Episode, Review
+    DramaSeriesTag, DramaSeriesLanguage, DramaSeriesCast, DramaSeriesCategory, Season, Episode, Review, Like
 
 
 # -------------------------GenericSerializer--------------------------------------------
@@ -186,3 +186,11 @@ class ReviewSerializer(serializers.ModelSerializer):
             raise ValidationError("You have already submitted a review for this drama series.")
 
         return data
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = ['drama_series']  # Make sure to adjust the field name according to your model
+        read_only_fields = ['user']
+

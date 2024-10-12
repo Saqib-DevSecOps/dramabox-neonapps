@@ -3,15 +3,15 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.filters import SearchFilter
-from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView, CreateAPIView, get_object_or_404
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from src.api.v1.pagination import DramaSeriesPagination
 from src.api.v1.serializers import HomeDramaSeriesListSerializer, DramaSeriesSerializer, DramaSeriesDetailSerializer, \
-    ReviewSerializer
-from src.services.drama.models import DramaSeries, Review
+    ReviewSerializer, LikeSerializer
+from src.services.drama.models import DramaSeries, Review, Like
 
 
 # Create your views here.
@@ -93,11 +93,10 @@ class ReviewListView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # Filter reviews by drama series using the ID provided in the URL
         drama_series_id = self.kwargs.get('drama_series_id')
         if drama_series_id:
             return Review.objects.filter(drama_series_id=drama_series_id)
-        return Review.objects.none()  # Return an empty queryset if no drama series is provided
+        return Review.objects.none()
 
 
 class ReviewCreateView(CreateAPIView):
@@ -110,3 +109,26 @@ class ReviewCreateView(CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+
+class LikeCreateView(CreateAPIView):
+    """
+    API view to toggle a like for a drama series.
+    """
+    serializer_class = LikeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        drama_series_id = request.data.get('drama_series')
+        if not drama_series_id:
+            return Response({"detail": "Drama series ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        existing_like = Like.objects.filter(user=user, drama_series_id=drama_series_id).first()
+        if existing_like:
+            existing_like.delete()
+            return Response({"detail": "Like removed."}, status=status.HTTP_200_OK)
+        else:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save(user=user, drama_series_id=drama_series_id)
+            return Response({"detail": "Like added."}, status=status.HTTP_201_CREATED)

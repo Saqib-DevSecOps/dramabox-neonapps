@@ -157,6 +157,6 @@ class ReviewAdmin(admin.ModelAdmin):
 
 @admin.register(Like)
 class LikeAdmin(admin.ModelAdmin):
-    list_display = ('user', 'episode', 'series', 'liked_on')
+    list_display = ('user', 'drama_series', 'liked_on')
     list_filter = ('liked_on',)
     search_fields = ('user__username', 'episode__title', 'series__title')

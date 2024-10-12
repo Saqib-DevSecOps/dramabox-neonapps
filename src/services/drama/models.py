@@ -153,8 +153,6 @@ class DramaSeries(models.Model):
         return self.release_date > timezone.now().date()
 
 
-
-
 class DramaSeriesTag(models.Model):
     """
     Normalized Many-to-Many relation for Drama Series and Tags.
@@ -289,16 +287,13 @@ class Like(models.Model):
     Represents likes by users on either an episode or a series.
     """
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
-    episode = models.ForeignKey(Episode, on_delete=models.CASCADE, related_name='likes', blank=True, null=True)
-    series = models.ForeignKey(DramaSeries, on_delete=models.CASCADE, related_name='likes', blank=True, null=True)
+    drama_series = models.ForeignKey(DramaSeries, on_delete=models.CASCADE, related_name='likes', blank=True, null=True)
     liked_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('user', 'episode', 'series')
+        unique_together = ('user', 'drama_series')
         verbose_name = "Drama Series Like"
         verbose_name_plural = "Drama Series Likes"
 
     def __str__(self):
-        if self.episode:
-            return f"{self.user.username} liked {self.episode.title}"
-        return f"{self.user.username} liked {self.series.title}"
+        return f"{self.user.username} liked {self.drama_series.title}"

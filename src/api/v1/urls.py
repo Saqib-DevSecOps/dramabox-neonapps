@@ -1,7 +1,7 @@
 from django.urls import path
 
 from src.api.v1.views import (HomeDramaListAPIView, DramaSeriesListAPIView, DramaSeriesDetailAPIView,
-                              ReviewListView, ReviewCreateView
+                              ReviewListView, ReviewCreateView, LikeCreateView
                               )
 
 app_name = 'v1'
@@ -15,4 +15,9 @@ urlpatterns = [
 urlpatterns += [
     path('drama-series/<str:drama_series_id>/reviews/', ReviewListView.as_view(), name='review-list'),
     path('reviews/add/', ReviewCreateView.as_view(), name='review-create'),
+]
+
+urlpatterns +=[
+    path('likes/', LikeCreateView.as_view(), name='like-create'),
+
 ]
