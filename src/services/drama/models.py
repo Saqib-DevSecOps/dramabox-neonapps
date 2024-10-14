@@ -152,6 +152,12 @@ class DramaSeries(models.Model):
         """
         return self.release_date > timezone.now().date()
 
+    def top_three_series(self):
+        """
+        Returns top three series based on view count.
+        """
+        return DramaSeries.objects.order_by('-view_count')[:3] # Needs to be serialized & Might need to be not automated
+
 
 class DramaSeriesTag(models.Model):
     """
@@ -297,3 +303,19 @@ class Like(models.Model):
 
     def __str__(self):
         return f"{self.user.username} liked {self.drama_series.title}"
+
+class Testimonials(models.Model):
+    """
+    Represents user testimonials for drama series.
+    """
+    user_name = models.CharField(max_length=255, help_text="Name of the user who submitted the review.")
+    user_image = models.ImageField(upload_to='testimonials/', blank=True, null=True)
+    rating = models.DecimalField(max_digits=2, decimal_places=1, help_text="Rating given by the user (e.g., 4.5).")
+    comment = models.TextField(blank=True, null=True, help_text="User's comments about the drama series.")
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the review was added.")
+    updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the review was last updated.")
+
+    class Meta:
+        verbose_name = "Drama Series Testimonial"
+        verbose_name_plural = "Drama Series Testimonials"
+
