@@ -152,7 +152,11 @@ class DramaSeries(models.Model):
         """
         return self.release_date > timezone.now().date()
 
-
+    def top_three_series(self):
+        """
+        Returns top three series based on view count.
+        """
+        return DramaSeries.objects.order_by('-view_count')[:3] # Needs to be serialized & Might need to be not automated
 
 
 class DramaSeriesTag(models.Model):
@@ -289,16 +293,29 @@ class Like(models.Model):
     Represents likes by users on either an episode or a series.
     """
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
-    episode = models.ForeignKey(Episode, on_delete=models.CASCADE, related_name='likes', blank=True, null=True)
-    series = models.ForeignKey(DramaSeries, on_delete=models.CASCADE, related_name='likes', blank=True, null=True)
+    drama_series = models.ForeignKey(DramaSeries, on_delete=models.CASCADE, related_name='likes', blank=True, null=True)
     liked_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('user', 'episode', 'series')
+        unique_together = ('user', 'drama_series')
         verbose_name = "Drama Series Like"
         verbose_name_plural = "Drama Series Likes"
 
     def __str__(self):
-        if self.episode:
-            return f"{self.user.username} liked {self.episode.title}"
-        return f"{self.user.username} liked {self.series.title}"
+        return f"{self.user.username} liked {self.drama_series.title}"
+
+class Testimonials(models.Model):
+    """
+    Represents user testimonials for drama series.
+    """
+    user_name = models.CharField(max_length=255, help_text="Name of the user who submitted the review.")
+    user_image = models.ImageField(upload_to='testimonials/', blank=True, null=True)
+    rating = models.DecimalField(max_digits=2, decimal_places=1, help_text="Rating given by the user (e.g., 4.5).")
+    comment = models.TextField(blank=True, null=True, help_text="User's comments about the drama series.")
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the review was added.")
+    updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the review was last updated.")
+
+    class Meta:
+        verbose_name = "Drama Series Testimonial"
+        verbose_name_plural = "Drama Series Testimonials"
+

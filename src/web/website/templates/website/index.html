@@ -4,161 +4,65 @@
 
 {% block content %}
 
-    <section class="hero-section section-padding bg-cover"
-             style="background-image: url('{% static 'website/img/dark-gradient-bg.jpg' %}');">
-        <div class="hero-1">
-            <div class="container-fluid">
-                <div class="row g-4">
-                    <div class="col-lg-6">
-                        <div class="hero-image">
-                            <img src="{% static 'website/img/hero/01.jpg' %}" alt="img">
-                            <div class="movie-content">
-                                <ul class="post-time">
-                                    <li>
-                                        <i class="fa-regular fa-clock"></i>
-                                        02h 45m
-                                    </li>
-                                    <li>
-                                        <i class="fa-sharp fa-regular fa-tv"></i>
-                                        4K Quality
-                                    </li>
-                                </ul>
-                                <h3>Happy Women’s day</h3>
-                                <p>Action, war, romantic</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="hero-image">
-                            <img src="{% static 'website/img/hero/02.jpg' %}" alt="img">
-                            <div class="movie-content">
-                                <ul class="post-time">
-                                    <li>
-                                        <i class="fa-regular fa-clock"></i>
-                                        02h 45m
-                                    </li>
-                                    <li>
-                                        <i class="fa-sharp fa-regular fa-tv"></i>
-                                        4K Quality
-                                    </li>
-                                </ul>
-                                <h3>Happy Women’s day</h3>
-                                <p>Action, war, romantic</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="movie-wrapper">
-                    <div class="swiper movie-slider">
-                        <div class="swiper-wrapper">
-                            {% for object in '12345' %}
-                                <div class="swiper-slide">
-                                    <div class="movie-box-items">
-                                        <div class="movie-image">
-                                            <img src="{% static 'website/img/movie/05.jpg' %}" alt="img">
-
-                                            <div class="movie-content">
-                                                <ul class="post-time">
-                                                    <li>
-                                                        <i class="fa-regular fa-clock"></i>
-                                                        02h 45m
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa-sharp fa-regular fa-tv"></i>
-                                                        4K Quality
-                                                    </li>
-                                                </ul>
-                                                <h3>Happy Women’s day</h3>
-                                                <p>Action, war, romantic</p>
+    <section class="hero-section hero-2">
+        <div class="text-stoke">
+            <img src="{% static 'website/img/hero/4KQuality.png' %}" alt="img">
+        </div>
+        <div class="swiper hero-slider">
+            <div class="swiper-wrapper">
+                {% for s in top_three_series %}
+                    <div class="swiper-slide">
+                        <div class="hero-items">
+                            <div class="hero-slider-bg bg-cover"
+                                 style="background-image: url('{{ s.poster_image.url|default:"{% static 'website/img/hero/default.jpg' %}" }}');"></div>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-lg-7">
+                                        <div class="hero-content">
+                                            <h1>
+                                                <span>{{ s.title }}</span>
+                                                <!-- Show first part of title, or use |truncatewords -->
+                                            </h1>
+                                            <ul>
+                                                <li>{{ s.release_date.year }} . {{ s.duration }} . {{ s.language }}
+                                                    . {{ s.genre }}</li>  <!-- Assuming you have these fields -->
+                                            </ul>
+                                            <p>
+                                                {{ s.description|truncatewords:20 }}
+                                                <!-- Truncate description to 20 words -->
+                                            </p>
+                                            <div class="hero-button">
+                                                <a href="{% url 'website:home' %}" class="theme-btn">+ Add to
+                                                    list</a>  <!-- Assuming you have a detail page -->
+                                                <span class="button-text">
+                                    <a href="{{ s.trailer_url }}" class="video-btn video-popup">
+                                        <i class="fa-solid fa-play"></i>
+                                    </a>
+                                    <span class="ms-4 d-line">Watch The Trailer</span>
+                                </span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            {% endfor %}
+                            </div>
                         </div>
                     </div>
-                    <div class="array-button">
-                        <button class="array-prev"><i class="fa-solid fa-chevron-left"></i></button>
-                        <button class="array-next"><i class="fa-solid fa-chevron-right"></i></button>
-                    </div>
-                    <div class="swiper-dot-3 text-center">
-                        <div class="dot2"></div>
-                    </div>
-                </div>
+                {% endfor %}
+
             </div>
         </div>
-        <div class="container">
-            <div class="cta-movie-banner-area section-padding">
-                <div class="section-title text-center">
-                    <h2><img src="{% static 'website/img/lightning.png' %}" alt="img">TRENDING NOW</h2>
-                </div>
-                <div class="cta-movie-banner-items bg-cover"
-                     style="background-image: url('{% static 'website/img/cta-movie/movie-bg-3.jpg' %}');">
-                    <div class="row g-4">
-                        <div class="col-xl-4">
-                            <div class="banner-movie-content">
-                                <h2>
-                                    Blockbuster
-                                    singles day out
-                                </h2>
-                                <p>
-                                    The journey from the vibrant souks and palaces of Marrakech to the tranquil, starlit
-                                    sands of Merzouga showcases the diverse splendor of Morocco. Camel treks a
-                                </p>
+        <div class="banner-thumnail-area-3">
+            <div class="swiper banner-thumnail-slider">
+                <div class="swiper-wrapper">
+                    {% for s in top_three_series %}
+                        <div class="swiper-slide">
+                            <div class="banner-img" style="width: 300px; height: 220px; overflow: hidden;">
+                                <img style="width: 100%; height: 100%; object-fit: cover;"
+                                     src="{{ s.poster_image.url }}" alt="img">
                             </div>
+
                         </div>
-                        <div class="col-xl-8">
-                            <div class="trending-movie-right-items">
-                                <div class="swiper trending-movie-slider">
-                                    <div class="swiper-wrapper">
-                                        <div class="swiper-slide">
-                                            <div class="trending-movie-thumb">
-                                                <img src="{% static 'website/img/trending/06.jpg' %}" alt="img">
-                                                <div class="trending-movie-content">
-                                                        <span>
-                                                            <i class="fa-sharp fa-regular fa-tv"></i>
-                                                            4K Quality
-                                                        </span>
-                                                    <h3>Happy Women’s day</h3>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="trending-movie-thumb">
-                                                <img src="{% static 'website/img/trending/07.jpg' %}" alt="img">
-                                                <div class="trending-movie-content">
-                                                        <span>
-                                                            <i class="fa-sharp fa-regular fa-tv"></i>
-                                                            4K Quality
-                                                        </span>
-                                                    <h3>Happy Women’s day</h3>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="trending-movie-thumb">
-                                                <img src="{% static 'website/img/trending/08.jpg' %}" alt="img">
-                                                <div class="trending-movie-content">
-                                                        <span>
-                                                            <i class="fa-sharp fa-regular fa-tv"></i>
-                                                            4K Quality
-                                                        </span>
-                                                    <h3>Happy Women’s day</h3>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="array-button-items">
-                                    <div class="array-button-2">
-                                        <button class="cta-prev"><i class="fa-solid fa-chevron-left"></i></button>
-                                        <button class="cta-next"><i class="fa-solid fa-chevron-right"></i></button>
-                                    </div>
-                                    <div class="movie-dot"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -168,45 +72,51 @@
     <section class="movie-section style-2 section-padding fix">
         <div class="container">
             <div class="section-title text-center">
-                <h2>This Week's Hot Picks</h2>
+                <h2>Featured: This Week's Hot Picks</h2>
             </div>
         </div>
         <div class="swiper movie-slider-2">
             <div class="swiper-wrapper">
-                {% for object in '12345' %}
+                {% for series in currently_featured %}
                     <div class="swiper-slide">
                         <div class="movie-box-items-2">
                             <div class="movie-image">
-                                <img src="{% static 'website/img/movie/06.jpg' %}" alt="img">
+                                <img src="{{ series.poster_image.url }}"
+                                     alt="{{ series.title }}">
                                 <div class="number">
-                                    01
+                                    {{ forloop.counter }}  <!-- Shows the index of the series -->
                                 </div>
                                 <div class="movie-content">
                                     <ul class="post-time">
                                         <li>
                                             <i class="fa-regular fa-clock"></i>
-                                            02h 45m
+                                            {{ series.duration|default:"N/A" }}
+                                            <!-- Assuming you have a duration field -->
                                         </li>
                                         <li>
                                             <i class="fa-sharp fa-regular fa-tv"></i>
-                                            4K Quality
+                                            4K Quality  <!-- Update this if you have a quality field -->
                                         </li>
                                     </ul>
-                                    <h3>Happy Women’s day</h3>
-                                    <p>The journey from the vibrant souks and palaces of Marrakech to the tranquil,
-                                        starlit
-                                        sands of Merzouga showcases the diverse splendor of Morocco. Camel treks a</p>
+                                    <h3>{{ series.title }}</h3>
+                                    <p>{{ series.description|truncatewords:20 }}</p>  <!-- Truncate the description -->
                                 </div>
                             </div>
                         </div>
                     </div>
+                {% empty %}
+                    <div class="swiper-slide">
+                        <div class="movie-box-items-2">
+                            <p>No currently featured series available.</p>
+                        </div>
+                    </div>
                 {% endfor %}
-
             </div>
             <div class="swiper-dot text-center pt-5">
                 <div class="dot"></div>
             </div>
         </div>
+
     </section>
 
 
@@ -224,34 +134,45 @@
             <div class="movie-wrapper style-2">
                 <div class="swiper movie-slider-3">
                     <div class="swiper-wrapper">
-                        {% for object in '123456' %}
+                        {% for series in upcoming_series %}
                             <div class="swiper-slide">
                                 <div class="movie-box-items style-2">
-                                    <div class="movie-image">
-                                        <img src="{% static 'website/img/movie/11.jpg' %}" alt="img">
+                                    <div style="max-width: 300px; max-height: 170px; overflow: hidden; border-radius: 10px;">
+                                        <img src="{{ series.poster_image.url }}" alt="{{ series.title }}"
+                                             style="width: 100%; height: auto; max-height: 100%; object-fit: cover; border-radius: 10px;">
                                     </div>
                                     <div class="movie-content">
                                         <ul class="post-time">
                                             <li>
                                                 <i class="fa-regular fa-clock"></i>
-                                                02h 45m
+                                                {{ series.duration }}
                                             </li>
                                             <li>
                                                 <i class="fa-sharp fa-regular fa-tv"></i>
-                                                4K Quality
+                                                {{ series.quality }}
                                             </li>
                                         </ul>
-                                        <h3>Happy Women’s day</h3>
-                                        <p>Action, war, romantic</p>
+                                        <h3>{{ series.title }}</h3>
+                                        <p>{{ series.description|truncatewords:15 }}</p>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        {% empty %}
+                            <div class="swiper-slide">
+                                <div class="movie-box-items style-2">
+                                    <div class="movie-content">
+                                        <p>No upcoming dramas available.</p>
                                     </div>
                                 </div>
                             </div>
                         {% endfor %}
-
                     </div>
                 </div>
             </div>
         </div>
+
     </section>
 
 
@@ -260,7 +181,7 @@
         <div class="container">
             <div class="section-title-area">
                 <div class="section-title style-2">
-                    <h2>Featured Dramas</h2>
+                    <h2>Trending Dramas</h2>
                 </div>
             </div>
         </div>
@@ -268,63 +189,70 @@
             <div class="movie-wrapper style-2">
                 <div class="swiper movie-slider-3">
                     <div class="swiper-wrapper">
-                        {% for object in '123456' %}
+                        {% for series in trending_series %}
                             <div class="swiper-slide">
                                 <div class="movie-box-items style-2">
-                                    <div class="movie-image">
-                                        <img src="{% static 'website/img/movie/09.jpg' %}" alt="img">
+                                    <div class="movie-image"
+                                         style="max-width: 300px; max-height: 170px; overflow: hidden; border-radius: 10px;">
+                                        <img src="{{ series.poster_image.url }}" alt="{{ series.title }}"
+                                             style="width: 100%; height: auto; max-height: 100%; object-fit: cover; border-radius: 10px;">
                                     </div>
                                     <div class="movie-content">
                                         <ul class="post-time">
                                             <li>
                                                 <i class="fa-regular fa-clock"></i>
-                                                02h 45m
+                                                {{ series.duration }}
+                                                <!-- Assuming duration is a property of series -->
                                             </li>
                                             <li>
                                                 <i class="fa-sharp fa-regular fa-tv"></i>
-                                                4K Quality
+                                                {{ series.quality }}  <!-- Assuming quality is a property of series -->
                                             </li>
                                         </ul>
-                                        <h3>Happy Women’s day</h3>
-                                        <p>Action, war, romantic</p>
+                                        <h3>{{ series.title }}</h3>
+                                        <p>{{ series.description|truncatewords:15 }}</p>
+                                        <!-- Assuming description is a property of series -->
                                     </div>
                                 </div>
                             </div>
                         {% endfor %}
-
                     </div>
                 </div>
             </div>
         </div>
+
     </section>
 
     <!-- Recently Video Section Start -->
-    <section class="recently-videos fix section-padding pt-0">
-        <div class="container">
-            <div class="section-title-area">
-                <div class="section-title style-2">
-                    <h2>Recently viewed</h2>
-                </div>
-                <div class="array-button-2">
-                    <button class="array-prev"><i class="fa-solid fa-chevron-left"></i></button>
-                    <button class="array-next"><i class="fa-solid fa-chevron-right"></i></button>
-                </div>
-            </div>
-            <div class="swiper recently-videos-slider">
-                <div class="swiper-wrapper">
-                    {% for object in '1234' %}
-                        <div class="swiper-slide">
-                            <div class="recently-view-items">
-                                <div class="recently-image">
-                                    <img src="{% static 'website/img/recently-view/01.jpg' %}" alt="img">
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </section>
+    {#    <section class="recently-videos fix section-padding pt-0">#}
+    {#        <div class="container">#}
+    {#            <div class="section-title-area">#}
+    {#                <div class="section-title style-2">#}
+    {#                    <h2>Recently Viewed</h2>#}
+    {#                </div>#}
+    {#                <div class="array-button-2">#}
+    {#                    <button class="array-prev"><i class="fa-solid fa-chevron-left"></i></button>#}
+    {#                    <button class="array-next"><i class="fa-solid fa-chevron-right"></i></button>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#            <div class="swiper recently-videos-slider">#}
+    {#                <div class="swiper-wrapper">#}
+    {#                    {% for series in currently_featured %}#}
+    {#                        <div class="swiper-slide">#}
+    {#                            <div class="recently-view-items">#}
+    {#                                <div class="recently-image"#}
+    {#                                     style="max-width: 320px; max-height: 385px; overflow: hidden; border-radius: 10px;">#}
+    {#                                    <img src="{{ series.poster_image.url }}" alt="{{ series.title }}"#}
+    {#                                         style="width: 100%; height: auto; max-height: 100%; object-fit: cover; border-radius: 10px;">#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    {% endfor %}#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </section>#}
+
 
     <!-- Testimonial Section Start -->
     <section class="testimonial-section fix mb-4">
@@ -341,27 +269,32 @@
             <div class="testimonial-wrapper">
                 <div class="swiper testimonial-slider">
                     <div class="swiper-wrapper">
-                        {% for object in '12345' %}
+                        {% for testimonial in testimonials %}
                             <div class="swiper-slide">
                                 <div class="testimonial-box-items">
                                     <div class="star">
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-light fa-star"></i>
-                                        <i class="fa-light fa-star"></i>
+                                        {% for i in "01234" %}  <!-- Loop to generate 5 stars -->
+                                            {% if i < testimonial.rating|floatformat:0 %}
+                                                <i class="fa-solid fa-star"></i>  <!-- Full star -->
+                                            {% else %}
+                                                <i class="fa-light fa-star"></i>  <!-- Empty star -->
+                                            {% endif %}
+                                        {% endfor %}
                                     </div>
                                     <p>
-                                        Consectetur adipiscing elit. Integer nunc viverra laoreet est the is porta
-                                        pretium metus aliquam eget maecenas porta is nunc viverra Aenean pulvinar
-                                        maximus leo quia voluptas sit.
+                                        {{ testimonial.comment|truncatewords:50 }} <!-- Use the comment from the model -->
                                     </p>
                                     <div class="client-info">
                                         <div class="client-img bg-cover"
-                                             style="background-image: url('{% static 'website/img/testimonial/client-4.png' %}');"></div>
+                                             style="background-image: url('{{ testimonial.user_image.url }}');
+                                                     width: 55px;
+                                                     height: 55px;
+                                                     border-radius: 50%;
+                                                     overflow: hidden;">
+                                        </div>
                                         <div class="content">
-                                            <h4 class="mb-1">Leslie Alexander</h4>
-                                            <span>Abstergo Ltd.</span>
+                                            <h4 class="mb-1">{{ testimonial.user_name }}</h4>
+                                            <!-- Use the user_name from the model -->
                                         </div>
                                     </div>
                                 </div>

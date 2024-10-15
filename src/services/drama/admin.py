@@ -13,7 +13,7 @@ from .models import (
     Season,
     Episode,
     Review,
-    Like, DramaSeriesCategory,
+    Like, DramaSeriesCategory, Testimonials
 )
 
 
@@ -118,33 +118,6 @@ class EpisodeAdmin(admin.ModelAdmin):
     search_fields = ('title', 'description')
 
 
-@admin.register(DramaSeriesTag)
-class DramaSeriesTagAdmin(admin.ModelAdmin):
-    list_display = ('drama_series', 'tag', 'created_at')
-    list_filter = ('tag',)
-    search_fields = ('drama_series__title', 'tag__name')
-
-
-@admin.register(DramaSeriesCategory)
-class DramaSeriesCategoryAdmin(admin.ModelAdmin):
-    list_display = ('drama_series', 'category', 'created_at')
-    list_filter = ('category',)
-    search_fields = ('drama_series__title', 'category__name')
-
-
-@admin.register(DramaSeriesLanguage)
-class DramaSeriesLanguageAdmin(admin.ModelAdmin):
-    list_display = ('drama_series', 'language', 'created_at')
-    list_filter = ('language',)
-    search_fields = ('drama_series__title', 'language__name')
-
-
-@admin.register(DramaSeriesCast)
-class DramaSeriesCastAdmin(admin.ModelAdmin):
-    list_display = ('drama_series', 'actor', 'created_at')
-    list_filter = ('drama_series', 'actor')
-    search_fields = ('drama_series__title', 'actor__name')
-
 
 # ---------------------------- User Interaction Models ---------------------------- #
 
@@ -157,6 +130,12 @@ class ReviewAdmin(admin.ModelAdmin):
 
 @admin.register(Like)
 class LikeAdmin(admin.ModelAdmin):
-    list_display = ('user', 'episode', 'series', 'liked_on')
+    list_display = ('user', 'drama_series', 'liked_on')
     list_filter = ('liked_on',)
     search_fields = ('user__username', 'episode__title', 'series__title')
+
+
+@admin.register(Testimonials)
+class TestimonialsAdmin(admin.ModelAdmin):
+    list_display = ('user_name', 'comment', 'created_at')
+    search_fields = ('user_name', 'comment', 'message')
