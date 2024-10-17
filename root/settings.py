@@ -77,7 +77,6 @@ INSTALLED_APPS = [
 
     # mailchimp
     'mailchimp_transactional',
-    'notifications',
 ]
 # MAILCHIMP SETTINGS
 MAILCHIMP_API_KEY = env('MAILCHIMP_API_KEY')
@@ -227,31 +226,8 @@ if ENVIRONMENT != 'server':
         'django_browser_reload.middleware.BrowserReloadMiddleware'
     ]
 
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'CLIENT_ID': '1021579594890-6m3kiukcsku6j5lpcv0293sjc3qq4830.apps.googleusercontent.com',
-        'SECRET': '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',
-        'SCOPE': ['profile', 'email', 'openid'],
-        'AUTH_PARAMS': {'access_type': 'online'},
-    }
-}
-
 """ MFA SETUP --------------------------------------------------------------------------------"""
 MFA_ADAPTER = "allauth.mfa.adapter.DefaultMFAAdapter"
-
-""" GMAIL SMTP ---------------------------------------------------------------------------------"""
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# SMTP  configuration
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-
-EMAIL_HOST_USER = 'gwtw.mhn@gmail.com'
-EMAIL_HOST_PASSWORD = 'jyrq jbmd grlu vvzs'
-
-# Default from email address
-DEFAULT_FROM_EMAIL = 'exarth@info.com'  # Replace with the email address to appear in the 'from' field
 
 """  ACCOUNT ADAPTER Modify Login/Signup Redirect UR----------------------------------------------------"""
 ACCOUNT_ADAPTER = "src.web.accounts.adapters.MyAccountAdapter"
