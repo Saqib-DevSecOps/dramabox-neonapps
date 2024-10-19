@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="container">
+    <h1>Update Season for {{ season.series.title }}</h1>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form|crispy }}
+
+        <button type="submit" class="btn btn-primary">Update Season</button>
+        <a href="{% url 'admins:drama-detail' slug=season.series.slug %}" class="btn btn-secondary ">Cancel</a>
+    </form>
+</div>
+{% endblock %}

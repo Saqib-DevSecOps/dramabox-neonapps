@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load core_tags %}
+{% block subtitle %} {{ request.user }} {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <button type="button" class="btn btn-primary mb-3 sticky-right"
+                onclick="window.location.href='{% url 'admins:actor-create' %}'">
+            Add Actor
+        </button>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    {% if object_list %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>PK</th>  <!-- New column for Primary Key -->
+                                <th>Profile Image</th>  <!-- Move Profile Image column here -->
+                                <th>Actor Name</th>
+                                <th>Biography</th>  <!-- New column for Biography -->
+                                <th>Date of Birth</th>  <!-- New column for Date of Birth -->
+                                <th>Created At</th>  <!-- New column for Creation Date -->
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for object in object_list %}
+                            <tr>
+                                <td>{{ object.pk }}</td>  <!-- Display Primary Key -->
+                                <td>
+                                    {% if object.profile_image %}
+                                        <img src="{{ object.profile_image.url }}" alt="Profile Image" style="width: 30px; height: auto; border-radius: 50%;">
+                                    {% else %}
+                                        <span>No Image</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'admins:actor-update' object.pk %}">
+                                        {{ object.name }}
+                                    </a>
+                                </td>
+                                <td>{{ object.biography|truncatewords:10 }}</td>  <!-- Display Biography (truncated) -->
+                                <td>{{ object.date_of_birth|date:"Y-m-d" }}</td>  <!-- Display Date of Birth -->
+                                <td>{{ object.created_at|date:"Y-m-d H:i:s" }}</td>  <!-- Display Creation Date -->
+                                <th>
+                                    <a href="{% url 'admins:actor-update' object.pk %}">
+                                        <i class="fa fa-edit"></i>
+                                    </a> &nbsp;
+                                    <a href="{% url 'admins:actor-delete' object.pk %}" class="text-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </th>
+                            </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="card-body">
+                        <p class="text-danger mb-0"><b>No actors available</b></p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <div class="row">
+        <div class="col-md-12">
+            <div class="mt-4">
+                <ul class="pagination">
+                    {% if actor_list.has_previous %}
+                        <li>
+                            <span>
+                                <a href="{% relative_url actor_list.previous_page_number 'page' request.GET.urlencode %}">
+                                    Previous
+                                </a>
+                            </span>
+                        </li>
+                    {% endif %}
+                    <li class="">
+                        <span>Page {{ actor_list.number }} of {{ actor_list.paginator.num_pages }}.</span>
+                    </li>
+                    {% if actor_list.has_next %}
+                        <li>
+                            <span>
+                                <a href="{% relative_url actor_list.next_page_number 'page' request.GET.urlencode %}">
+                                    Next
+                                </a>
+                            </span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

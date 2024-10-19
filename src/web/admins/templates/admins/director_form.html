@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+
+{% block subtitle %} {{ request.user }} {% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Update Director</h1>
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form|crispy }}
+
+        <button type="submit" class="btn btn-primary">Update Director</button>
+        <br>
+    </form>
+
+    <a href="{% url 'admins:director-list' %}" class="btn btn-secondary mt-2">Back to Director List</a>
+</div>
+{% endblock %}

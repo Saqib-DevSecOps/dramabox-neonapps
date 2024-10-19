@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load core_tags %}
+{% block subtitle %} {{ request.user }} {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <button type="button" class="btn btn-primary mb-3 sticky-right"
+                onclick="window.location.href='{% url 'admins:drama-create' %}'">
+            Add Drama
+        </button>
+        <div class="row">
+            {% if object_list %}
+            {% for object in object_list %}
+            <div class="col-xl-4 col-sm-5">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0 me-4">
+                                <div class="avatar-md">
+                                    {% if object.poster_image %}
+                                    <img src="{{ object.poster_image.url }}" alt="NO IMAGE"
+                                         class="img-fluid rounded-circle object-fit-cover"
+                                         style="width: 100%; height: 100%; aspect-ratio: 1/1; object-fit: cover;"/>
+                                    {% else %}
+                                    <p class="text-danger">No Image</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="flex-grow-1 overflow-hidden px-3">
+                                <h5 class="text-truncate font-size-15"><a
+                                        href="{% url 'admins:drama-detail' object.slug %}" class="text-dark">{{object.title}}</a>
+                                </h5>
+                                <p class="text-muted mb-4">{{object.description|truncatewords:10}}</p>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row px-3">
+                        <h6 class="px-3 pt-1">Tags:</h6>
+                        {% for tag in object.drama_tags.all %}
+                        <div>
+                            <span class="badge bg-primary text-white">{{ tag.tag.name }}</span>&nbsp;&nbsp;
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="row px-3">
+                        <h6 class="px-3 pt-1">Categories:</h6>
+                        {% for cat in object.drama_category.all %}
+                        <div>
+                            <span class="badge bg-danger text-white">{{ cat.category.name }}</span>&nbsp;&nbsp;
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="row px-3">
+                        <h6 class="px-3 pt-1">Cast:</h6>
+                        {% if object.drama_cast.exists %}
+                        {% for cast in object.drama_cast.all %}
+                        <div class="avatar-group-item ms-1">
+                            <a href="javascript: void(0);" class="d-inline-block">
+                                {% if cast.actor.profile_image %}
+                                <img src="{{ cast.actor.profile_image.url }}" alt="{{ cast.actor.name }}"
+                                     class="rounded-circle avatar-xs">
+                                {% else %}
+                                <!-- Default image if actor has no profile image -->
+                                <img src="{% static 'images/default_user_avatar.jpg' %}" alt="No Image"
+                                     class="rounded-circle avatar-xs">
+                                {% endif %}
+                            </a>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <p>No cast members available</p>
+                        {% endif %}
+                    </div>
+
+
+                    <div class="px-4 py-3 border-top">
+                        <ul class="list-inline mb-0">
+                            {% if object.is_featured %}
+                            <li class="list-inline-item me-3">
+                                <span class="badge bg-success">Featured</span>
+                            </li>
+                            {% else %}
+                            <li class="list-inline-item me-3">
+                                <span class="badge bg-danger">Not Featured</span>
+                            </li>
+                            {% endif %}
+                            <li class="list-inline-item me-3">
+                                <i class="bx bx-calendar me-1"></i> {{ object.release_date|date:"Y-m-d" }}
+                            </li>
+                            <li class="list-inline-item me-3">
+                                <i class="bx bx-low-vision me-1"></i> {{ object.drama_reviews.count }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-12">
+                <div class="alert alert-danger" role="alert">
+                    <b>No dramas available</b>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="mt-4">
+            <ul class="pagination">
+                {% if drama_list.has_previous %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="{% relative_url drama_list.previous_page_number 'page' request.GET.urlencode %}">
+                        Previous
+                    </a>
+                </li>
+                {% endif %}
+                <li class="page-item disabled">
+                    <span class="page-link">Page {{ drama_list.number }} of {{ drama_list.paginator.num_pages }}.</span>
+                </li>
+                {% if drama_list.has_next %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="{% relative_url drama_list.next_page_number 'page' request.GET.urlencode %}">
+                        Next
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+<div class="avatar-group d-flex align-items-center">
+    {% if object.drama_cast.exists %}
+    {% for cast in object.drama_cast.all %}
+    <div class="avatar-group-item ms-1">
+        <a href="javascript: void(0);" class="d-inline-block">
+            {% if cast.actor.profile_image %}
+            <img src="{{ cast.actor.profile_image.url }}" alt="{{ cast.actor.name }}"
+                 class="rounded-circle avatar-xs">
+            {% else %}
+            <!-- Default image if actor has no profile image -->
+            <img src="{% static 'images/default_user_avatar.jpg' %}" alt="No Image"
+                 class="rounded-circle avatar-xs">
+            {% endif %}
+        </a>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>No cast members available</p>
+    {% endif %}
+</div>

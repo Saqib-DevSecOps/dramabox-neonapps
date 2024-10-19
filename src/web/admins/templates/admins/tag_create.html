@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+
+{% block subtitle %} {{ request.user }} {% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Create Tag</h1>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form|crispy }}
+
+        <button type="submit" class="btn btn-primary">Create Tag</button>
+        <br>
+    </form>
+
+    <a href="{% url 'admins:tag-list' %}" class="btn btn-secondary mt-2">Back to Tag List</a>
+</div>
+{% endblock %}

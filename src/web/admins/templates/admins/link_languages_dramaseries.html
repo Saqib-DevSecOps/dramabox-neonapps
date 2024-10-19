@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Link Languages to {{ drama_series.title }}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Renders the checkboxes for the languages -->
+
+        <button type="submit" class="btn btn-primary">Save Languages</button>
+    </form>
+
+    <a href="{% url 'admins:drama-detail' drama_series.slug %}" class="btn btn-secondary mt-2">Back to Drama Series</a>
+</div>
+{% endblock %}
