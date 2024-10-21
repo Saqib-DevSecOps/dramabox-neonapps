@@ -7,17 +7,24 @@
 
 {% block content %}
 <div class="container">
-    <h1>Update Drama Series</h1>
+    <div class="card">
+        <div class="card-body">
+            {% if object %}
+            <h1>Update Drama Series</h1>
+            {% else %}
+            <h1>Create Series</h1>
+            {% endif %}
 
-    <form method="post" novalidate enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
-        {{ form|crispy }}  <!-- Use Crispy Forms for better layout -->
+            <form method="post" novalidate enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                {{ form|crispy }}  <!-- Use Crispy Forms for better layout -->
 
-        <button type="submit" class="btn btn-primary">Update Drama Series</button>
-        <br>
-    </form>
+                <button type="submit" class="btn btn-primary">Confirm</button>
+                <br>
+            </form>
 
-    <a href="{% url 'admins:drama-list' %}" class="btn btn-secondary mt-2">Back to Drama Series List</a>
-</div>
-{% endblock %}
+            <a href="{% url 'admins:drama-list' %}" class="btn btn-secondary mt-2">Back to Drama Series List</a>
+        </div>
+    </div>
+    {% endblock %}

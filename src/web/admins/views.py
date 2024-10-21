@@ -21,6 +21,8 @@ from src.services.users.models import User
 from src.web.accounts.decorators import staff_required_decorator
 from src.web.admins.filters import UserFilter
 from .forms import DramaSeriesTagForm, DramaSeriesLanguageForm, DramaSeriesCategoryForm, SeasonForm
+from django import forms
+
 
 
 @method_decorator(staff_required_decorator, name='dispatch')
@@ -415,12 +417,21 @@ class DramaSeriesListView(ListView):
 class DramaSeriesCreateView(CreateView):
     model = DramaSeries
     fields = ['title', 'description', 'release_date', 'director', 'rating', 'poster_image', 'trailer_url', 'slug', 'is_featured', 'featured_until', 'trending_threshold']
-    template_name = 'admins/dramaseries_create.html'  # Update with your template path
+    template_name = 'admins/dramaseries_form.html'  # Update with your template path
     success_url = reverse_lazy('admins:drama-list')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        # Customize the release_date widget
+        form.fields['release_date'].widget = forms.DateInput(attrs={'type': 'date'})
+        form.fields['release_date'].help_text = "Select the release date of this season."
+        return form
+
 
 
 @method_decorator(staff_required_decorator, name='dispatch')
 class DramaSeriesUpdateView(UpdateView):
+
     model = DramaSeries
     fields = ['title', 'description', 'release_date', 'director', 'rating', 'poster_image', 'trailer_url', 'slug', 'is_featured', 'featured_until', 'trending_threshold']
     template_name = 'admins/dramaseries_form.html'  # Update with your template path

@@ -16,7 +16,7 @@
             {% if object_list %}
             {% for object in object_list %}
             <div class="col-xl-4 col-sm-5">
-                <div class="card">
+                <div class="card shadow-lg">
                     <div class="card-body">
                         <div class="d-flex">
                             <div class="flex-shrink-0 me-4">
@@ -26,7 +26,9 @@
                                          class="img-fluid rounded-circle object-fit-cover"
                                          style="width: 100%; height: 100%; aspect-ratio: 1/1; object-fit: cover;"/>
                                     {% else %}
-                                    <p class="text-danger">No Image</p>
+                                    <img src="{% static 'noimage.jpg' %}" alt="NO IMAGE"
+                                         class="img-fluid rounded-circle object-fit-cover"
+                                         style="width: 100%; height: 100%; aspect-ratio: 1/1; object-fit: cover;"/>
                                     {% endif %}
                                 </div>
                             </div>
@@ -70,7 +72,7 @@
                                      class="rounded-circle avatar-xs">
                                 {% else %}
                                 <!-- Default image if actor has no profile image -->
-                                <img src="{% static 'images/default_user_avatar.jpg' %}" alt="No Image"
+                                <img src="{% static 'noimage.jpg' %}" alt="No Image"
                                      class="rounded-circle avatar-xs">
                                 {% endif %}
                             </a>
@@ -154,8 +156,7 @@
             <img src="{{ cast.actor.profile_image.url }}" alt="{{ cast.actor.name }}"
                  class="rounded-circle avatar-xs">
             {% else %}
-            <!-- Default image if actor has no profile image -->
-            <img src="{% static 'images/default_user_avatar.jpg' %}" alt="No Image"
+            <img src="{% static 'noimage.jpg' %}" alt="No Image"
                  class="rounded-circle avatar-xs">
             {% endif %}
         </a>
