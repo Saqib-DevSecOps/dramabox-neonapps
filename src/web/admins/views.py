@@ -152,7 +152,7 @@ class TagUpdateView(UpdateView):
 class TagCreateView(CreateView):
     model = Tag
     fields = ['name']
-    template_name = 'admins/tag_create.html'  # Update with your template path
+    template_name = 'admins/tag_form.html'  # Update with your template path
     success_url = reverse_lazy('admins:tag-list')
 
 
