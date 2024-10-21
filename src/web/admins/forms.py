@@ -1,0 +1,35 @@
+from django import forms
+from src.services.drama.models import Tag, Language, Category, Season
+
+
+class DramaSeriesTagForm(forms.Form):
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label="Select Tags to Link"
+    )
+
+
+class DramaSeriesLanguageForm(forms.Form):
+    languages = forms.ModelMultipleChoiceField(
+        queryset=Language.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label="Select Languages to Link"
+    )
+
+class DramaSeriesCategoryForm(forms.Form):
+    categories = forms.ModelMultipleChoiceField(
+        queryset=Category.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        help_text="Select categories to link to this drama series."
+    )
+
+
+
+class SeasonForm(forms.ModelForm):
+    class Meta:
+        model = Season
+        fields = ['season_number', 'release_date', 'description']

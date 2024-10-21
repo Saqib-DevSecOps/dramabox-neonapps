@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 
 
 # ---------------------------- Utility Models ---------------------------- #
@@ -19,6 +20,11 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = "Categories"
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
@@ -31,6 +37,11 @@ class Tag(models.Model):
     slug = models.SlugField(max_length=50, unique=True, help_text="URL-friendly identifier for the tag.")
     created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the tag was created.")
     updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the tag was last updated.")
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

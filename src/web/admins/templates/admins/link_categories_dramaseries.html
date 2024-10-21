@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+    <h1>Link Categories to {{ drama_series.title }}</h1>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form|crispy }}  <!-- Ensure you're using the crispy rendering -->
+
+        <button type="submit" class="btn btn-primary">Link Categories</button>
+        <a href="{% url 'admins:drama-detail' slug=drama_series.slug %}" class="btn btn-secondary ">Back to Drama Series</a>
+    </form>
+</div>
+{% endblock %}

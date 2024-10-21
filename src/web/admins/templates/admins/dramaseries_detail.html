@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load core_tags %}
+{% block subtitle %} {{ request.user }} {% endblock %}
+
+{% block content %}
+<div class="page-title-box d-sm-flex align-items-center justify-content-between">
+    <h4 class="mb-sm-0 font-size-18">Drama Overview</h4>
+
+    <div class="page-title-right">
+        <ol class="breadcrumb m-0">
+
+            <li class="breadcrumb-item active mb-3"><a  class="btn btn-warning text-white shadow-lg" href="{% url 'admins:drama-update' object.slug %}">Edit Details</a></a></li>
+        </ol>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-xl-8">
+        <div class="card-body shadow-lg">
+            <div class="d-flex">
+                <div class="flex-shrink-0 me-4">
+                    {% if object.poster_image %}
+                    <img src="{{ object.poster_image.url }}" alt="{{ object.title }}" class="avatar-sm rounded">
+                    {% else %}
+                    <img src="path/to/placeholder/image.png" alt="No Image" class="avatar-sm">
+                    {% endif %}
+                </div>
+
+                <div class="flex-grow-1 overflow-hidden px-3">
+                    <h5 class="text-truncate font-size-15">{{ object.title }}</h5>
+                    <p class="text-muted">{{ object.description|truncatewords:10 }}</p>
+                </div>
+            </div>
+
+            <h5 class="font-size-15 mt-4">Drama Series Details :</h5>
+
+            <p class="text-muted">{{ object.description }}</p>
+
+            <div class="text-muted mt-4">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Directed by: {{ object.director.name }}</p>
+                        <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Rating: {{ object.rating }}</p>
+                        <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Release Date: {{ object.release_date }}</p>
+                    </div>
+                    <div class="col-sm-6">
+
+                        <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Views: {{ object.view_count }}</p>
+                        <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Trending Threshold: {{ object.trending_threshold }}</p>
+                        <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Trending Threshold: {{ object.trending_threshold }}</p>
+                    </div>
+                </div>
+                <div class="row px-3">
+                    <h6 class="px-3 pt-1">Tags:</h6>
+                    {% for tag in object.drama_tags.all %}
+                    <div>
+                        <span class="badge bg-primary text-white">{{ tag.tag.name }}</span>&nbsp;&nbsp;
+                    </div>
+                    {% endfor %}
+                    <a href="{% url 'admins:link-tags-dramaseries' object.slug %}">
+                        <i class="fa fa-plus text-success pt-1"></i>
+                    </a>
+                </div>
+                <div class="row px-3">
+                    <h6 class="px-3 pt-1">Categories:</h6>
+                    {% for cat in object.drama_category.all %}
+                    <div>
+                        <span class="badge bg-danger text-white">{{ cat.category.name }}</span>&nbsp;&nbsp;
+                    </div>
+                    {% endfor %}
+                    <a href="{% url 'admins:link-categories-dramaseries' object.slug %}">
+                        <i class="fa fa-plus text-success pt-1"></i>
+                    </a>
+                </div>
+                <div class="row px-3">
+                    <h6 class="px-3 pt-1">Languages:</h6>
+                    {% for language in object.drama_languages.all %}
+                    <div>
+                        <span class="badge bg-warning text-white">{{ language.language.name }}</span>&nbsp;&nbsp;
+                    </div>
+                    {% endfor %}
+                    <a href="{% url 'admins:link-languages' object.slug %}">
+                        <i class="fa fa-plus text-success pt-1"></i>
+                    </a>
+                </div>
+
+
+                <div class="row task-dates">
+                    <div class="col-sm-4 col-6">
+                        <div class="mt-4">
+                            <h5 class="font-size-14"><i class="bx bx-calendar me-1 text-primary"></i> Release Date</h5>
+                            <p class="text-muted mb-0">{{ object.release_date|date:"d M, Y" }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4 col-6">
+                        <div class="mt-4">
+                            <h5 class="font-size-14"><i class="bx bx-calendar-check me-1 text-primary"></i> Featured
+                                Until</h5>
+                            <p class="text-muted mb-0">{{ object.featured_until|date:"d M, Y" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4">
+        <div class="card-body shadow-lg">
+            <h4 class="card-title mb-4">Cast Members</h4>
+
+            <div class="table-responsive">
+                <table class="table align-middle table-nowrap">
+                    <tbody>
+                    {% for cast in object.drama_cast.all %}
+                    <tr>
+                        <td style="width: 50px;">
+                            {% if cast.actor.profile_image %}
+                            <img src="{{ cast.actor.profile_image.url }}" class="rounded-circle avatar-xs"
+                                 alt="{{ cast.actor.name }}">
+                            {% else %}
+                            <img src="path/to/placeholder/image.png" class="rounded-circle avatar-xs"
+                                 alt="No Image">
+                            {% endif %}
+                        </td>
+                        <td>
+                            <h5 class="font-size-14 m-0">
+                                <a href="javascript:void(0);" class="text-dark">{{ cast.actor.name }}</a>
+                            </h5>
+                        </td>
+                        <td>
+                            <div>
+                                <a href="javascript:void(0);"
+                                   class="badge bg-primary-subtle text-primary font-size-11">{{ cast.actor.speciality }}</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<br>
+<div class="card-body border-bottom">
+    <div class="d-flex align-items-center">
+        <h5 class="mb-0 card-title flex-grow-1">Seasons</h5>
+        <div class="flex-shrink-0">
+            <a href="{% url 'admins:season-create' object.slug %}" class="btn btn-warning">Add Season +</a>
+        </div>
+    </div>
+</div>
+
+<br>
+<div class="row row-cols-1 row-cols-xl-3 g-4">
+{% for season in  object.seasons.all %}
+    <div class="col">
+        <div class="card-body border shadow-lg">
+            <h5 class="fs-17 mb-2">
+                <a href="javascript:void(0);" class="text-dark">{{ season.series.title }} - Season {{ season.season_number }}</a>
+                <small class="text-muted fw-normal">({{ season.release_date|date:"Y" }})</small>
+            </h5>
+            <p class="text-muted fs-14 mb-1">{{ season.description|truncatewords:5 }}</p>
+
+            <ul class="list-inline mb-0">
+                <li class="list-inline-item">
+                    <p class="text-muted fs-14 mb-0"><i class="mdi mdi-calendar"></i> Release Date: {{ season.release_date|date:"F j, Y" }}</p>
+                </li>
+                <li class="list-inline-item">
+                    <p class="text-muted fs-14 mb-0"><i class="mdi mdi-clock"></i> Duration: TBD</p>
+                </li>
+                <br>
+                <li class="list-inline-item">
+                    <p class="text-muted fs-14 mb-0"><i class="mdi mdi-television"></i> Total Episodes: {{ season.episodes.count }}<p>
+                </li>
+            </ul>
+
+            <div class="mt-3 hstack gap-2">
+                <span class="badge rounded-1 badge-soft-info">Drama Series</span>
+                <span class="badge rounded-1 badge-soft-success">Release</span>
+            </div>
+
+            <div class="mt-4 hstack gap-2">
+                <div class="row">
+                    <div class="col-sm-8 col-6">
+                         <a href="{% url 'admins:season-update' object.slug season.pk %}" class="btn btn-danger w-100">Manage</a>
+                    </div>
+                    <div class="col-sm-4 col-6">
+                            <a href="{% url 'admins:season-episode-list' drama_series_slug=season.series.slug season_pk=season.pk %}" class="btn btn-warning">Episodes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+{% endblock %}
