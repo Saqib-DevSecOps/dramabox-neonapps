@@ -30,6 +30,10 @@ class DramaSeriesCategoryForm(forms.Form):
 
 
 class SeasonForm(forms.ModelForm):
+    release_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        help_text="Select the release date of this season."
+    )
     class Meta:
         model = Season
         fields = ['season_number', 'release_date', 'description']
