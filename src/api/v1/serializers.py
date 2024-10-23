@@ -165,7 +165,7 @@ class DramaSeriesDetailSerializer(serializers.ModelSerializer):
     Includes related director, rating, categories, tags, cast, languages, and seasons.
     """
     director = DirectorSerializer()
-    rating = ContentRatingSerializer()
+    content_rating = ContentRatingSerializer()
     categories = serializers.StringRelatedField(many=True, source='drama_category')
     tags = serializers.StringRelatedField(many=True, source='drama_tags')
     cast = serializers.StringRelatedField(many=True, source='drama_cast')
@@ -174,7 +174,7 @@ class DramaSeriesDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DramaSeries
-        fields = ['id', 'title', 'description', 'release_date', 'director', 'rating', 'poster_image',
+        fields = ['id', 'title', 'description', 'release_date', 'director', 'rating','content_rating', 'poster_image',
                   'trailer_url', 'slug', 'view_count', 'categories', 'tags', 'cast', 'languages', 'seasons',
                   'is_trending', 'is_currently_featured', 'created_at', 'updated_at']
 
