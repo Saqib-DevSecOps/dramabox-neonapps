@@ -127,7 +127,10 @@ class DramaSeries(models.Model):
                                      help_text="Poster image of the drama series.")
     trailer_url = models.URLField(blank=True, null=True, help_text="Trailer URL for the drama series.")
     slug = models.SlugField(max_length=255, unique=True, help_text="URL-friendly identifier for the drama series.")
+
     view_count = models.PositiveIntegerField(default=0, help_text="Number of views the drama series has received.")
+    search_count = models.PositiveIntegerField(default=0,
+                                               help_text="Number of times the drama series has been searched.")
 
     is_featured = models.BooleanField(default=False, help_text="Mark as featured for promotional purposes.")
     featured_until = models.DateField(blank=True, null=True, help_text="Date until this drama is featured.")
