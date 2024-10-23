@@ -19,10 +19,10 @@ from src.services.drama.models import (
 # from faker_data import initialization
 from src.services.users.models import User
 from src.web.accounts.decorators import staff_required_decorator
-from src.web.admins.filters import UserFilter
+from src.web.admins.filters import UserFilter, TagFilter, ActorFilter, LanguageFilter, CategoryFilter, DirectorFilter, \
+    ContentRatingFilter
 from .forms import DramaSeriesTagForm, DramaSeriesLanguageForm, DramaSeriesCategoryForm, SeasonForm
 from django import forms
-
 
 
 @method_decorator(staff_required_decorator, name='dispatch')
@@ -125,22 +125,24 @@ def remove_social_account(request, account_id):
 
 
 """ TAGS ---------------------------------------------------------------"""
+
+
 @method_decorator(staff_required_decorator, name='dispatch')
 class TagListView(ListView):
     model = Tag
-    template_name = 'admins/tag_list.html'  # Update with your template path
+    template_name = 'admins/tag_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        paginator = Paginator(Tag.objects.all(), 50)  # 50 items per page
+        tag_filter = TagFilter(self.request.GET, queryset=Tag.objects.all())
+        paginator = Paginator(tag_filter.qs, 20)
         page_number = self.request.GET.get('page')
         tag_page_object = paginator.get_page(page_number)
         context['tag_list'] = tag_page_object
+        context['tag_filter_form'] = tag_filter.form
         return context
 
 
-
-# Tag Update View
 @method_decorator(staff_required_decorator, name='dispatch')
 class TagUpdateView(UpdateView):
     model = Tag
@@ -149,7 +151,6 @@ class TagUpdateView(UpdateView):
     success_url = reverse_lazy('admins:tag-list')
 
 
-# Tag Create View
 @method_decorator(staff_required_decorator, name='dispatch')
 class TagCreateView(CreateView):
     model = Tag
@@ -176,14 +177,16 @@ class TagDeleteView(DeleteView):
 @method_decorator(staff_required_decorator, name='dispatch')
 class ActorListView(ListView):
     model = Actor
-    template_name = 'admins/actor_list.html'  # Update with your template path
+    template_name = 'admins/actor_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        paginator = Paginator(Actor.objects.all(), 50)  # 50 items per page
+        actor_filter = ActorFilter(self.request.GET, queryset=Actor.objects.all())
+        paginator = Paginator(actor_filter.qs, 20)
         page_number = self.request.GET.get('page')
         actor_page_object = paginator.get_page(page_number)
         context['actor_list'] = actor_page_object
+        context['actor_filter_form'] = actor_filter.form
         return context
 
 
@@ -191,7 +194,7 @@ class ActorListView(ListView):
 class ActorUpdateView(UpdateView):
     model = Actor
     fields = ['name', 'profile_image', 'biography', 'date_of_birth']
-    template_name = 'admins/actor_form.html'  # Update with your template path
+    template_name = 'admins/actor_form.html'
     success_url = reverse_lazy('admins:actor-list')
 
 
@@ -199,7 +202,7 @@ class ActorUpdateView(UpdateView):
 class ActorCreateView(CreateView):
     model = Actor
     fields = ['name', 'profile_image', 'biography', 'date_of_birth']
-    template_name = 'admins/actor_create.html'  # Update with your template path
+    template_name = 'admins/actor_create.html'
     success_url = reverse_lazy('admins:actor-list')
 
 
@@ -209,13 +212,12 @@ class ActorDeleteView(DeleteView):
     success_url = reverse_lazy('admins:actor-list')
 
     def get(self, request, *args, **kwargs):
-        self.object = self.get_object()  # Get the object to delete
-        self.object.delete()  # Delete the object
+        self.object = self.get_object()
+        self.object.delete()
         return HttpResponseRedirect(self.get_success_url())
 
 
 """ Language ---------------------------------------------------------- """
-
 
 
 @method_decorator(staff_required_decorator, name='dispatch')
@@ -225,10 +227,12 @@ class LanguageListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        paginator = Paginator(Language.objects.all(), 50)  # 50 items per page
+        language_filter = LanguageFilter(self.request.GET, queryset=Language.objects.all())
+        paginator = Paginator(language_filter.qs, 20)  # 50 items per page
         page_number = self.request.GET.get('page')
         language_page_object = paginator.get_page(page_number)
         context['language_list'] = language_page_object
+        context['language_filter_form'] = language_filter.form
         return context
 
 
@@ -264,6 +268,7 @@ class LanguageDeleteView(DeleteView):
 
 """ CATEGORY ---------------------------------------------------------- """
 
+
 @method_decorator(staff_required_decorator, name='dispatch')
 class CategoryListView(ListView):
     model = Category
@@ -271,10 +276,12 @@ class CategoryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        paginator = Paginator(Category.objects.all(), 50)  # 50 items per page
+        category_filter = CategoryFilter(self.request.GET, queryset=Category.objects.all())
+        paginator = Paginator(category_filter, 50)
         page_number = self.request.GET.get('page')
         category_page_object = paginator.get_page(page_number)
         context['category_list'] = category_page_object
+        context['category_filter_form'] = category_filter.form
         return context
 
 
@@ -318,10 +325,12 @@ class DirectorListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        paginator = Paginator(Director.objects.all(), 1)  # 50 items per page
+        director_filter = DirectorFilter(self.request.GET, queryset=Director.objects.all())
+        paginator = Paginator(director_filter.qs, 20)  # 50 items per page
         page_number = self.request.GET.get('page')
         director_page_object = paginator.get_page(page_number)
         context['director_list'] = director_page_object
+        context['director_filter_form'] = director_filter.form
         return context
 
 
@@ -365,10 +374,12 @@ class ContentRatingListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        paginator = Paginator(ContentRating.objects.all(), 50)  # 50 items per page
+        content_rating_filter = ContentRatingFilter(self.request.GET, queryset=ContentRating.objects.all())
+        paginator = Paginator(content_rating_filter.qs, 20)
         page_number = self.request.GET.get('page')
         contentrating_page_object = paginator.get_page(page_number)
         context['contentrating_list'] = contentrating_page_object
+        context['contentrating_filter_form'] = content_rating_filter.form
         return context
 
 
@@ -400,6 +411,8 @@ class ContentRatingDeleteView(DeleteView):
 
 
 """ DRAMA SERIES -------------------------------------------------------- """
+
+
 class DramaSeriesListView(ListView):
     model = DramaSeries
     template_name = 'admins/dramaseries_list.html'
@@ -416,7 +429,8 @@ class DramaSeriesListView(ListView):
 @method_decorator(staff_required_decorator, name='dispatch')
 class DramaSeriesCreateView(CreateView):
     model = DramaSeries
-    fields = ['title', 'description', 'release_date', 'director', 'rating', 'poster_image', 'trailer_url', 'slug', 'is_featured', 'featured_until', 'trending_threshold']
+    fields = ['title', 'description', 'release_date', 'director', 'rating', 'poster_image', 'trailer_url', 'slug',
+              'is_featured', 'featured_until', 'trending_threshold']
     template_name = 'admins/dramaseries_form.html'  # Update with your template path
     success_url = reverse_lazy('admins:drama-list')
 
@@ -428,12 +442,11 @@ class DramaSeriesCreateView(CreateView):
         return form
 
 
-
 @method_decorator(staff_required_decorator, name='dispatch')
 class DramaSeriesUpdateView(UpdateView):
-
     model = DramaSeries
-    fields = ['title', 'description', 'release_date', 'director', 'rating', 'poster_image', 'trailer_url', 'slug', 'is_featured', 'featured_until', 'trending_threshold']
+    fields = ['title', 'description', 'release_date', 'director', 'rating', 'poster_image', 'trailer_url', 'slug',
+              'is_featured', 'featured_until', 'trending_threshold']
     template_name = 'admins/dramaseries_form.html'  # Update with your template path
     success_url = reverse_lazy('admins:drama-list')
 
@@ -460,7 +473,10 @@ class DramaSeriesDetailView(DetailView):
         # You can add extra context if needed, like related objects
         return context
 
+
 """ Drama Series Utils ---------------------------------------------------------------------- """
+
+
 def link_tags_dramaseries(request, slug):
     # Fetch the drama series based on the ID
     drama_series = get_object_or_404(DramaSeries, slug=slug)
@@ -489,7 +505,6 @@ def link_tags_dramaseries(request, slug):
         'drama_series': drama_series,
         'form': form
     })
-
 
 
 def link_languages_dramaseries(request, drama_series_slug):
@@ -522,7 +537,6 @@ def link_languages_dramaseries(request, drama_series_slug):
     })
 
 
-
 def link_categories_dramaseries(request, drama_series_slug):
     # Fetch the drama series based on the slug
     drama_series = get_object_or_404(DramaSeries, slug=drama_series_slug)
@@ -544,7 +558,8 @@ def link_categories_dramaseries(request, drama_series_slug):
             return redirect('admins:drama-detail', slug=drama_series.slug)
     else:
         # Pre-fill the form with already linked categories
-        preselected_categories = DramaSeriesCategory.objects.filter(drama_series=drama_series).values_list('category', flat=True)  # Get linked categories
+        preselected_categories = DramaSeriesCategory.objects.filter(drama_series=drama_series).values_list('category',
+                                                                                                           flat=True)  # Get linked categories
         form = DramaSeriesCategoryForm(initial={'categories': preselected_categories})
 
     return render(request, 'admins/link_categories_dramaseries.html', {
@@ -554,6 +569,8 @@ def link_categories_dramaseries(request, drama_series_slug):
 
 
 """ SEASONS ----------------------------------------------------------------------------------------------  """
+
+
 @method_decorator(staff_required_decorator, name='dispatch')
 class SeasonCreateView(CreateView):
     model = Season
@@ -581,7 +598,6 @@ class SeasonCreateView(CreateView):
 
         form.instance.series = drama_series
         return super().form_valid(form)
-
 
 
 class SeasonUpdateView(UpdateView):
