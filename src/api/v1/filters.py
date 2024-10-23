@@ -6,6 +6,11 @@ from src.services.drama.models import DramaSeries
 
 
 class DramaSeriesFilter(filters.FilterSet):
+    search = filters.CharFilter(
+        label='Search',
+        lookup_expr='icontains',
+        method='filter_search',
+    )
     category = filters.CharFilter(
         field_name='drama_category__category__name',
         label='Category Name',
@@ -64,7 +69,7 @@ class DramaSeriesFilter(filters.FilterSet):
         Filter based on search counts. Assumes a `search_count` field tracks the number of searches.
         """
         if value:
-            return queryset.filter(search_count__gte=500)  # Example threshold for top searches
+            return queryset.filter(search_count__gte=500)
         return queryset
 
     @staticmethod
@@ -84,3 +89,10 @@ class DramaSeriesFilter(filters.FilterSet):
         if value:
             return queryset.filter(is_featured=True, featured_until__gte=timezone.now().date())
         return queryset
+
+    @staticmethod
+    def filter_search(queryset, name, value):
+        """
+        Filter based on search query. Searches the title and description fields.
+        """
+        return queryset.filter(title__icontains=value) | queryset.filter(description__icontains=value)

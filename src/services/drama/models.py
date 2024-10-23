@@ -137,6 +137,7 @@ class DramaSeries(models.Model):
 
     trending_threshold = models.PositiveIntegerField(default=100, help_text="Minimum views to be considered trending.")
 
+
     created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the drama series was added.")
     updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the drama series was last updated.")
 

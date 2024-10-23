@@ -69,10 +69,9 @@ class DramaSeriesListAPIView(ListAPIView):
     serializer_class = DramaSeriesSerializer
     permission_classes = [AllowAny]
     pagination_class = DramaSeriesPagination
-    filter_backends = [DjangoFilterBackend, SearchFilter]  # Include both filters here
+    filter_backends = [DjangoFilterBackend]
     filterset_class = DramaSeriesFilter
 
-    search_fields = ['title', 'description']
 
     def get_queryset(self):
         """
