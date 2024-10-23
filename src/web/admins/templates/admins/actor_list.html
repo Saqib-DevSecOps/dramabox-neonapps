@@ -6,13 +6,32 @@
 {% block subtitle %} {{ request.user }} {% endblock %}
 
 {% block content %}
+<div class="row justify-content-between">
+    <div class="col-6 col-md-4 p-2 mt-2">
+        <form method="get">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control " placeholder="Enter Actor Name"
+                       id="id_tag" name="name" aria-describedby="search-button">
+                <button class="btn btn-secondary" type="submit" id="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="{% url 'admins:actor-list' %}" class="btn btn-danger ml-2" id="clear-button">
+                    <i class="fas fa-brush"></i>
+                </a>
 
-<div class="row">
-    <div class="col-12">
-        <button type="button" class="btn btn-primary mb-3 sticky-right"
+
+            </div>
+        </form>
+    </div>
+    <div class="col-4 mt-0 pt-0 mb-2 d-flex align-items-center justify-content-end">
+        <button type="button" class="btn btn-primary mb-1"
                 onclick="window.location.href='{% url 'admins:actor-create' %}'">
             Add Actor
         </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
         <div class="row">
             <div class="col-12">
                 <div class="card shadow-lg rounded-lg">
@@ -37,7 +56,7 @@
                                 <td>{{ object.pk }}</td>  <!-- Display Primary Key -->
                                 <td>
                                     {% if object.profile_image %}
-                                        <img src="{{ object.profile_image.url }}" alt="Profile Image" style="width: 30px; height: auto; border-radius: 50%;">
+                                        <img src="{{ object.profile_image.url }}" alt="Profile Image" style="width: 30px; height: 30px; border-radius: 50%;">
                                     {% else %}
                                         <span>No Image</span>
                                     {% endif %}
@@ -75,26 +94,28 @@
     </div>
 </div>
 
-  <div class="row">
+ <div class="row">
         <div class="col-md-12">
             <div class="mt-4">
                 <ul class="pagination">
-                    {% if actor_list.has_previous %}
-                        <li>
+                    {% if object_list.has_previous %}
+                        <li class="page-link rounded">
                             <span>
-                                <a href="{% relative_url actor_list.previous_page_number 'page' request.GET.urlencode %}">
+                                <a href="{% relative_url object_list.previous_page_number 'page' request.GET.urlencode %}">
                                     Previous
                                 </a>
                             </span>
                         </li>
                     {% endif %}
-                    <li class="">
-                        <span>Page {{ actor_list.number }} of {{ actor_list.paginator.num_pages }}.</span>
+                    &nbsp;&nbsp;&nbsp;
+                    <li  class="page-link rounded">
+                        <span>Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.</span>
                     </li>
-                    {% if actor_list.has_next %}
-                        <li>
+                    &nbsp;&nbsp;&nbsp;
+                    {% if object_list.has_next %}
+                        <li class="page-link rounded">
                             <span>
-                                <a href="{% relative_url actor_list.next_page_number 'page' request.GET.urlencode %}">
+                                <a href="{% relative_url object_list.next_page_number 'page' request.GET.urlencode %}">
                                     Next
                                 </a>
                             </span>

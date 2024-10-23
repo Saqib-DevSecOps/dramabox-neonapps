@@ -7,105 +7,105 @@
 {% block subtitle %} {{ request.user }} {% endblock %}
 
 {% block content %}
-    <div class="row justify-content-between">
-        <div class="col-6 col-md-4 p-2 mt-2">
-            <form method="get">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control " placeholder="Enter Tag Name"
-                           id="id_tag" name="name" aria-describedby="search-button">
-                    <button class="btn btn-secondary" type="submit" id="search-button">
-                        <i class="fas fa-search"></i> <!-- Font Awesome icon for search -->
-                    </button>
-                    <button class="btn btn-danger" type="button" id="clear-button">
-                        <i class="fas fa-brush"></i> <!-- Font Awesome icon for clear -->
-                    </button>
+<div class="row justify-content-between">
+    <div class="col-6 col-md-4 p-2 mt-2">
+        <form method="get">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control " placeholder="Enter Tag Name"
+                       id="id_tag" name="name" aria-describedby="search-button">
+                <button class="btn btn-secondary" type="submit" id="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="{% url 'admins:tag-list' %}" class="btn btn-danger ml-2" id="clear-button">
+                    <i class="fas fa-brush"></i>
+                </a>
 
-                </div>
-            </form>
-        </div>
-        <div class="col-4 mt-0 pt-0 mb-2 d-flex align-items-center justify-content-end">
-            <button type="button" class="btn btn-primary mb-1"
-                    onclick="window.location.href='{% url 'admins:tag-create' %}'">
-                Add Tag
-            </button>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow-lg rounded-lg">
-                {% if object_list %}
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead class="thead-light">
-                            <tr>
-                                <th>
-                                    #
-                                </th>  <!-- New column for Primary Key -->
-                                <th>Tag Name</th>
-                                <th>Slug</th>  <!-- New column for Slug -->
-                                <th>Created At</th>  <!-- New column for Creation Date -->
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            {% for object in object_list %}
-                                <tr>
-                                    <td>{{ forloop.counter }}</td>  <!-- Display Primary Key -->
-                                    <td>
-                                        <a href="{% url 'admins:tag-update' object.pk %}">
-                                            {{ object.name }}
-                                        </a>
-                                    </td>
-                                    <td>{{ object.slug }}</td>  <!-- Display Slug -->
-                                    <td>{{ object.created_at|date:"Y-m-d H:i:s" }}</td>  <!-- Display Creation Date -->
-                                    <th>
-                                        <a href="{% url 'admins:tag-update' object.pk %}">
-                                            <i class="fa fa-edit"></i>
-                                        </a> &nbsp;
-                                        <a href="{% url 'admins:tag-delete' object.pk %}" class="text-danger">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                    </th>
-                                </tr>
-                            {% endfor %}
-
-                            </tbody>
-                        </table>
-                    </div>
-                {% else %}
-                    <div class="card-body">
-                        <p class="text-danger mb-0"><b>No objects available</b></p>
-                    </div>
-                {% endif %}
             </div>
+        </form>
+    </div>
+    <div class="col-4 mt-0 pt-0 mb-2 d-flex align-items-center justify-content-end">
+        <button type="button" class="btn btn-primary mb-1"
+                onclick="window.location.href='{% url 'admins:tag-create' %}'">
+            Add Tag
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-lg rounded-lg">
+            {% if object_list %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>
+                            #
+                        </th>  <!-- New column for Primary Key -->
+                        <th>Tag Name</th>
+                        <th>Slug</th>  <!-- New column for Slug -->
+                        <th>Created At</th>  <!-- New column for Creation Date -->
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for object in object_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>  <!-- Display Primary Key -->
+                        <td>
+                            <a href="{% url 'admins:tag-update' object.pk %}">
+                                {{ object.name }}
+                            </a>
+                        </td>
+                        <td>{{ object.slug }}</td>  <!-- Display Slug -->
+                        <td>{{ object.created_at|date:"Y-m-d H:i:s" }}</td>  <!-- Display Creation Date -->
+                        <th>
+                            <a href="{% url 'admins:tag-update' object.pk %}">
+                                <i class="fa fa-edit"></i>
+                            </a> &nbsp;
+                            <a href="{% url 'admins:tag-delete' object.pk %}" class="text-danger">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </th>
+                    </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="card-body">
+                <p class="text-danger mb-0"><b>No objects available</b></p>
+            </div>
+            {% endif %}
         </div>
     </div>
+</div>
 
-    <div class="row">
+ <div class="row">
         <div class="col-md-12">
-
             <div class="mt-4">
                 <ul class="pagination">
-                    {% if tag_list.has_previous %}
-                        <li>
+                    {% if object_list.has_previous %}
+                        <li class="page-link rounded">
                             <span>
-                                <a href="{% relative_url tag_list.previous_page_number 'page' request.GET.urlencode %}">
+                                <a href="{% relative_url object_list.previous_page_number 'page' request.GET.urlencode %}">
                                     Previous
                                 </a>
                             </span>
                         </li>
                     {% endif %}
                     &nbsp;&nbsp;&nbsp;
-                    <li class="">
-                        <span>Page {{ tag_list.number }} of {{ tag_list.paginator.num_pages }}.</span>
+                    <li  class="page-link rounded">
+                        <span>Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.</span>
                     </li>
                     &nbsp;&nbsp;&nbsp;
-                    {% if tag_list.has_next %}
-                        <li>
+                    {% if object_list.has_next %}
+                        <li class="page-link rounded">
                             <span>
-                                <a href="{% relative_url tag_list.next_page_number 'page' request.GET.urlencode %}">
+                                <a href="{% relative_url object_list.next_page_number 'page' request.GET.urlencode %}">
                                     Next
                                 </a>
                             </span>

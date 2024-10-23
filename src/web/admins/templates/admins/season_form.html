@@ -1,23 +1,26 @@
 {% extends 'base.html' %}
-{% load static %}
 {% load crispy_forms_tags %}
-{% load humanize %}
-
-{% block subtitle %} {{ request.user }} {% endblock %}
 
 {% block content %}
 <div class="container">
-    {% if object %}
-    <h1>Update Language</h1>
-    {% else %}
-    <h1>Create Language</h1>
-    {% endif %}
-
-     <div class="mt-2">
-        <a href="{% url 'admins:language-list' %}" class="mt-2 btn btn-sm btn-secondary"><i class="fa fa-arrow-left"
-                                                                                         aria-hidden="true"></i>
+    {% if season %}
+    <h1>Update Season for {{ season.series.title }}</h1>
+    <div class="mt-2">
+        <a href="{% url 'admins:drama-detail' slug=season.series.slug %}" class="mt-2 btn btn-sm btn-secondary"><i
+                class="fa fa-arrow-left"
+                aria-hidden="true"></i>
             Back to List</a>
     </div>
+    {% else %}
+     <h1>Create Season {{ object }}</h1>
+    <div class="mt-2">
+        <a href="{% url 'admins:drama-detail' slug=object.slug %}" class="mt-2 btn btn-sm btn-secondary"><i
+                class="fa fa-arrow-left"
+                aria-hidden="true"></i>
+            Back to List</a>
+    </div>
+    {% endif %}
+
     <div class="row justify-content-center mt-4">
         <div class="col-12 col-sm-12">
             <div class="card shadow-lg">
@@ -34,5 +37,10 @@
                 </div>
             </div>
         </div>
+    </div>
+
+
 </div>
 {% endblock %}
+
+

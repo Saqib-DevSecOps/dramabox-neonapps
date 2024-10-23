@@ -1,5 +1,6 @@
 # all_auth
 from allauth.socialaccount.models import SocialAccount
+from django import forms
 from django.contrib import messages
 from django.contrib.auth.forms import AdminPasswordChangeForm
 from django.core.paginator import Paginator
@@ -20,9 +21,8 @@ from src.services.drama.models import (
 from src.services.users.models import User
 from src.web.accounts.decorators import staff_required_decorator
 from src.web.admins.filters import UserFilter, TagFilter, ActorFilter, LanguageFilter, CategoryFilter, DirectorFilter, \
-    ContentRatingFilter
+    ContentRatingFilter, DramaSeriesFilter
 from .forms import DramaSeriesTagForm, DramaSeriesLanguageForm, DramaSeriesCategoryForm, SeasonForm
-from django import forms
 
 
 @method_decorator(staff_required_decorator, name='dispatch')
@@ -134,11 +134,12 @@ class TagListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        tag_filter = TagFilter(self.request.GET, queryset=Tag.objects.all())
+        tag_filter = TagFilter(self.request.GET, queryset=Tag.objects.all().order_by('created_at'))
+
         paginator = Paginator(tag_filter.qs, 20)
         page_number = self.request.GET.get('page')
         tag_page_object = paginator.get_page(page_number)
-        context['tag_list'] = tag_page_object
+        context['object_list'] = tag_page_object
         context['tag_filter_form'] = tag_filter.form
         return context
 
@@ -185,7 +186,7 @@ class ActorListView(ListView):
         paginator = Paginator(actor_filter.qs, 20)
         page_number = self.request.GET.get('page')
         actor_page_object = paginator.get_page(page_number)
-        context['actor_list'] = actor_page_object
+        context['object_list'] = actor_page_object
         context['actor_filter_form'] = actor_filter.form
         return context
 
@@ -197,13 +198,23 @@ class ActorUpdateView(UpdateView):
     template_name = 'admins/actor_form.html'
     success_url = reverse_lazy('admins:actor-list')
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['date_of_birth'].widget = forms.DateInput(attrs={'type': 'date'})
+        return form
+
 
 @method_decorator(staff_required_decorator, name='dispatch')
 class ActorCreateView(CreateView):
     model = Actor
     fields = ['name', 'profile_image', 'biography', 'date_of_birth']
-    template_name = 'admins/actor_create.html'
+    template_name = 'admins/actor_form.html'
     success_url = reverse_lazy('admins:actor-list')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['date_of_birth'].widget = forms.DateInput(attrs={'type': 'date'})
+        return form
 
 
 @method_decorator(staff_required_decorator, name='dispatch')
@@ -231,7 +242,7 @@ class LanguageListView(ListView):
         paginator = Paginator(language_filter.qs, 20)  # 50 items per page
         page_number = self.request.GET.get('page')
         language_page_object = paginator.get_page(page_number)
-        context['language_list'] = language_page_object
+        context['object_list'] = language_page_object
         context['language_filter_form'] = language_filter.form
         return context
 
@@ -241,7 +252,7 @@ class LanguageListView(ListView):
 class LanguageCreateView(CreateView):
     model = Language
     fields = ['name', 'code']
-    template_name = 'admins/language_create.html'  # Update with your template path
+    template_name = 'admins/language_form.html'  # Update with your template path
     success_url = reverse_lazy('admins:language-list')
 
 
@@ -277,10 +288,10 @@ class CategoryListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         category_filter = CategoryFilter(self.request.GET, queryset=Category.objects.all())
-        paginator = Paginator(category_filter, 50)
+        paginator = Paginator(category_filter.qs, 50)
         page_number = self.request.GET.get('page')
         category_page_object = paginator.get_page(page_number)
-        context['category_list'] = category_page_object
+        context['object_list'] = category_page_object
         context['category_filter_form'] = category_filter.form
         return context
 
@@ -290,7 +301,7 @@ class CategoryListView(ListView):
 class CategoryCreateView(CreateView):
     model = Category
     fields = ['name', 'thumbnail', 'description']
-    template_name = 'admins/category_create.html'  # Update with your template path
+    template_name = 'admins/category_form.html'  # Update with your template path
     success_url = reverse_lazy('admins:category-list')
 
 
@@ -329,7 +340,7 @@ class DirectorListView(ListView):
         paginator = Paginator(director_filter.qs, 20)  # 50 items per page
         page_number = self.request.GET.get('page')
         director_page_object = paginator.get_page(page_number)
-        context['director_list'] = director_page_object
+        context['object_list'] = director_page_object
         context['director_filter_form'] = director_filter.form
         return context
 
@@ -339,8 +350,13 @@ class DirectorListView(ListView):
 class DirectorCreateView(CreateView):
     model = Director
     fields = ['name', 'profile_image', 'biography', 'date_of_birth']
-    template_name = 'admins/director_create.html'  # Update with your template path
+    template_name = 'admins/director_form.html'  # Update with your template path
     success_url = reverse_lazy('admins:director-list')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['date_of_birth'].widget = forms.DateInput(attrs={'type': 'date'})
+        return form
 
 
 # Director Update View
@@ -350,6 +366,11 @@ class DirectorUpdateView(UpdateView):
     fields = ['name', 'profile_image', 'biography', 'date_of_birth']
     template_name = 'admins/director_form.html'  # Update with your template path
     success_url = reverse_lazy('admins:director-list')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['date_of_birth'].widget = forms.DateInput(attrs={'type': 'date'})
+        return form
 
 
 # Director Delete View
@@ -375,10 +396,10 @@ class ContentRatingListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         content_rating_filter = ContentRatingFilter(self.request.GET, queryset=ContentRating.objects.all())
-        paginator = Paginator(content_rating_filter.qs, 20)
+        paginator = Paginator(content_rating_filter.qs, 1)
         page_number = self.request.GET.get('page')
         contentrating_page_object = paginator.get_page(page_number)
-        context['contentrating_list'] = contentrating_page_object
+        context['object_list'] = contentrating_page_object
         context['contentrating_filter_form'] = content_rating_filter.form
         return context
 
@@ -387,7 +408,7 @@ class ContentRatingListView(ListView):
 class ContentRatingCreateView(CreateView):
     model = ContentRating
     fields = ['code', 'description']
-    template_name = 'admins/contentrating_create.html'  # Update with your template path
+    template_name = 'admins/contentrating_form.html'  # Update with your template path
     success_url = reverse_lazy('admins:content-rating-list')
 
 
@@ -419,10 +440,13 @@ class DramaSeriesListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        paginator = Paginator(DramaSeries.objects.all(), 50)  # 50 items per page
+        drama_series_filter = DramaSeriesFilter(self.request.GET, queryset=DramaSeries.objects.all().order_by('-created_at'))
+        paginator = Paginator(drama_series_filter.qs, 50)  # 50 items per page
         page_number = self.request.GET.get('page')
         dramaseries_page_object = paginator.get_page(page_number)
-        context['dramaseries_list'] = dramaseries_page_object
+        context['object_list'] = dramaseries_page_object
+        context['drama_series_filter'] = drama_series_filter.form
+
         return context
 
 
@@ -436,9 +460,7 @@ class DramaSeriesCreateView(CreateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        # Customize the release_date widget
         form.fields['release_date'].widget = forms.DateInput(attrs={'type': 'date'})
-        form.fields['release_date'].help_text = "Select the release date of this season."
         return form
 
 
@@ -575,7 +597,7 @@ def link_categories_dramaseries(request, drama_series_slug):
 class SeasonCreateView(CreateView):
     model = Season
     form_class = SeasonForm
-    template_name = 'admins/season_create.html'
+    template_name = 'admins/season_form.html'
     success_url = reverse_lazy('admins:drama-list')
 
     def get_context_data(self, **kwargs):
@@ -603,7 +625,7 @@ class SeasonCreateView(CreateView):
 class SeasonUpdateView(UpdateView):
     model = Season
     form_class = SeasonForm  # Use your form for the season
-    template_name = 'admins/season_update.html'  # Update with your template path
+    template_name = 'admins/season_form.html'  # Update with your template path
     context_object_name = 'season'
 
     def get_success_url(self):

@@ -7,15 +7,36 @@
 {% block subtitle %} {{ request.user }} {% endblock %}
 
 {% block content %}
+<div class="row justify-content-between">
+    <div class="col-6 col-md-4 p-2 mt-2">
+        <form method="get">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control " placeholder="Enter category Name"
+                       id="id_tag" name="name" aria-describedby="search-button">
+                <button class="btn btn-secondary" type="submit" id="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="{% url 'admins:category-list' %}" class="btn btn-danger ml-2" id="clear-button">
+                    <i class="fas fa-brush"></i>
+                </a>
+
+
+            </div>
+        </form>
+    </div>
+    <div class="col-4 mt-0 pt-0 mb-2 d-flex align-items-center justify-content-end">
+        <button type="button" class="btn btn-primary mb-1"
+                onclick="window.location.href='{% url 'admins:category-create' %}'">
+            Add category
+        </button>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-12">
-        <button type="button" class="btn btn-primary mb-3 sticky-right"
-                onclick="window.location.href='{% url 'admins:category-create' %}'">
-            Add Category
-        </button>
         <div class="row">
             <div class="col-12">
-                <div class="card">
+                <div class="card  shadow-lg card">
                     {% if object_list %}
                     <div class="table-responsive">
                         <table class="table table-hover">
@@ -74,26 +95,29 @@
 </div>
 
 
-    <div class="row">
+
+ <div class="row">
         <div class="col-md-12">
             <div class="mt-4">
                 <ul class="pagination">
-                    {% if category_list.has_previous %}
-                        <li>
+                    {% if object_list.has_previous %}
+                        <li class="page-link rounded">
                             <span>
-                                <a href="{% relative_url category_list.previous_page_number 'page' request.GET.urlencode %}">
+                                <a href="{% relative_url object_list.previous_page_number 'page' request.GET.urlencode %}">
                                     Previous
                                 </a>
                             </span>
                         </li>
                     {% endif %}
-                    <li class="">
-                        <span>Page {{ category_list.number }} of {{ category_list.paginator.num_pages }}.</span>
+                    &nbsp;&nbsp;&nbsp;
+                    <li  class="page-link rounded">
+                        <span>Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.</span>
                     </li>
-                    {% if category_list.has_next %}
-                        <li>
+                    &nbsp;&nbsp;&nbsp;
+                    {% if object_list.has_next %}
+                        <li class="page-link rounded">
                             <span>
-                                <a href="{% relative_url category_list.next_page_number 'page' request.GET.urlencode %}">
+                                <a href="{% relative_url object_list.next_page_number 'page' request.GET.urlencode %}">
                                     Next
                                 </a>
                             </span>
