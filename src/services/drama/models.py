@@ -120,8 +120,9 @@ class DramaSeries(models.Model):
     release_date = models.DateField(help_text="Release date of the drama series.")
     director = models.ForeignKey(Director, on_delete=models.SET_NULL, null=True,
                                  help_text="Director of the drama series.")
-    rating = models.ForeignKey(ContentRating, on_delete=models.SET_NULL, null=True,
-                               help_text="Content rating of the drama series.")
+    content_rating = models.ForeignKey(ContentRating, on_delete=models.SET_NULL, null=True,
+                                       help_text="Content rating of the drama series.")
+    rating = models.DecimalField(max_digits=2, decimal_places=1, help_text="Average rating of the drama series.")
     poster_image = models.ImageField(upload_to='dramas/posters/', blank=True, null=True,
                                      help_text="Poster image of the drama series.")
     trailer_url = models.URLField(blank=True, null=True, help_text="Trailer URL for the drama series.")
@@ -167,7 +168,8 @@ class DramaSeries(models.Model):
         """
         Returns top three series based on view count.
         """
-        return DramaSeries.objects.order_by('-view_count')[:3] # Needs to be serialized & Might need to be not automated
+        return DramaSeries.objects.order_by('-view_count')[
+               :3]  # Needs to be serialized & Might need to be not automated
 
 
 class DramaSeriesTag(models.Model):
@@ -315,6 +317,7 @@ class Like(models.Model):
     def __str__(self):
         return f"{self.user.username} liked {self.drama_series.title}"
 
+
 class Testimonials(models.Model):
     """
     Represents user testimonials for drama series.
@@ -329,4 +332,3 @@ class Testimonials(models.Model):
     class Meta:
         verbose_name = "Drama Series Testimonial"
         verbose_name_plural = "Drama Series Testimonials"
-

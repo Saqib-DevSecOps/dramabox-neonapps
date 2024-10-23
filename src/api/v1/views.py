@@ -8,10 +8,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from src.api.v1.filters import DramaSeriesFilter
 from src.api.v1.pagination import DramaSeriesPagination
 from src.api.v1.serializers import HomeDramaSeriesListSerializer, DramaSeriesSerializer, DramaSeriesDetailSerializer, \
     ReviewSerializer, LikeSerializer
-from src.services.drama.models import DramaSeries, Review, Like
+from src.services.drama.models import DramaSeries, Review, Like, Episode
 
 
 # Create your views here.
@@ -19,7 +20,8 @@ from src.services.drama.models import DramaSeries, Review, Like
 class HomeDramaListAPIView(ListAPIView):
     """
     Provides a list of drama series for the home page.
-    Returns featured, trending, upcoming, and new dramas.
+    Returns featured, trending, upcoming, new, seasons for slider, top 10, you might like,
+    most popular, new release, and top searched dramas.
     """
     serializer_class = HomeDramaSeriesListSerializer
     permission_classes = [AllowAny]
@@ -27,20 +29,26 @@ class HomeDramaListAPIView(ListAPIView):
     def get_queryset(self):
         """
         Retrieves and organizes the drama series for the home page.
-        Filters dramas into featured, trending, upcoming, and new categories.
+        Filters dramas into various categories: featured, trending, upcoming, etc.
         """
         all_dramas = DramaSeries.objects.all()
-
-        featured_dramas = [drama for drama in all_dramas if drama.is_currently_featured][:10]
-        trending_dramas = [drama for drama in all_dramas if drama.is_trending][:10]
-        upcoming_dramas = DramaSeries.objects.filter(release_date__gt=timezone.now().date())[:10]
-        new_dramas = DramaSeries.objects.order_by('-created_at')[:10]
+        trending_dramas = [drama for drama in all_dramas if drama.is_trending][:3]
+        seasons_for_slider = trending_dramas[:3]
+        top_10_dramas = DramaSeries.objects.order_by('-rating')[:10]
+        continue_watching = Episode.objects.all()[:10]
+        you_might_like = DramaSeries.objects.order_by('?')[:10]
+        most_popular = DramaSeries.objects.order_by('-view_count')[:10]
+        new_releases = DramaSeries.objects.filter(release_date__gte=timezone.now().date())[:10]
+        top_searched = DramaSeries.objects.all()[:10]
 
         return {
-            'featured_dramas': featured_dramas,
-            'trending_dramas': trending_dramas,
-            'upcoming_dramas': upcoming_dramas,
-            'new_dramas': new_dramas,
+            'trending_slider': seasons_for_slider,
+            'continue_watching': continue_watching,
+            'top_10_dramas': top_10_dramas,
+            'you_might_like': you_might_like,
+            'most_popular': most_popular,
+            'new_releases': new_releases,
+            'top_searched': top_searched,
         }
 
     def list(self, request, *args, **kwargs):
@@ -61,7 +69,9 @@ class DramaSeriesListAPIView(ListAPIView):
     serializer_class = DramaSeriesSerializer
     permission_classes = [AllowAny]
     pagination_class = DramaSeriesPagination
-    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filter_backends = [DjangoFilterBackend, SearchFilter]  # Include both filters here
+    filterset_class = DramaSeriesFilter
+
     search_fields = ['title', 'description']
 
     def get_queryset(self):
