@@ -10,12 +10,12 @@ from src.services.drama.models import Category, Tag, Language, ContentRating, Ac
 class CategorySerializer(serializers.ModelSerializer):
     """
     Serializes data for the Category model.
-    Provides fields: id, name, slug, thumbnail, and description.
+    Provides fields: id, name, and thumbnail.
     """
 
     class Meta:
         model = Category
-        fields = ['id', 'name', 'thumbnail', 'description']
+        fields = ['id', 'name', 'thumbnail']
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -206,5 +206,3 @@ class LikeSerializer(serializers.ModelSerializer):
         model = Like
         fields = ['drama_series']  # Make sure to adjust the field name according to your model
         read_only_fields = ['user']
-
-

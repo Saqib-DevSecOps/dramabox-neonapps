@@ -11,8 +11,8 @@ from rest_framework.views import APIView
 from src.api.v1.filters import DramaSeriesFilter
 from src.api.v1.pagination import DramaSeriesPagination
 from src.api.v1.serializers import HomeDramaSeriesListSerializer, DramaSeriesSerializer, DramaSeriesDetailSerializer, \
-    ReviewSerializer, LikeSerializer
-from src.services.drama.models import DramaSeries, Review, Like, Episode
+    ReviewSerializer, LikeSerializer, CategorySerializer, TagSerializer
+from src.services.drama.models import DramaSeries, Review, Like, Episode, Category, Tag
 
 
 # Create your views here.
@@ -142,3 +142,21 @@ class LikeCreateView(CreateAPIView):
             serializer.is_valid(raise_exception=True)
             serializer.save(user=user, drama_series_id=drama_series_id)
             return Response({"detail": "Like added."}, status=status.HTTP_201_CREATED)
+
+
+class CategoryTagHelperAPIView(APIView):
+    """
+    API view to retrieve all categories or tags.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        """
+        Handles the GET request to retrieve all categories or tags.
+        """
+        serialize_category = CategorySerializer(Category.objects.all(), many=True)
+        serialize_tag = TagSerializer(Tag.objects.all(), many=True)
+        return Response({
+            'category': serialize_category.data,
+            'tag': serialize_tag.data
+        })
