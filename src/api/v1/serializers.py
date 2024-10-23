@@ -15,7 +15,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['id', 'name', 'slug', 'thumbnail', 'description']
+        fields = ['id', 'name', 'thumbnail', 'description']
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -26,7 +26,7 @@ class TagSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tag
-        fields = ['id', 'name', 'slug']
+        fields = ['id', 'name']
 
 
 class LanguageSerializer(serializers.ModelSerializer):
@@ -99,7 +99,7 @@ class DramaSeriesHomeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DramaSeries
-        fields = ['id', 'title', 'slug', 'rating', 'poster_image',
+        fields = ['id', 'title', 'rating', 'poster_image',
                   'trailer_url', 'categories', 'tags', 'languages']
 
 
@@ -130,7 +130,7 @@ class DramaSeriesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DramaSeries
-        fields = ['id', 'title', 'slug', 'rating', 'poster_image',
+        fields = ['id', 'title', 'rating', 'poster_image',
                   'trailer_url', 'categories', 'tags', 'languages']
 
 
@@ -174,8 +174,8 @@ class DramaSeriesDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DramaSeries
-        fields = ['id', 'title', 'description', 'release_date', 'director', 'rating','content_rating', 'poster_image',
-                  'trailer_url', 'slug', 'view_count', 'categories', 'tags', 'cast', 'languages', 'seasons',
+        fields = ['id', 'title', 'description', 'release_date', 'director', 'rating', 'content_rating', 'poster_image',
+                  'trailer_url', 'view_count', 'categories', 'tags', 'cast', 'languages', 'seasons',
                   'is_trending', 'is_currently_featured', 'created_at', 'updated_at']
 
 
@@ -206,3 +206,5 @@ class LikeSerializer(serializers.ModelSerializer):
         model = Like
         fields = ['drama_series']  # Make sure to adjust the field name according to your model
         read_only_fields = ['user']
+
+
