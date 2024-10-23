@@ -74,16 +74,16 @@ class DirectorSerializer(serializers.ModelSerializer):
 
 
 class EpisodeHomeSerializer(serializers.ModelSerializer):
-    """
-    Serializes data for the Episode model.
-    Provides essential fields: id, title, episode_number, description, release_date,
-    duration, video_file, is_free, view_count, created_at, and updated_at.
-    """
+    """Serializes data for the Episode model, including related Season and DramaSeries."""
+    series_id = serializers.IntegerField(source='season.series.id', read_only=True)
+    series_title = serializers.CharField(source='season.series.title', read_only=True)
+    season_id = serializers.IntegerField(source='season.id', read_only=True)
+    season_number = serializers.CharField(source='season.season_number', read_only=True)
 
     class Meta:
         model = Episode
-        fields = ['id', 'title', 'episode_number', 'duration',
-                  'video_file', ]
+        fields = ['id', 'title', 'episode_number', 'duration', 'video_file', 'season_id', 'season_number', 'series_id',
+                  'series_title']
 
 
 # -------------------------HomeSerializer-----------------------------------------------
@@ -99,8 +99,8 @@ class DramaSeriesHomeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DramaSeries
-        fields = ['id', 'title', 'release_date', 'rating', 'poster_image',
-                  'trailer_url', 'slug', 'categories', 'tags', 'languages']
+        fields = ['id', 'title', 'slug', 'rating', 'poster_image',
+                  'trailer_url', 'categories', 'tags', 'languages']
 
 
 class HomeDramaSeriesListSerializer(serializers.Serializer):
@@ -130,8 +130,8 @@ class DramaSeriesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DramaSeries
-        fields = ['id', 'title', 'release_date', 'rating', 'poster_image',
-                  'trailer_url', 'slug', 'categories', 'tags', 'languages']
+        fields = ['id', 'title', 'slug', 'rating', 'poster_image',
+                  'trailer_url', 'categories', 'tags', 'languages']
 
 
 class EpisodeSerializer(serializers.ModelSerializer):
