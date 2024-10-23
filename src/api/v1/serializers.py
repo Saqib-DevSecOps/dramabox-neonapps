@@ -90,17 +90,18 @@ class EpisodeHomeSerializer(serializers.ModelSerializer):
 
 class DramaSeriesHomeSerializer(serializers.ModelSerializer):
     """
-    Serializes data for the DramaSeries model for the home page.
-    Includes related content ratings, categories, tags, and languages.
+    DramaSeriesHomeSerializer data for the DramaSeries model.
+    Provides fields for the home page response, including total_episodes, categories, tags, and languages.
     """
+    total_episodes = serializers.IntegerField(source='get_total_episodes', read_only=True)
     categories = serializers.StringRelatedField(many=True, source='drama_category')
     tags = serializers.StringRelatedField(many=True, source='drama_tags')
     languages = serializers.StringRelatedField(many=True, source='drama_languages')
 
     class Meta:
         model = DramaSeries
-        fields = ['id', 'title', 'rating', 'poster_image',
-                  'trailer_url', 'categories', 'tags', 'languages']
+        fields = ['id', 'title', 'description', 'rating', 'poster_image',
+                  'trailer_url', 'total_episodes', 'categories', 'tags', 'languages']
 
 
 class HomeDramaSeriesListSerializer(serializers.Serializer):
@@ -121,17 +122,19 @@ class HomeDramaSeriesListSerializer(serializers.Serializer):
 
 class DramaSeriesSerializer(serializers.ModelSerializer):
     """
-    Serializes data for the DramaSeries model.
-    Provides fields for general listing of dramas, including nested serializers for related data.
+    DramaSeriesSerializer data for the DramaSeries model.
+    Provides essential fields: id, title, description, rating, poster_image,
+    trailer_url, total_episodes, categories, tags, and languages.
     """
+    total_episodes = serializers.IntegerField(source='get_total_episodes', read_only=True)
     categories = serializers.StringRelatedField(many=True, source='drama_category')
     tags = serializers.StringRelatedField(many=True, source='drama_tags')
     languages = serializers.StringRelatedField(many=True, source='drama_languages')
 
     class Meta:
         model = DramaSeries
-        fields = ['id', 'title', 'rating', 'poster_image',
-                  'trailer_url', 'categories', 'tags', 'languages']
+        fields = ['id', 'title', 'description', 'rating', 'poster_image',
+                  'trailer_url', 'total_episodes', 'categories', 'tags', 'languages']
 
 
 class EpisodeSerializer(serializers.ModelSerializer):

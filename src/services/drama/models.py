@@ -168,8 +168,14 @@ class DramaSeries(models.Model):
         """
         Returns top three series based on view count.
         """
-        return DramaSeries.objects.order_by('-view_count')[
-               :3]  # Needs to be serialized & Might need to be not automated
+        return DramaSeries.objects.order_by('-view_count')[:3]
+
+    @property
+    def get_total_episodes(self):
+        """
+        Returns the total number of episodes.
+        """
+        return Episode.objects.filter(season__series=self).count()
 
 
 class DramaSeriesTag(models.Model):
