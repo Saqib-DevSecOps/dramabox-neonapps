@@ -39,7 +39,8 @@ class DramaSeriesFilter(filters.FilterSet):
         model = DramaSeries
         fields = ['category', 'tag', 'is_popular', 'is_trending', 'is_featured', 'new_release', 'top_searched']
 
-    def filter_by_popularity(self, queryset, name, value):
+    @staticmethod
+    def filter_by_popularity(queryset, name, value):
         """
         Filter based on popularity. Checks if `view_count` exceeds a defined threshold.
         """
@@ -47,7 +48,8 @@ class DramaSeriesFilter(filters.FilterSet):
             return queryset.filter(view_count__gte=1000)  # Threshold can be defined as a constant
         return queryset
 
-    def filter_new_release(self, queryset, name, value):
+    @staticmethod
+    def filter_new_release(queryset, name, value):
         """
         Filter for series released in the last 30 days.
         """
@@ -56,7 +58,8 @@ class DramaSeriesFilter(filters.FilterSet):
             return queryset.filter(release_date__gte=thirty_days_ago)
         return queryset
 
-    def filter_by_top_searched(self, queryset, name, value):
+    @staticmethod
+    def filter_by_top_searched(queryset, name, value):
         """
         Filter based on search counts. Assumes a `search_count` field tracks the number of searches.
         """
@@ -64,7 +67,8 @@ class DramaSeriesFilter(filters.FilterSet):
             return queryset.filter(search_count__gte=500)  # Example threshold for top searches
         return queryset
 
-    def filter_by_trending(self, queryset, name, value):
+    @staticmethod
+    def filter_by_trending(queryset, name, value):
         """
         Filter for trending series based on view count compared to the trending threshold.
         """
@@ -72,7 +76,8 @@ class DramaSeriesFilter(filters.FilterSet):
             return queryset.filter(view_count__gte=F('trending_threshold'))
         return queryset
 
-    def filter_by_featured(self, queryset, name, value):
+    @staticmethod
+    def filter_by_featured(queryset, name, value):
         """
         Filter for currently featured drama series based on `is_featured` and `featured_until` date.
         """
