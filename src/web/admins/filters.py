@@ -1,7 +1,7 @@
 import django_filters
 from django.forms import TextInput
 
-from src.services.drama.models import Tag, Actor, Language, Category, Director, ContentRating
+from src.services.drama.models import Tag, Actor, Language, Category, Director, ContentRating, DramaSeries
 from src.services.users.models import User
 
 
@@ -22,7 +22,7 @@ class TagFilter(django_filters.FilterSet):
 
     class Meta:
         model = Tag
-        fields = {}
+        fields = ['name']
 
 
 class ActorFilter(django_filters.FilterSet):
@@ -31,7 +31,7 @@ class ActorFilter(django_filters.FilterSet):
 
     class Meta:
         model = Actor
-        fields = {}
+        fields = ['name']
 
 
 class LanguageFilter(django_filters.FilterSet):
@@ -49,7 +49,7 @@ class CategoryFilter(django_filters.FilterSet):
 
     class Meta:
         model = Category
-        fields = {}
+        fields = ['name']
 
 
 class DirectorFilter(django_filters.FilterSet):
@@ -68,3 +68,11 @@ class ContentRatingFilter(django_filters.FilterSet):
     class Meta:
         model = ContentRating
         fields = {}
+
+class DramaSeriesFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(widget=TextInput(attrs={'placeholder': 'Enter Drama Rating'}),
+                                     lookup_expr='icontains')
+
+    class Meta:
+        model = DramaSeries
+        fields = ['title']

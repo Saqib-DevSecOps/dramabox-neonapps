@@ -6,12 +6,32 @@
 {% block subtitle %} {{ request.user }} {% endblock %}
 
 {% block content %}
+<div class="row justify-content-between">
+    <div class="col-6 col-md-4 p-2 mt-2">
+        <form method="get">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control " placeholder="Enter Drama Series Title"
+                       id="id_tag" name="title" aria-describedby="search-button">
+                <button class="btn btn-secondary" type="submit" id="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="{% url 'admins:drama-list' %}" class="btn btn-danger ml-2" id="clear-button">
+                    <i class="fas fa-brush"></i>
+                </a>
+
+
+            </div>
+        </form>
+    </div>
+    <div class="col-4 mt-0 pt-0 mb-2 d-flex align-items-center justify-content-end">
+        <button type="button" class="btn btn-primary mb-1"
+                onclick="window.location.href='{% url 'admins:drama-create' %}'">
+            Add Drama
+        </button>
+    </div>
+</div>
     <div class="row">
         <div class="col-12">
-            <button type="button" class="btn btn-primary mb-3 sticky-right"
-                    onclick="window.location.href='{% url 'admins:drama-create' %}'">
-                Add Drama
-            </button>
             <div class="row">
                 {% if object_list %}
                     {% for object in object_list %}
@@ -105,12 +125,11 @@
                                 </div>
                                 <div class="row mt-4 p-2 mt-2">
                                     <div class="col-6">
-                                        <a href="#!" data-bs-toggle="modal"
-                                           class="btn btn-primary w-100 ">View Profile</a>
+                                        <a href="{% url 'admins:drama-update' object.slug %}" data-bs-toggle="modal"
+                                           class="btn btn-warning w-100 ">Edit</a>
                                     </div>
                                     <div class="col-6">
-                                        <a href="#applyJobs" data-bs-toggle="modal" class="btn btn-danger w-100">Apply
-                                            Now</a>
+                                        <a href="{% url 'admins:drama-detail' object.slug %}" data-bs-toggle="modal" class="btn btn-danger w-100">Details</a>
                                     </div>
 
                                 </div>
@@ -129,27 +148,31 @@
         </div>
     </div>
 
-    <div class="row">
+     <div class="row">
         <div class="col-md-12">
             <div class="mt-4">
                 <ul class="pagination">
-                    {% if drama_list.has_previous %}
-                        <li class="page-item">
-                            <a class="page-link"
-                               href="{% relative_url drama_list.previous_page_number 'page' request.GET.urlencode %}">
-                                Previous
-                            </a>
+                    {% if object_list.has_previous %}
+                        <li class="page-link rounded">
+                            <span>
+                                <a href="{% relative_url object_list.previous_page_number 'page' request.GET.urlencode %}">
+                                    Previous
+                                </a>
+                            </span>
                         </li>
                     {% endif %}
-                    <li class="page-item disabled">
-                        <span class="page-link">Page {{ drama_list.number }} of {{ drama_list.paginator.num_pages }}.</span>
+                    &nbsp;&nbsp;&nbsp;
+                    <li  class="page-link rounded">
+                        <span>Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.</span>
                     </li>
-                    {% if drama_list.has_next %}
-                        <li class="page-item">
-                            <a class="page-link"
-                               href="{% relative_url drama_list.next_page_number 'page' request.GET.urlencode %}">
-                                Next
-                            </a>
+                    &nbsp;&nbsp;&nbsp;
+                    {% if object_list.has_next %}
+                        <li class="page-link rounded">
+                            <span>
+                                <a href="{% relative_url object_list.next_page_number 'page' request.GET.urlencode %}">
+                                    Next
+                                </a>
+                            </span>
                         </li>
                     {% endif %}
                 </ul>
@@ -158,23 +181,3 @@
     </div>
 {% endblock %}
 
-
-<div class="avatar-group d-flex align-items-center">
-    {% if object.drama_cast.exists %}
-        {% for cast in object.drama_cast.all %}
-            <div class="avatar-group-item ms-1">
-                <a href="javascript: void(0);" class="d-inline-block">
-                    {% if cast.actor.profile_image %}
-                        <img src="{{ cast.actor.profile_image.url }}" alt="{{ cast.actor.name }}"
-                             class="rounded-circle avatar-xs">
-                    {% else %}
-                        <img src="{% static 'noimage.jpg' %}" alt="No Image"
-                             class="rounded-circle avatar-xs">
-                    {% endif %}
-                </a>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No cast members available</p>
-    {% endif %}
-</div>

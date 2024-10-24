@@ -7,17 +7,31 @@
 
 {% block content %}
 <div class="container">
+    {% if object %}
     <h1>Update Category</h1>
+    {% else %}
+    <h1>Create Category</h1>
+    {% endif %}
+    <div class="mt-2">
+        <a href="{% url 'admins:category-list' %}" class="mt-2 btn btn-sm btn-secondary"><i class="fa fa-arrow-left"
+                                                                                         aria-hidden="true"></i>
+            Back to List</a>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-12 col-sm-12">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        {{ form|crispy }}
 
-    <form method="post" enctype="multipart/form-data" novalidate>
-        {% csrf_token %}
-        {{ form.non_field_errors }}
-        {{ form|crispy }}
+                        <button type="submit" class="btn btn-primary">Confirm</button>
+                        <br>
+                    </form>
 
-        <button type="submit" class="btn btn-primary">Update Category</button>
-        <br>
-    </form>
-
-    <a href="{% url 'admins:category-list' %}" class="btn btn-secondary mt-2">Back to Category List</a>
+                </div>
+            </div>
+        </div>
 </div>
 {% endblock %}
