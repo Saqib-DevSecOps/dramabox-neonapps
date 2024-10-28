@@ -70,7 +70,7 @@ class ContentRatingFilter(django_filters.FilterSet):
         fields = {}
 
 class DramaSeriesFilter(django_filters.FilterSet):
-    name = django_filters.CharFilter(widget=TextInput(attrs={'placeholder': 'Enter Drama Rating'}),
+    title = django_filters.CharFilter(widget=TextInput(attrs={'placeholder': 'Enter Drama Rating'}),
                                      lookup_expr='icontains')
 
     class Meta:

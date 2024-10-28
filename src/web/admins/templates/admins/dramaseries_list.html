@@ -6,30 +6,29 @@
 {% block subtitle %} {{ request.user }} {% endblock %}
 
 {% block content %}
-<div class="row justify-content-between">
-    <div class="col-6 col-md-4 p-2 mt-2">
-        <form method="get">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control " placeholder="Enter Drama Series Title"
-                       id="id_tag" name="title" aria-describedby="search-button">
-                <button class="btn btn-secondary" type="submit" id="search-button">
-                    <i class="fas fa-search"></i>
-                </button>
-                <a href="{% url 'admins:drama-list' %}" class="btn btn-danger ml-2" id="clear-button">
-                    <i class="fas fa-brush"></i>
-                </a>
+    <div class="row justify-content-between">
+        <div class="col-6 col-md-4 p-2 mt-2">
+            <form method="get">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control " placeholder="Enter Drama Series Title"
+                           id="id_title"
+                           value="{% if drama_series_filter.title.value %}{{ drama_series_filter.title.value }}{% endif %}"
+                           name="title">
+                    <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
+                    <a class="btn btn-danger" href="{% url 'admins:drama-list' %}">
+                        <i class="fas fa-brush"></i>
+                    </a>
+                </div>
 
-
-            </div>
-        </form>
+            </form>
+        </div>
+        <div class="col-4 mt-0 pt-0 mb-2 d-flex align-items-center justify-content-end">
+            <button type="button" class="btn btn-primary mb-1"
+                    onclick="window.location.href='{% url 'admins:drama-create' %}'">
+                Add Drama
+            </button>
+        </div>
     </div>
-    <div class="col-4 mt-0 pt-0 mb-2 d-flex align-items-center justify-content-end">
-        <button type="button" class="btn btn-primary mb-1"
-                onclick="window.location.href='{% url 'admins:drama-create' %}'">
-            Add Drama
-        </button>
-    </div>
-</div>
     <div class="row">
         <div class="col-12">
             <div class="row">
@@ -129,7 +128,8 @@
                                            class="btn btn-warning w-100 ">Edit</a>
                                     </div>
                                     <div class="col-6">
-                                        <a href="{% url 'admins:drama-detail' object.slug %}" data-bs-toggle="modal" class="btn btn-danger w-100">Details</a>
+                                        <a href="{% url 'admins:drama-detail' object.slug %}" data-bs-toggle="modal"
+                                           class="btn btn-danger w-100">Details</a>
                                     </div>
 
                                 </div>
@@ -148,7 +148,7 @@
         </div>
     </div>
 
-     <div class="row">
+    <div class="row">
         <div class="col-md-12">
             <div class="mt-4">
                 <ul class="pagination">
@@ -162,7 +162,7 @@
                         </li>
                     {% endif %}
                     &nbsp;&nbsp;&nbsp;
-                    <li  class="page-link rounded">
+                    <li class="page-link rounded">
                         <span>Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.</span>
                     </li>
                     &nbsp;&nbsp;&nbsp;
