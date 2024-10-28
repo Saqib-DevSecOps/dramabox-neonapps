@@ -1,17 +1,37 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
 {% load crispy_forms_tags %}
+{% load humanize %}
+
+{% block subtitle %} {{ request.user }} {% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Link Categories to {{ drama_series.title }}</h1>
+    <div class="container">
+        <h1>Link Categories to {{ drama_series.title }}</h1>
 
-    <form method="post" novalidate>
-        {% csrf_token %}
-        {{ form.non_field_errors }}
-        {{ form|crispy }}  <!-- Ensure you're using the crispy rendering -->
 
-        <button type="submit" class="btn btn-primary">Link Categories</button>
-        <a href="{% url 'admins:drama-detail' slug=drama_series.slug %}" class="btn btn-secondary ">Back to Drama Series</a>
-    </form>
-</div>
+        <div class="mt-2">
+            <a href="{% url 'admins:drama-detail' drama_series.slug %}" class="mt-2 btn btn-sm btn-secondary"><i
+                    class="fa fa-arrow-left"
+                    aria-hidden="true"></i>
+                Back to List</a>
+        </div>
+        <div class="row justify-content-center mt-4">
+            <div class="col-12 col-sm-12">
+                <div class="card shadow-lg">
+                    <div class="card-body">
+                        <form method="post" novalidate>
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            {{ form|crispy }}
+                            <button type="submit" class="btn btn-primary">Confirm</button>
+                            <br>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
