@@ -7,86 +7,103 @@
 {% block subtitle %} Content Ratings {% endblock %}
 
 {% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="mb-0 font-size-24">
+                            Content Rating Management
+                        </p>
+                    </div>
+                    <div class="col-sm-6 text-right">
 
-<div class="row justify-content-between">
-    <div class="col-6 col-md-4 p-2 mt-2">
-        <form method="get">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control " placeholder="Enter Content Rating Name"
-                       id="id_tag" name="name" aria-describedby="search-button">
-                <button class="btn btn-secondary" type="submit" id="search-button">
-                    <i class="fas fa-search"></i>
-                </button>
-                <a href="{% url 'admins:content-rating-list' %}" class="btn btn-danger ml-2" id="clear-button">
-                    <i class="fas fa-brush"></i>
-                </a>
+                        <button type="button" class="btn btn-primary mb-1"
+                                onclick="window.location.href='{% url 'admins:content-rating-create' %}'">
+                            <i class="fa fa-plus"></i> Add Content Rating
+                        </button>
 
+                    </div>
+                </div>
 
             </div>
-        </form>
-    </div>
-    <div class="col-4 mt-0 pt-0 mb-2 d-flex align-items-center justify-content-end">
-        <button type="button" class="btn btn-primary mb-1"
-                onclick="window.location.href='{% url 'admins:content-rating-create' %}'">
-            Add Rating
-        </button>
-    </div>
-</div>
-
-
-<div class="row">
-    <div class="col-12">
-        <div class="card  shadow-lg card">
-            {% if object_list %}
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead class="thead-light">
-                    <tr>
-                        <th>PK</th>
-                        <th>Rating Code</th>
-                        <th>Description</th>
-                        <th>Created At</th>
-                        <th>Updated At</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for object in object_list %}
-                    <tr>
-                        <td>{{ object.pk }}</td>
-                        <td>
-                            <a href="{% url 'admins:content-rating-update' object.pk %}">
-                                {{ object.code }}
-                            </a>
-                        </td>
-                        <td>{{ object.description }}</td>
-                        <td>{{ object.created_at|date:"Y-m-d" }}</td>
-                        <td>{{ object.updated_at|date:"Y-m-d" }}</td>
-                        <th>
-                            <a href="{% url 'admins:content-rating-update' object.pk %}">
-                                <i class="fa fa-edit"></i>
-                            </a> &nbsp;
-                            <a href="{% url 'admins:content-rating-delete' object.pk %}" class="text-danger">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </th>
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {% else %}
-            <div class="card-body">
-                <p class="text-danger mb-0"><b>No content ratings available</b></p>
-            </div>
-            {% endif %}
         </div>
     </div>
-</div>
+
+
+   <div class="row justify-content-between">
+        <div class="col-12 col-md-12 p-2 mt-2">
+            <form method="get">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control " placeholder="Enter Content Rating Code"
+                           id="id_code"
+                           value="{% if contentrating_filter_form.code.value %}{{ contentrating_filter_form.code.value }}{% endif %}"
+                           name="code">
+                    <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
+                    <a class="btn btn-danger" href="{% url 'admins:content-rating-list' %}">
+                        <i class="fas fa-brush"></i>
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card  shadow-lg card">
+                {% if object_list %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>PK</th>
+                                <th>Rating Code</th>
+                                <th>Description</th>
+                                <th>Created At</th>
+                                <th>Updated At</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for object in object_list %}
+                                <tr>
+                                    <td>{{ object.pk }}</td>
+                                    <td>
+                                        <a href="{% url 'admins:content-rating-update' object.pk %}">
+                                            {{ object.code }}
+                                        </a>
+                                    </td>
+                                    <td>{{ object.description }}</td>
+                                    <td>{{ object.created_at|date:"Y-m-d" }}</td>
+                                    <td>{{ object.updated_at|date:"Y-m-d" }}</td>
+                                    <th>
+                                        <a href="{% url 'admins:content-rating-update' object.pk %}">
+                                            <i class="fa fa-edit"></i>
+                                        </a> &nbsp;
+                                        <a href="{% url 'admins:content-rating-delete' object.pk %}"
+                                           class="text-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </th>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="card-body">
+                        <p class="text-danger mb-0"><b>No content ratings available</b></p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 
 
 
- <div class="row">
+    <div class="row">
         <div class="col-md-12">
             <div class="mt-4">
                 <ul class="pagination">
@@ -100,7 +117,7 @@
                         </li>
                     {% endif %}
                     &nbsp;&nbsp;&nbsp;
-                    <li  class="page-link rounded">
+                    <li class="page-link rounded">
                         <span>Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.</span>
                     </li>
                     &nbsp;&nbsp;&nbsp;

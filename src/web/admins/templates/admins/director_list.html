@@ -7,93 +7,110 @@
 {% block subtitle %} {{ request.user }} {% endblock %}
 
 {% block content %}
-<div class="row justify-content-between">
-    <div class="col-6 col-md-4 p-2 mt-2">
-        <form method="get">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control " placeholder="Enter director Name"
-                       id="id_tag" name="name" aria-describedby="search-button">
-                <button class="btn btn-secondary" type="submit" id="search-button">
-                    <i class="fas fa-search"></i>
-                </button>
-                <a href="{% url 'admins:director-list' %}" class="btn btn-danger ml-2" id="clear-button">
-                    <i class="fas fa-brush"></i>
-                </a>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="mb-0 font-size-24">
+                            Director Management
+                        </p>
+                    </div>
+                    <div class="col-sm-6 text-right">
 
+                        <button type="button" class="btn btn-primary mb-1"
+                                onclick="window.location.href='{% url 'admins:director-create' %}'">
+                            <i class="fa fa-plus"></i> Add Director
+                        </button>
+
+                    </div>
+                </div>
 
             </div>
-        </form>
+        </div>
     </div>
-    <div class="col-4 mt-0 pt-0 mb-2 d-flex align-items-center justify-content-end">
-        <button type="button" class="btn btn-primary mb-1"
-                onclick="window.location.href='{% url 'admins:director-create' %}'">
-            Add director
-        </button>
+     <div class="row justify-content-between">
+        <div class="col-12 col-md-12 p-2 mt-2">
+            <form method="get">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control " placeholder="Enter Director Name"
+                           id="id_name"
+                           value="{% if director_filter_form.name.value %}{{ director_filter_form.name.value }}{% endif %}"
+                           name="name">
+                    <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
+                    <a class="btn btn-danger" href="{% url 'admins:director-list' %}">
+                        <i class="fas fa-brush"></i>
+                    </a>
+                </div>
+
+            </form>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-12">
-        <div class="row">
-            <div class="col-12">
-                <div class="card  shadow-lg card">
-                    {% if object_list %}
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead class="thead-light">
-                            <tr>
-                                <th>PK</th>
-                                <th>Profile Image</th>  <!-- New column for Profile Image -->
-                                <th>Name</th>
-                                <th>Biography</th>
-                                <th>Date of Birth</th>
-                                <th>Created At</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for object in object_list %}
-                            <tr>
-                                <td>{{ object.pk }}</td>
-                                <td>
-                                    {% if object.profile_image %}
-                                        <img src="{{ object.profile_image.url }}" alt="Profile Image" style="width: 30px; height: auto; border-radius: 50%;">
-                                    {% else %}
-                                        <span>No Image</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <a href="{% url 'admins:director-update' object.pk %}">
-                                        {{ object.name }}
-                                    </a>
-                                </td>
-                                <td>{{ object.biography|truncatewords:10 }}</td>
-                                <td>{{ object.date_of_birth|date:"Y-m-d" }}</td>
-                                <td>{{ object.created_at|date:"Y-m-d H:i:s" }}</td>
-                                <th>
-                                    <a href="{% url 'admins:director-update' object.pk %}">
-                                        <i class="fa fa-edit"></i>
-                                    </a> &nbsp;
-                                    <a href="{% url 'admins:director-delete' object.pk %}" class="text-danger">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                </th>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card  shadow-lg card">
+                        {% if object_list %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th>PK</th>
+                                        <th>Profile Image</th>  <!-- New column for Profile Image -->
+                                        <th>Name</th>
+                                        <th>Biography</th>
+                                        <th>Date of Birth</th>
+                                        <th>Created At</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for object in object_list %}
+                                        <tr>
+                                            <td>{{ object.pk }}</td>
+                                            <td>
+                                                {% if object.profile_image %}
+                                                    <img src="{{ object.profile_image.url }}" alt="Profile Image"
+                                                         style="width: 30px; height: auto; border-radius: 50%;">
+                                                {% else %}
+                                                    <span>No Image</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'admins:director-update' object.pk %}">
+                                                    {{ object.name }}
+                                                </a>
+                                            </td>
+                                            <td>{{ object.biography|truncatewords:10 }}</td>
+                                            <td>{{ object.date_of_birth|date:"Y-m-d" }}</td>
+                                            <td>{{ object.created_at|date:"Y-m-d H:i:s" }}</td>
+                                            <th>
+                                                <a href="{% url 'admins:director-update' object.pk %}">
+                                                    <i class="fa fa-edit"></i>
+                                                </a> &nbsp;
+                                                <a href="{% url 'admins:director-delete' object.pk %}"
+                                                   class="text-danger">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </th>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="card-body">
+                                <p class="text-danger mb-0"><b>No directors available</b></p>
+                            </div>
+                        {% endif %}
                     </div>
-                    {% else %}
-                    <div class="card-body">
-                        <p class="text-danger mb-0"><b>No directors available</b></p>
-                    </div>
-                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
-</div>
 
- <div class="row">
+    <div class="row">
         <div class="col-md-12">
             <div class="mt-4">
                 <ul class="pagination">
@@ -107,7 +124,7 @@
                         </li>
                     {% endif %}
                     &nbsp;&nbsp;&nbsp;
-                    <li  class="page-link rounded">
+                    <li class="page-link rounded">
                         <span>Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.</span>
                     </li>
                     &nbsp;&nbsp;&nbsp;

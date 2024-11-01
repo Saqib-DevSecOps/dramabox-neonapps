@@ -1,28 +1,33 @@
 # all_auth
+import json
+
+import boto3
 from allauth.socialaccount.models import SocialAccount
+from botocore.exceptions import ClientError
 from django import forms
 from django.contrib import messages
 from django.contrib.auth.forms import AdminPasswordChangeForm
 from django.core.paginator import Paginator
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import (
     TemplateView, ListView, DetailView, UpdateView, CreateView, DeleteView
 )
 
+from core import settings
 from src.services.drama.models import (
     Tag, Actor, Language, Category, Director, ContentRating, DramaSeries, DramaSeriesTag, DramaSeriesLanguage,
-    DramaSeriesCategory, Season
+    DramaSeriesCategory, Season, Episode
 )
-# from faker_data import initialization
 from src.services.users.models import User
 from src.web.accounts.decorators import staff_required_decorator
 from src.web.admins.filters import UserFilter, TagFilter, ActorFilter, LanguageFilter, CategoryFilter, DirectorFilter, \
     ContentRatingFilter, DramaSeriesFilter
-from .forms import DramaSeriesTagForm, DramaSeriesLanguageForm, DramaSeriesCategoryForm, SeasonForm
+from .forms import DramaSeriesTagForm, DramaSeriesLanguageForm, DramaSeriesCategoryForm, SeasonForm, EpisodeForm
 
 
 @method_decorator(staff_required_decorator, name='dispatch')
@@ -440,7 +445,8 @@ class DramaSeriesListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        drama_series_filter = DramaSeriesFilter(self.request.GET, queryset=DramaSeries.objects.all().order_by('-created_at'))
+        drama_series_filter = DramaSeriesFilter(self.request.GET,
+                                                queryset=DramaSeries.objects.all().order_by('-created_at'))
         paginator = Paginator(drama_series_filter.qs, 50)  # 50 items per page
         page_number = self.request.GET.get('page')
         dramaseries_page_object = paginator.get_page(page_number)
@@ -590,7 +596,6 @@ def link_categories_dramaseries(request, drama_series_slug):
     })
 
 
-
 """ SEASONS ----------------------------------------------------------------------------------------------  """
 
 
@@ -625,21 +630,18 @@ class SeasonCreateView(CreateView):
 
 class SeasonUpdateView(UpdateView):
     model = Season
-    form_class = SeasonForm  # Use your form for the season
-    template_name = 'admins/season_form.html'  # Update with your template path
+    form_class = SeasonForm
+    template_name = 'admins/season_form.html'
     context_object_name = 'season'
 
     def get_success_url(self):
-        # Redirect to the drama series detail page after successful update
         return reverse_lazy('admins:drama-detail', kwargs={'slug': self.object.series.slug})
 
     def get_object(self, queryset=None):
-        # Get the season instance based on the primary key passed in the URL
-        pk = self.kwargs.get('pk')  # Assuming you're using pk in your URL
+        pk = self.kwargs.get('pk')
         return get_object_or_404(Season, pk=pk)
 
     def form_valid(self, form):
-        # Here you can add any additional validation if necessary
         return super().form_valid(form)
 
 
@@ -648,20 +650,108 @@ class SeasonUpdateView(UpdateView):
 
 class SeasonEpisodeListView(DetailView):
     model = Season
-    template_name = 'admins/season_episode_list.html'  # Update with your template path
+    template_name = 'admins/season_episode_list.html'
     context_object_name = 'season'
 
     def get_object(self, queryset=None):
-        # Get the drama series slug from the URL
         drama_series_slug = self.kwargs['drama_series_slug']
-
-        # Get the season primary key from the URL
         season_pk = self.kwargs['season_pk']
-
-        # Fetch the Season object based on the primary key and drama series
         return get_object_or_404(Season, pk=season_pk, series__slug=drama_series_slug)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['episodes'] = self.object.episodes.all()  # Fetch all episodes for the season
+        context['episodes'] = self.object.episodes.order_by('id')
         return context
+
+
+class SeasonEpisodeCreateView(CreateView):
+    template_name = 'admins/season_episode_form.html'
+    model = Episode
+    form_class = EpisodeForm
+
+    def get_success_url(self):
+        season = self.object.season
+        # Ensure to get the slug field of the DramaSeries model
+        return reverse('admins:season-episode-list',
+                       kwargs={'drama_series_slug': season.series.slug, 'season_pk': season.pk})
+
+    def form_valid(self, form):
+        season_pk = self.kwargs.get('season_pk')
+        form.instance.season = get_object_or_404(Season, pk=season_pk)
+        return super().form_valid(form)
+
+
+class SeasonEpisodeUpdateView(UpdateView):
+    template_name = 'admins/season_episode_form.html'
+    model = Episode
+    form_class = EpisodeForm
+
+    def get_success_url(self):
+        season = self.object.season
+        return reverse('admins:season-episode-list',
+                       kwargs={'drama_series_slug': season.series.slug, 'season_pk': season.pk})
+
+    def get_object(self, queryset=None):
+        pk = self.kwargs.get('pk')
+        return get_object_or_404(Episode, pk=pk)
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+
+class SeasonEpisodeDeleteView(DeleteView):
+    model = Episode
+
+    def get_success_url(self):
+        season = self.object.season
+        return reverse('admins:season-episode-list',
+                       kwargs={'drama_series_slug': season.series.slug, 'season_pk': season.pk})
+
+    def delete_s3_objects(self, episode):
+        s3_client = boto3.client(
+            's3',
+            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+            region_name=settings.AWS_S3_REGION_NAME
+        )
+        bucket_name = 'dramaboxbucket'
+        key_prefix = f"{episode.season.series}/{episode.season}/{episode.video_file_name}"
+
+        response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=key_prefix)
+        if 'Contents' in response:
+            keys_to_delete = [{'Key': obj['Key']} for obj in response['Contents']]
+            s3_client.delete_objects(Bucket=bucket_name, Delete={'Objects': keys_to_delete})
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.delete_s3_objects(self.object)
+        self.object.delete()
+        return HttpResponseRedirect(self.get_success_url())
+
+
+""" UPLOADS ----------------------------------------------------------- """
+
+
+@method_decorator(staff_required_decorator, name='dispatch')
+class SeasonEpisodeMediaUpdate(TemplateView):
+    template_name = 'admins/season_episode_media_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['episode'] = get_object_or_404(Episode, pk=self.kwargs.get('pk'))
+        return context
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class SaveFileAPIView(View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        file_url = data.get('file_url')
+        episode_id = data.get('episode_id')
+        video_file_name = data.get('file_name')
+        episode = get_object_or_404(Episode, pk=episode_id)
+        episode.video_file_name = video_file_name
+        episode.video_file = file_url
+        episode.is_active = True
+        episode.save()
+        return JsonResponse({'status': 'success', 'message': 'File URL saved successfully.'})

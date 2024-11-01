@@ -7,30 +7,45 @@
 {% block subtitle %} {{ request.user }} {% endblock %}
 
 {% block content %}
-<div class="row justify-content-between">
-    <div class="col-6 col-md-4 p-2 mt-2">
-        <form method="get">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control " placeholder="Enter Tag Name"
-                       id="id_tag" name="name" aria-describedby="search-button">
-                <button class="btn btn-secondary" type="submit" id="search-button">
-                    <i class="fas fa-search"></i>
-                </button>
-                <a href="{% url 'admins:tag-list' %}" class="btn btn-danger ml-2" id="clear-button">
-                    <i class="fas fa-brush"></i>
-                </a>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="mb-0 font-size-24">
+                            Tag Management
+                        </p>
+                    </div>
+                    <div class="col-sm-6 text-right">
 
+                        <button type="button" class="btn btn-primary mb-1"
+                                onclick="window.location.href='{% url 'admins:tag-create' %}'">
+                          <i class="fa fa-plus"></i>   Add Tag
+                        </button>
+
+                    </div>
+                </div>
 
             </div>
-        </form>
+        </div>
     </div>
-    <div class="col-4 mt-0 pt-0 mb-2 d-flex align-items-center justify-content-end">
-        <button type="button" class="btn btn-primary mb-1"
-                onclick="window.location.href='{% url 'admins:tag-create' %}'">
-            Add Tag
-        </button>
+    <div class="row justify-content-between">
+        <div class="col-12 col-md-12 p-2 mt-2">
+            <form method="get">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control " placeholder="Enter Tag Name"
+                           id="id_name"
+                           value="{% if tag_filter_form.name.value %}{{ tag_filter_form.name.value }}{% endif %}"
+                           name="name">
+                    <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
+                    <a class="btn btn-danger" href="{% url 'admins:tag-list' %}">
+                        <i class="fas fa-brush"></i>
+                    </a>
+                </div>
+
+            </form>
+        </div>
     </div>
-</div>
 
 <div class="row">
     <div class="col-12">
@@ -42,10 +57,10 @@
                     <tr>
                         <th>
                             #
-                        </th>  <!-- New column for Primary Key -->
+                        </th>
                         <th>Tag Name</th>
-                        <th>Slug</th>  <!-- New column for Slug -->
-                        <th>Created At</th>  <!-- New column for Creation Date -->
+                        <th>Slug</th>
+                        <th>Created At</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -53,14 +68,14 @@
 
                     {% for object in object_list %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>  <!-- Display Primary Key -->
+                        <td>{{ forloop.counter }}</td>
                         <td>
                             <a href="{% url 'admins:tag-update' object.pk %}">
                                 {{ object.name }}
                             </a>
                         </td>
-                        <td>{{ object.slug }}</td>  <!-- Display Slug -->
-                        <td>{{ object.created_at|date:"Y-m-d H:i:s" }}</td>  <!-- Display Creation Date -->
+                        <td>{{ object.slug }}</td>
+                        <td>{{ object.created_at|date:"Y-m-d H:i:s" }}</td>
                         <th>
                             <a href="{% url 'admins:tag-update' object.pk %}">
                                 <i class="fa fa-edit"></i>

@@ -12755,7 +12755,7 @@
   	_initContainer: function () {
   		this._container = create$2('svg');
 
-  		// makes it possible to click through svg root; we'll reset it back in individual paths
+  		// makes it possible to click through svg core; we'll reset it back in individual paths
   		this._container.setAttribute('pointer-events', 'none');
 
   		this._rootGroup = create$2('g');

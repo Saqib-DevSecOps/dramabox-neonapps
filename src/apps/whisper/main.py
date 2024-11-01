@@ -7,7 +7,7 @@ from notifications.signals import notify
 import mailchimp_transactional as MailchimpTransactional
 from mailchimp_transactional.api_client import ApiClientError
 
-from root.settings import EMAIL_HOST_USER, MAILCHIMP_FROM_EMAIL, MAILCHIMP_API_KEY
+from core.settings import EMAIL_HOST_USER, MAILCHIMP_FROM_EMAIL, MAILCHIMP_API_KEY
 from src.apps.whisper.models import EmailNotification
 
 

@@ -78,7 +78,7 @@
         do {
             c = elem.css(css).toLowerCase();
             // keep going until we find an element that has color, or
-            // we hit the body or root (have no parent)
+            // we hit the body or core (have no parent)
             if (c != '' && c != 'transparent')
                 break;
             elem = elem.parent();

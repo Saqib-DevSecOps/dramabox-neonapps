@@ -137,7 +137,6 @@ class DramaSeries(models.Model):
 
     trending_threshold = models.PositiveIntegerField(default=100, help_text="Minimum views to be considered trending.")
 
-
     created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the drama series was added.")
     updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the drama series was last updated.")
 
@@ -272,10 +271,12 @@ class Episode(models.Model):
     description = models.TextField(blank=True, null=True, help_text="Detailed description of the episode.")
     release_date = models.DateField(help_text="Release date of the episode.")
     duration = models.DurationField(help_text="Duration of the episode (hh:mm:ss).")
-    video_file = models.FileField(upload_to='dramas/episodes/', help_text="Video file of the episode.")
+    video_file_name = models.CharField(max_length=255, blank=True, null=True)
+    video_file = models.URLField(null=True, blank=False, help_text="Video file of the episode.")
     is_free = models.BooleanField(default=False, help_text="Mark if the episode is free to watch.")
     view_count = models.PositiveIntegerField(default=0, help_text="Number of views the episode has received.")
 
+    is_active = models.BooleanField(default=False, help_text="Mark if the episode is active.")
     created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the episode was added.")
     updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the episode was last updated.")
 

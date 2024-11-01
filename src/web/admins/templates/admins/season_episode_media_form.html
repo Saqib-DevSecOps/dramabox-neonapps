@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+
+{% block subtitle %} {{ request.user }} {% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h1>Update Media File</h1>
+        <div class="mt-2">
+            <a href="{% url 'admins:drama-list' %}" class="mt-2 btn btn-sm btn-secondary">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i> Back to List
+            </a>
+        </div>
+        <div class="row justify-content-center mt-4">
+            <div class="col-12 col-sm-12">
+                <div class="card shadow-lg">
+                    <div class="card-body">
+                        <div class="progress mt-3 mb-2">
+                            <div id="progressBar"
+                                 class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+                                 role="progressbar" style="width: 0%"
+                                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%
+                            </div>
+                        </div>
+
+                        <form method="post" enctype="multipart/form-data" novalidate>
+                            {% csrf_token %}
+                            <div>
+                                <label for="id_video_file">File:</label>
+                                <input type="file" name="file" required="" id="id_video_file">
+                            </div>
+
+                            <div class="mt-2">
+                                <h5 id="message-status"></h5>
+                            </div>
+                            <button type="button" id="submitBtn" class="mt-1 btn btn-primary">Confirm</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Axios and AWS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1112.0.min.js"></script>
+    <script>
+        // Configure AWS SDK
+        AWS.config.update({
+            accessKeyId: 'AKIAZJF4BO4LKEG2EHSR', // Your Access Key ID
+            secretAccessKey: '/zWpWeyxn14XSAqWOSl0BKfAxgI/vkUdP/Q48HRl', // Your Secret Access Key
+            region: 'us-east-1' // e.g., 'us-east-1'
+        });
+
+        const s3 = new AWS.S3();
+        let submitting = false;
+        let file = null;
+
+        function setIsSubmitting(val) {
+            submitting = val;
+        }
+
+        function setFile(val) {
+            file = val;
+        }
+
+        function _(el) {
+            return document.getElementById(el);
+        }
+
+        // Set up event listener for file selection
+        _("id_video_file").addEventListener("change", event => {
+            setFile(event.target.files[0]);
+        });
+
+        // Prevent form reload on button click
+        _("submitBtn").addEventListener("click", event => {
+            event.preventDefault(); // Prevent default form submission
+            handleSubmit(event);
+            _("submitBtn").disabled = true;
+        });
+
+        const handleSubmit = async event => {
+            event.preventDefault(); // Prevent form submission
+
+            setIsSubmitting(true);
+
+            try {
+                // Get the signed URL and upload file
+                const signedUrl = await getSignedUrl();
+                console.log("Signed URL: ", signedUrl);
+                await uploadFile(signedUrl);
+            } catch (err) {
+                setIsSubmitting(false);
+                console.error("Error during upload process:", err);
+                alert('There was an error uploading your file. Please check the console for more details.');
+                _("submitBtn").disabled = false;
+                throw err;
+            }
+
+            setIsSubmitting(false);
+        };
+
+        const getSignedUrl = async () => {
+            const params = {
+                Bucket: 'dramaboxbucket/{{ episode.season.series }}/{{ episode.season }}', // Replace with your bucket name
+                Key: file.name,              // The file name you want to save as
+                ContentType: file.type,      // The file type
+                Expires: 60                   // URL expiration time in seconds
+            };
+
+            return new Promise((resolve, reject) => {
+                s3.getSignedUrl('putObject', params, (err, url) => {
+                    if (err) {
+                        console.error("Error getting signed URL:", err);
+                        reject(err);
+                    } else {
+                        resolve(url);
+                    }
+                });
+            });
+        };
+        const uploadFile = async (signedUrl) => {
+            const config = {
+                headers: {
+                    'Content-Type': file.type,
+                },
+                onUploadProgress: progressEvent => {
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                    const progressBar = _("progressBar");
+                    progressBar.style.width = `${percentCompleted}%`;
+                    progressBar.setAttribute("aria-valuenow", percentCompleted);
+                    progressBar.innerText = `${percentCompleted}%`;
+                    _("message-status").innerHTML = `${percentCompleted}% uploaded... please wait`;
+                }
+            };
+
+            try {
+                // Upload the file to S3 using the signed URL
+                await axios.put(signedUrl, file, config);
+                _("message-status").innerHTML = "Upload Complete";
+                _("progressBar").style.width = "0%";
+                _("progressBar").innerText = "0%";
+
+                // Save the S3 URL and file name to the model
+                const fileUrl = signedUrl.split('?')[0]; // Get the URL without query params
+                await saveFileUrlToModel(fileUrl, file.name); // Pass the file name here
+
+                _("submitBtn").disabled = false;
+            } catch (error) {
+                console.error("Upload error:", error.response || error.message);
+                _("message-status").innerHTML = "Upload Failed: " + (error.response?.data?.error || error.message);
+                _("submitBtn").disabled = false;
+                throw new Error("Upload Failed");
+            }
+        };
+
+        // Function to save the file URL and file name in the Django model
+        const saveFileUrlToModel = async (fileUrl, fileName) => {  // Add fileName parameter
+            try {
+                await axios.post("{% url 'admins:save-file' %}", {
+                    file_url: fileUrl,
+                    file_name: fileName,  // Send the file name
+                    episode_id: "{{ episode.pk }}"  // Pass the episode ID
+                });
+                _("message-status").innerHTML += "<br>File URL and name saved to model.";
+                location.href = "{% url 'admins:season-episode-list' episode.season.series.slug episode.season.pk %}";
+            } catch (error) {
+                console.error("Error saving file URL to model:", error);
+                _("message-status").innerHTML += "<br>Failed to save file URL to model.";
+                throw error;
+            }
+        };
+
+    </script>
+{% endblock content %}

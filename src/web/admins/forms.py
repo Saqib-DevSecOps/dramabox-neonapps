@@ -1,5 +1,5 @@
 from django import forms
-from src.services.drama.models import Tag, Language, Category, Season
+from src.services.drama.models import Tag, Language, Category, Season, Episode
 
 
 class DramaSeriesTagForm(forms.Form):
@@ -19,6 +19,7 @@ class DramaSeriesLanguageForm(forms.Form):
         label="Select Languages to Link"
     )
 
+
 class DramaSeriesCategoryForm(forms.Form):
     categories = forms.ModelMultipleChoiceField(
         queryset=Category.objects.all(),
@@ -28,12 +29,25 @@ class DramaSeriesCategoryForm(forms.Form):
     )
 
 
-
 class SeasonForm(forms.ModelForm):
     release_date = forms.DateField(
         widget=forms.DateInput(attrs={'type': 'date'}),
         help_text="Select the release date of this season."
     )
+
     class Meta:
         model = Season
         fields = ['season_number', 'release_date', 'description']
+
+
+class EpisodeForm(forms.ModelForm):
+    release_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        help_text="Select the release date of this episode."
+    )
+
+    class Meta:
+        model = Episode
+        fields = ['title', 'description', 'episode_number', 'release_date',
+                  'duration', 'is_free',
+                  ]

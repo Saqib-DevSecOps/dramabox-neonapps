@@ -6,10 +6,9 @@
 {% block subtitle %} {{ request.user }} {% endblock %}
 
 {% block content %}
-
     <div class="row">
         <div class="col-sm-3">
-            <div class="card mini-stats-wid">
+            <div class="card shadow-lg rounded-lgmini-stats-wid">
                 <div class="card-body">
                     <div class="media">
                         <div class="mr-3 align-self-center">
@@ -26,7 +25,7 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <div class="card mini-stats-wid">
+            <div class="card shadow-lg rounded-lgmini-stats-wid">
                 <div class="card-body">
                     <div class="media">
                         <div class="mr-3 align-self-center">
@@ -44,7 +43,7 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <div class="card mini-stats-wid">
+            <div class="card shadow-lg rounded-lgmini-stats-wid">
                 <div class="card-body">
                     <div class="media">
                         <div class="mr-3 align-self-center">
@@ -62,7 +61,7 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <div class="card mini-stats-wid">
+            <div class="card shadow-lg rounded-lgmini-stats-wid">
                 <div class="card-body">
                     <div class="media">
                         <div class="mr-3 align-self-center">
@@ -79,30 +78,8 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title mb-3">2022 Statistics</h4>
-                    <div id="chart_year_months">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title mb-3">2022 Registrations</h4>
-                    <div id="chart_year_months_registrations">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
         <div class="col-xl-4">
-            <div class="card">
+            <div class="card shadow-lg rounded-lg">
                 <div class="card-body">
                     <h4 class="card-title mb-4">Today's Record</h4>
 
@@ -168,7 +145,7 @@
             </div>
         </div>
         <div class="col-xl-4">
-            <div class="card">
+            <div class="card shadow-lg rounded-lg">
                 <div class="card-body">
                     <h4 class="card-title mb-4">Yesterday's Record</h4>
 
@@ -234,7 +211,7 @@
             </div>
         </div>
         <div class="col-xl-4">
-            <div class="card">
+            <div class="card shadow-lg rounded-lg">
                 <div class="card-body">
                     <h4 class="card-title mb-4">Month Record</h4>
 
@@ -300,8 +277,8 @@
             </div>
         </div>
 
-        <div class="col-12">
-            <div class="card">
+        <div class="col-6">
+            <div class="card shadow-lg rounded-lg">
                 <div class="card-body">
                     <h4 class="card-title mb-3">Month Statistics</h4>
                     <div id="chart_month_dates">
@@ -309,8 +286,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-12">
-            <div class="card">
+        <div class="col-6">
+            <div class="card shadow-lg rounded-lg">
                 <div class="card-body">
                     <h4 class="card-title mb-3">Month Registrations</h4>
                     <div id="chart_month_days_registrations">
@@ -319,6 +296,30 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+
+
+        <div class="col-6">
+            <div class="card shadow-lg rounded-lg">
+                <div class="card-body">
+                    <h4 class="card-title mb-3">2022 Statistics</h4>
+                    <div id="chart_year_months">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-3">2022 Registrations</h4>
+                    <div id="chart_year_months_registrations">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
 
 {% endblock %}
 

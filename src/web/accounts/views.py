@@ -19,16 +19,17 @@ class LogoutView(View):
 class CrossAuthView(View):
     def get(self, request):
 
-        if not request.user.is_authenticated:
-            return redirect('account_login')
+        # 1: check if user is staff or something
+        user = request.user
+
+        if not user.is_authenticated:
+            return redirect("account_login")
 
         if request.user.is_staff:
-            return redirect('admins:dashboard')
-
-        if request.user.is_superuser:
-            return redirect('/admin/')
-
-        return redirect('/')
+            return redirect('/dashboard/')
+        messages.error(self.request, 'You are not authorized to access this page')
+        logout(request)
+        return redirect('website:home')
 
 
 

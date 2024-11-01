@@ -62,7 +62,7 @@ class DirectorFilter(django_filters.FilterSet):
 
 
 class ContentRatingFilter(django_filters.FilterSet):
-    name = django_filters.CharFilter(widget=TextInput(attrs={'placeholder': 'Enter Content Rating'}),
+    code = django_filters.CharFilter(widget=TextInput(attrs={'placeholder': 'Enter Content Rating'}),
                                      lookup_expr='icontains')
 
     class Meta:

@@ -17,3 +17,27 @@ def relative_url(value, field_name, urlencode=None):
 @register.filter
 def get_item(dictionary, key):
     return dictionary.get(key)
+
+
+@register.filter
+def alert_type_class(value):
+    if value in ['cod', 'delivery', 'in_transit', 'bank_account', "MANAGER", "trialing", 'new']:
+        return 'primary'
+    if value in ['cod', 'delivery', 'in_transit', 'bank_account', "CASHIER", "incomplete", "incomplete_expired",
+                 'closed']:
+        return 'info'
+    elif value in ['completed', 'success', 'approved', 'paid', 'card', "OWNER", "active", "sent", 'resolved']:
+        return 'success'
+    elif value in ['pending', "STAFF", "ADMIN", "past_due", "pause", 'in_progress']:
+        return 'warning'
+    elif value in ['online', 'cancel', 'cancelled', 'unpaid', 'failed', "ROOT", "failed"]:
+        return 'danger'
+    else:
+        return 'secondary'
+
+
+@register.filter
+def check_null(value):
+    if value:
+        return value
+    return "-"

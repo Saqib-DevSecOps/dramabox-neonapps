@@ -30,3 +30,5 @@ mailchimp_transactional
 django-notifications-hq
 fido2
 django-jazzmin
+django-storages
+boto3

@@ -6,8 +6,30 @@
 {% block subtitle %} {{ request.user }} {% endblock %}
 
 {% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="mb-0 font-size-24">
+                            Drama Series Management
+                        </p>
+                    </div>
+                    <div class="col-sm-6 text-right">
+
+                        <button type="button" class="btn btn-primary mb-1"
+                                onclick="window.location.href='{% url 'admins:drama-create' %}'">
+                            <i class="fa fa-plus"></i> Add Drama
+                        </button>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <div class="row justify-content-between">
-        <div class="col-6 col-md-4 p-2 mt-2">
+        <div class="col-12 col-md-12 p-2 mt-2">
             <form method="get">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control " placeholder="Enter Drama Series Title"
@@ -21,12 +43,6 @@
                 </div>
 
             </form>
-        </div>
-        <div class="col-4 mt-0 pt-0 mb-2 d-flex align-items-center justify-content-end">
-            <button type="button" class="btn btn-primary mb-1"
-                    onclick="window.location.href='{% url 'admins:drama-create' %}'">
-                Add Drama
-            </button>
         </div>
     </div>
     <div class="row">

@@ -25,7 +25,7 @@ LOGIN_REDIRECT_URL = '/accounts/cross-auth/'
 GOOGLE_CALLBACK_ADDRESS = f"{BASE_URL}/accounts/google/login/callback/"
 APPLE_CALLBACK_ADDRESS = f"{BASE_URL}/accounts/apple/login/callback/"
 
-ROOT_URLCONF = 'root.urls'
+ROOT_URLCONF = 'core.urls'
 AUTH_USER_MODEL = 'users.User'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -131,7 +131,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'root.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 if ENVIRONMENT == 'server':
     DATABASES = {
@@ -175,7 +175,7 @@ USE_L10N = True
 USE_TZ = True
 
 """ EMAIL CONFIGURATION --------------------------------------------------------------------------------"""
-EMAIL_BACKEND = 'django.root.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
@@ -214,6 +214,16 @@ ACCOUNT_USERNAME_REQUIRED = False
 OLD_PASSWORD_FIELD_ENABLED = True
 LOGOUT_ON_PASSWORD_CHANGE = False
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+""" S3 BUCKET SETUP --------------------------------------------------------------------------------"""
+
+AWS_USERNAME="programatic_user"
+AWS_ACCESS_KEY_ID = "AKIAZJF4BO4LKEG2EHSR"
+AWS_SECRET_ACCESS_KEY = "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"
+AWS_STORAGE_BUCKET_NAME = "dramaboxbucket"
+AWS_S3_REGION_NAME = "us-east-1"
+AWS_S3_ENDPOINT_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+
 
 """ DEBUGGING TOOLS """
 

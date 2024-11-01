@@ -3,7 +3,7 @@ from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from django.views.static import serve
 
-from root.settings import ENVIRONMENT, MEDIA_ROOT, STATIC_ROOT
+from core.settings import ENVIRONMENT, MEDIA_ROOT, STATIC_ROOT
 from src.core.handlers import (
     handler404, handler500
 )

@@ -1,8 +1,9 @@
 from django.urls import path
 
+from src.web.accounts.views import InActiveView
 
 disabled_all_auth_url_patterns = [
-    # path('accounts/signup/', InActiveView.as_view(), name='account_signup'),
+    path('accounts/signup/', InActiveView.as_view(), name='account_signup'),
     # path('accounts/reauthenticate/', InActiveView.as_view(), name='account_signup'),
     # path('accounts/3rdparty/', InActiveView.as_view(), name='account_signup'),
     # path('accounts/login/', InActiveView.as_view(), name='account_login'),

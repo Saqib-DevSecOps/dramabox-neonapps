@@ -1,4 +1,5 @@
 import django_filters
+from django import forms
 
 from src.apps.whisper.models import EmailNotification
 
@@ -10,3 +11,5 @@ class EmailNotificationFilter(django_filters.FilterSet):
     class Meta:
         model = EmailNotification
         fields = ['recipient', 'status']
+
+
