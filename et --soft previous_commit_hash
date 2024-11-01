@@ -1,0 +1,287 @@
+[33mcommit b78d58e146f1de2cb079ac8c619e8eb5b00638d1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Fri Nov 1 20:11:36 2024 +0500
+
+    Remove sensitive information from code
+
+[33mcommit 29341b746b18c79d82d84c825c80fbbefcf19216[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Mon Oct 28 21:03:49 2024 +0500
+
+    DEsign : Update on Drama series detail page
+
+[33mcommit a98a63f769c4ebc06ea569f3a3577abe8c642d9c[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Mon Oct 28 19:57:09 2024 +0500
+
+    Feat:ADministration Updated
+
+[33mcommit 7201b72c0be617c0d499ed63932eb7c88900339a[m
+Merge: 8e7697a 9c753cf
+Author: Code with Skay <99408199+Saqib-DevSecOps@users.noreply.github.com>
+Date:   Thu Oct 24 14:27:55 2024 +0500
+
+    Merge pull request #8 from IkramKhan-DevOps/hesham
+    
+    Design update in Admin panel
+
+[33mcommit 9c753cfa20e763009a4fdc77c96b212531d2eeb2[m
+Author: hesham <hesham.fractured@gmail.com>
+Date:   Thu Oct 24 00:51:49 2024 +0500
+
+    UI/UX
+
+[33mcommit 8e7697a8fe617c91e3a55dddaf26c413808afec0[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Wed Oct 23 20:35:05 2024 +0500
+
+    Filter: Search Filter update with icontains field
+
+[33mcommit d53ded82b542c7e2b7f2b1c0c281b9ed094b353b[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Wed Oct 23 20:15:41 2024 +0500
+
+    Feat:Static method added on filters
+
+[33mcommit dfffbbac7c4b317b470fa306ab52a601867bea51[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Wed Oct 23 20:04:07 2024 +0500
+
+    API: Filter added for tending , popular , featured etc
+
+[33mcommit fa5fa5474028c930cce7ade3b942ce3c6d2ce61c[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Wed Oct 23 19:38:10 2024 +0500
+
+    API: Total Episode Field added on api
+
+[33mcommit 99cb85e28bf2a7c09b6e0767ca3bea6d7bce98c1[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Wed Oct 23 18:45:32 2024 +0500
+
+    API: Helper APi Implemented for Category and Tags
+
+[33mcommit c34e82e18bb7c56c8a7b4e5ee67ae3a953adc1e7[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Wed Oct 23 18:38:10 2024 +0500
+
+    Slug field removed from restapi
+
+[33mcommit b6e8a72ff0052cc541f04b34aad348f4040e9130[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Wed Oct 23 16:17:26 2024 +0500
+
+    API ISSUE: Drama Series detail api issue resolved
+
+[33mcommit afe8cec0107b8e2e2eef53b0f18337b5ffdd6579[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Wed Oct 23 15:59:30 2024 +0500
+
+    HOMEAPI:HOme api Episode serializer updated
+
+[33mcommit 6076102d66b8d838c1d284e9000b17bab3678977[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Wed Oct 23 15:47:53 2024 +0500
+
+    Api:Api additional data and logic change for home api
+
+[33mcommit 423cf4321f2565a080e7461ce2fbd996e730d2a5[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Wed Oct 23 14:53:26 2024 +0500
+
+    Design:Update on admin portal list
+
+[33mcommit 73e07fc631601daa68ea5fef434154fe05e3a7f7[m[33m ([m[1;32msaqib-dev[m[33m)[m
+Merge: 8609ee3 3ecf620
+Author: Muhammad Hesham <hesham.fractured@gmail.com>
+Date:   Tue Oct 22 20:12:51 2024 +0500
+
+    Merge pull request #7 from IkramKhan-DevOps/saqib-dev
+    
+    Design: Update on drama list
+
+[33mcommit 3ecf620a157c0824e2d925a3704b2fdff2ecc5d4[m[33m ([m[1;31morigin/saqib-dev[m[33m)[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Tue Oct 22 20:01:03 2024 +0500
+
+    Design:Update on drama list
+
+[33mcommit 8609ee3dd29f927a0c957992e65855ed91c74ecd[m
+Merge: 1e32cf8 ebe0c67
+Author: Muhammad Hesham <hesham.fractured@gmail.com>
+Date:   Mon Oct 21 21:10:09 2024 +0500
+
+    Merge pull request #6 from IkramKhan-DevOps/hesham
+    
+    Design Bugs & Forms widget
+
+[33mcommit ebe0c676cf9d3bcaf69496d9ab0632d8347f8bd7[m[33m ([m[1;31morigin/hesham[m[33m)[m
+Author: hesham <hesham.fractured@gmail.com>
+Date:   Mon Oct 21 21:11:47 2024 +0500
+
+    Design Bugs & Forms widget
+
+[33mcommit 1e32cf85883655d4c19a690def8f7923d5b2d57a[m
+Merge: 75a7bf0 82c936b
+Author: Code with Skay <99408199+Saqib-DevSecOps@users.noreply.github.com>
+Date:   Mon Oct 21 20:36:00 2024 +0500
+
+    Merge pull request #5 from IkramKhan-DevOps/saqib-dev
+    
+    Design:  Some change made on design admin portal
+
+[33mcommit 82c936bbb7dde023b3b818267d222f4a7fc67642[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Mon Oct 21 20:26:01 2024 +0500
+
+    Design:  Some change made on design admin portal
+
+[33mcommit 75a7bf077973cefbceb99c1400ea7e4c8dcfc9c4[m
+Merge: d019861 b8c8ef7
+Author: Muhammad Hesham <hesham.fractured@gmail.com>
+Date:   Mon Oct 21 19:31:27 2024 +0500
+
+    Merge pull request #4 from IkramKhan-DevOps/hesham
+    
+    FEAT: Admin Section
+
+[33mcommit b8c8ef76f09dd3e43c45ea27b27068204b93cd5a[m
+Author: hesham <hesham.fractured@gmail.com>
+Date:   Sat Oct 19 21:58:30 2024 +0500
+
+    FEAT: Admin Section
+
+[33mcommit d019861110938f8fa1300df2495e2a770ce45aa8[m
+Merge: 4965825 dc03654
+Author: Ikram Khan <57677370+IkramKhan-DevOps@users.noreply.github.com>
+Date:   Thu Oct 17 15:29:55 2024 +0500
+
+    Merge pull request #3 from IkramKhan-DevOps/saqib-dev
+    
+    Configure app >> example env added and notification hq removed jazzmi…
+
+[33mcommit dc03654b1b5e06d65cc9c4f60cc987fafe9ed184[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Thu Oct 17 10:10:55 2024 +0500
+
+    Configure app >> example env added and notification hq removed jazzmin addded
+
+[33mcommit 4965825f5a88b57ec6f57bfbbe8429d739e69b13[m
+Merge: 503f114 c877885
+Author: Ikram Khan <57677370+IkramKhan-DevOps@users.noreply.github.com>
+Date:   Tue Oct 15 12:36:10 2024 +0500
+
+    Merge pull request #2 from IkramKhan-DevOps/saqib-dev
+    
+    website and backend dynamic portions with new theme added.
+
+[33mcommit c877885d5e7cb23d3037f4a7704315b5c09d73b8[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Tue Oct 15 01:08:02 2024 +0500
+
+    Design & Model: Changes made on website and Testimonal model added
+
+[33mcommit 2c588b1639028ddc161cdc096d9355e728482c94[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Mon Oct 14 20:40:28 2024 +0500
+
+    Design Update and Some Admin Pages Added and Rootadmin unused models removed
+
+[33mcommit 44e7779521a3da500e91d8acd8605e63d1fba529[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Sat Oct 12 20:12:19 2024 +0500
+
+    Api Added : LikeApi Added
+
+[33mcommit 29ba36bb0dd897f03dc155b5067c3ee0fea6bceb[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Sat Oct 12 19:47:21 2024 +0500
+
+    API : Review List and Review Create APi Created
+
+[33mcommit 6713617f17e41ef091f218b8c21cc5d98a61cc42[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Sat Oct 12 12:51:32 2024 +0500
+
+    Issue:APIS implemented on Service app now moved into api v1 app
+
+[33mcommit 503f114b6edbc79d6571c0b24f978a18f3b0ba95[m
+Merge: 6f27501 3eb9095
+Author: Code with Skay <99408199+Saqib-DevSecOps@users.noreply.github.com>
+Date:   Sat Oct 12 12:41:14 2024 +0500
+
+    Merge pull request #1 from IkramKhan-DevOps/saqib-dev
+    
+    New APIs Implemented and Updated previous apis
+
+[33mcommit 3eb9095fb912221a217dfa666949f2def214dce3[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Sat Oct 12 12:38:59 2024 +0500
+
+    API Update >> Comments added on Custom Auth APi and dupplication removed
+
+[33mcommit b2bf01df9cb1f83fa5945e1fd8beecfb2b2fb2c5[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Sat Oct 12 12:35:44 2024 +0500
+
+    API: APis Created For Home , DramaList Drama Detail
+
+[33mcommit 6f27501eedd865d3ef4dea540037f8384ac85b04[m
+Author: Ikram Khan <57677370+IkramKhan-DevOps@users.noreply.github.com>
+Date:   Fri Oct 11 23:05:31 2024 +0500
+
+    Update README.md
+
+[33mcommit 0f9ab978a1024396f48e5da70d722d8ac23d81b6[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Fri Oct 11 20:39:31 2024 +0500
+
+    Term and privacy Page added
+
+[33mcommit aec9e3cbe6f07f66db0108154f7b5727dedd9fff[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Fri Oct 11 19:48:16 2024 +0500
+
+    New Static Files added and website designed changed
+
+[33mcommit ae511cc734d6d042f82ebd5c9044fce9c1dd7921[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Fri Oct 11 18:32:03 2024 +0500
+
+    @property added on Dramaseries For Upcoming DramaSeries
+
+[33mcommit 580bbb852ede728237db229be086f1ae86375546[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Fri Oct 11 18:30:32 2024 +0500
+
+    Model Update: Drama Series attributes added >> featured and tredning
+
+[33mcommit 71b743768d2fb418c0b7a5fc1846d067b33ab6db[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Fri Oct 11 17:38:22 2024 +0500
+
+    Website: Pages Design >> home , About , Pricing , Contact Us
+
+[33mcommit 844662f78a94135d0e183d0ad1483abe8357f04d[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Fri Oct 11 15:38:00 2024 +0500
+
+    Models: Drama App ALl models are created
+
+[33mcommit b9b2dcfb25601a2e1a4848f0b72d0928daaba07d[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Fri Oct 11 15:27:49 2024 +0500
+
+    Website:Static Files added
+
+[33mcommit a38f3eaeec3f6753bf035fd6899fac09cebbed6b[m
+Author: Saqib-DevSecOp <saqibahmad778866@gmail.com>
+Date:   Tue Oct 8 19:37:58 2024 +0500
+
+    Boiler: LibBoiler Added to the System and Basic configurations done
+
+[33mcommit be85d3b20c2e5ec923ca5d31ce8b6dc7553e3906[m
+Author: Ikram Khan <57677370+IkramKhan-DevOps@users.noreply.github.com>
+Date:   Tue Oct 8 14:10:10 2024 +0500
+
+    Initial commit

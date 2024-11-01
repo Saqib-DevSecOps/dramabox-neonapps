@@ -27,6 +27,7 @@
                             <th scope="col">View Count</th>
                             <th scope="col">Is Free</th>
                             <th scope="col">Is Active</th>
+                            <th scope="col">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -48,10 +49,13 @@
 
                                 <td>
                                     {% if not episode.is_active %}
-                                        <a href="{% url 'admins:episode-media-update' season.pk episode.pk %}" class="btn btn-sm btn-success">Add Media</a>
+                                        <a href="{% url 'admins:episode-media-update' season.pk episode.pk %}"
+                                           ><i class="fa fa-upload"></i></a>
                                     {% endif %}
-                                    <a href="{% url 'admins:episode-update' season.pk episode.pk %}" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
-                                    <a href="{% url 'admins:episode-delete' season.pk episode.pk %}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                                    <a href="{% url 'admins:episode-update' season.pk episode.pk %}"
+                                       ><i class="fa fa-edit"></i></a>
+                                    <a href="{% url 'admins:episode-delete' season.pk episode.pk %}"
+                                       ><i class="fa fa-trash text-danger"></i></a>
                                 </td>
                             </tr>
                         {% empty %}
