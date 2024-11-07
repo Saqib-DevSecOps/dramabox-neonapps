@@ -2,7 +2,6 @@ from django.core.mail import send_mail
 from django.db.models import F
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from notifications.signals import notify
 
 import mailchimp_transactional as MailchimpTransactional
 from mailchimp_transactional.api_client import ApiClientError
@@ -92,8 +91,9 @@ class NotificationService:
                 self.update_notification_record(self.email_id, 'failed', error_message=error.text)
 
     def send_app_notification(self):
-        for user in self.recipient_list:
-            notify.send(self.obj, recipient=user, verb=self.heading, description=self.description, object=self.obj)
+        pass
+        # for user in self.recipient_list:
+        #     notify.send(self.obj, recipient=user, verb=self.heading, description=self.description, object=self.obj)
 
     def send_sms_notification(self):
         pass

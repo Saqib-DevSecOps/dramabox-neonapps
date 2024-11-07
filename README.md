@@ -120,7 +120,7 @@ The backend is protected against common attacks such as:
 git clone git@github.com:IkramKhan-DevOps/dramabox-neonapps.git
 cd dramabox-neonapps
 pip install -r requirements.txt
-python manage.py makemigrations core users content subscriptions
+python manage.py makemigrations core users drama whisper
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
