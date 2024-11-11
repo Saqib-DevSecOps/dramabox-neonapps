@@ -74,11 +74,11 @@
                                             </a>
                                         </td>
                                         <td>{{ object.slug }}</td>
-                                        <td>{{ object.created_at|date:"Y-m-d H:i:s" }}</td>
+                                        <td>{{ object.created_at }}</td>
                                         <th>
                                             <a href="{% url 'admins:tag-update' object.pk %}">
                                                 <i class="fa fa-edit"></i>
-                                            </a> &nbsp;
+                                            </a>
                                             <a href="{% url 'admins:tag-delete' object.pk %}" class="text-danger">
                                                 <i class="fa fa-trash"></i>
                                             </a>

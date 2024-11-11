@@ -20,6 +20,16 @@ def get_item(dictionary, key):
 
 
 @register.filter
+def image_or_placeholder(image, placeholder=None):
+    if image:
+        return image.url
+
+    if placeholder:
+        return f"https://placehold.co/{placeholder}"
+    return "https://placehold.co/100"
+
+
+@register.filter
 def alert_type_class(value):
     if value in ['cod', 'delivery', 'in_transit', 'bank_account', "MANAGER", "trialing", 'new']:
         return 'primary'

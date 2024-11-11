@@ -74,14 +74,12 @@
                                                         {{ object.name }}
                                                     </a>
                                                 </td>
-                                                <td>{{ object.date_of_birth|date:"Y/m/d" }}</td>
-                                                <!-- Display Date of Birth -->
-                                                <td>{{ object.created_at|date:"Y/m/d H:i:s" }}</td>
-                                                <!-- Display Creation Date -->
+                                                <td>{{ object.date_of_birth|check_null }}</td>
+                                                <td>{{ object.created_at }}</td>
                                                 <th>
                                                     <a href="{% url 'admins:actor-update' object.pk %}">
                                                         <i class="fa fa-edit"></i>
-                                                    </a> &nbsp;
+                                                    </a>
                                                     <a href="{% url 'admins:actor-delete' object.pk %}"
                                                        class="text-danger">
                                                         <i class="fa fa-trash"></i>

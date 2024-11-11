@@ -12,158 +12,146 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <p class="mb-0 font-size-24">
-                            Drama Series Management
+                            DRAMA SERIES
                         </p>
                     </div>
                     <div class="col-sm-6 text-right">
 
                         <button type="button" class="btn btn-primary mb-1"
                                 onclick="window.location.href='{% url 'admins:drama-create' %}'">
-                            <i class="fa fa-plus"></i> Add Drama
+                            <i class="fa fa-plus"></i> Start New Serial
                         </button>
 
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-    <div class="row justify-content-between">
-        <div class="col-12 col-md-12 p-2 mt-2">
-            <form method="get">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control " placeholder="Enter Drama Series Title"
-                           id="id_title"
-                           value="{% if drama_series_filter.title.value %}{{ drama_series_filter.title.value }}{% endif %}"
-                           name="title">
-                    <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
-                    <a class="btn btn-danger" href="{% url 'admins:drama-list' %}">
-                        <i class="fas fa-brush"></i>
-                    </a>
-                </div>
 
-            </form>
-        </div>
-    </div>
     <div class="row">
         <div class="col-12">
-            <div class="row">
-                {% if object_list %}
-                    {% for object in object_list %}
-                        <div class="col-xl-3 col-lg-4 col-sm-6">
-                            <div class="card shadow-lg rounded-lg">
-                                <div class="card-body">
-                                    <div class="d-flex">
-                                        <div class="flex-shrink-0 me-4">
-                                            <div class="avatar-md">
-                                                {% if object.poster_image %}
-                                                    <img src="{{ object.poster_image.url }}" alt="NO IMAGE"
-                                                         class="img-fluid rounded-circle object-fit-cover"
-                                                         style="width: 100%; height: 100%; aspect-ratio: 1/1; object-fit: cover;"/>
-                                                {% else %}
-                                                    <img src="{% static 'noimage.jpg' %}" alt="NO IMAGE"
-                                                         class="img-fluid rounded-circle object-fit-cover"
-                                                         style="width: 100%; height: 100%; aspect-ratio: 1/1; object-fit: cover;"/>
-                                                {% endif %}
-                                            </div>
-                                        </div>
 
-                                        <div class="flex-grow-1 overflow-hidden px-3">
-                                            <h5 class="text-truncate font-size-15"><a
-                                                    href="{% url 'admins:drama-detail' object.slug %}"
-                                                    class="text-dark">{{ object.title }}</a>
-                                            </h5>
-                                            <p class="text-muted mb-4">{{ object.description|slice:50 }}...</p>
+            <div class="card">
 
-                                        </div>
-                                    </div>
-                                </div>
+                {# FILTER #}
+                <div class="card-body border-bottom">
+                    <form method="get">
+                        <div class="input-group">
+                            <input type="text" class="form-control " placeholder="Enter Drama Series Title"
+                                   id="id_title"
+                                   value="
 
-                                <div class="row px-3">
-                                    <h6 class="px-3 pt-1">Tags:</h6>
-                                    {% for tag in object.drama_tags.all %}
-                                        <div>
-                                            <span class="badge bg-primary text-white">{{ tag.tag.name }}</span>&nbsp;&nbsp;
-                                        </div>
-                                    {% endfor %}
-                                </div>
 
-                                <div class="row px-3">
-                                    <h6 class="px-3 pt-1">Categories:</h6>
-                                    {% for cat in object.drama_category.all %}
-                                        <div>
-                                            <span class="badge bg-danger text-white">{{ cat.category.name }}</span>&nbsp;&nbsp;
-                                        </div>
-                                    {% endfor %}
-                                </div>
 
-                                <div class="row px-3">
-                                    <h6 class="px-3 pt-1">Cast:</h6>
-                                    {% if object.drama_cast.exists %}
-                                        {% for cast in object.drama_cast.all %}
-                                            <div class="avatar-group-item ms-1">
-                                                <a href="javascript: void(0);" class="d-inline-block">
-                                                    {% if cast.actor.profile_image %}
-                                                        <img src="{{ cast.actor.profile_image.url }}"
-                                                             alt="{{ cast.actor.name }}"
-                                                             class="rounded-circle avatar-xs">
-                                                    {% else %}
-                                                        <!-- Default image if actor has no profile image -->
-                                                        <img src="{% static 'noimage.jpg' %}" alt="No Image"
-                                                             class="rounded-circle avatar-xs">
-                                                    {% endif %}
+
+
+                                           {% if drama_series_filter.title.value %}{{ drama_series_filter.title.value }}{% endif %}"
+                                   name="title">&nbsp;
+                            <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>&nbsp;
+                            <a class="btn btn-danger" href="{% url 'admins:drama-list' %}">
+                                <i class="fas fa-brush"></i>
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+
+                {# CONTENT #}
+                <div class="card-body p-0">
+                    {% if object_list %}
+                        <div class="table-responsive">
+                            <table class="table align-middle table-nowrap mb-0">
+                                <tbody>
+                                <tr>
+                                    <th scope="col" colspan="2">Serial</th>
+                                    <th scope="col">Views</th>
+                                    <th scope="col">Search</th>
+                                    <th scope="col">Rating</th>
+                                    <th scope="col">Featured</th>
+                                    <th scope="col">-</th>
+                                </tr>
+                                </tbody>
+                                <tbody>
+
+                                {% for object in object_list %}
+                                    <tr>
+                                        <td style="width: 100px;">
+                                            <img src="https://placehold.co/50" alt="" height="50" width="50"
+                                                 class="h-auto d-block rounded">
+                                        </td>
+                                        <td>
+                                            <h5 class="font-size-13 text-truncate mb-1">
+                                                <a href="javascript: void(0);" class="text-dark">
+                                                    {{ object.title }}
                                                 </a>
-                                            </div>
-                                        {% endfor %}
-                                    {% else %}
-                                        <p>No cast members available</p>
-                                    {% endif %}
-                                </div>
-                                <div class=" py-3 ">
-                                    <ul class="mb-0">
-                                        {% if object.is_featured %}
-                                            <li class="list-inline-item me-3">
-                                                <span class="badge bg-success">Featured</span>
-                                            </li>
-                                        {% else %}
-                                            <li class="list-inline-item me-3">
-                                                <span class="badge bg-danger">Not Featured</span>
-                                            </li>
-                                        {% endif %}
-                                        <li class="list-inline-item me-3">
-                                            <i class="bx bx-calendar me-1"></i> {{ object.release_date|date:"Y-m-d" }}
-                                        </li>
-                                        <li class="list-inline-item me-3">
-                                            <i class="bx bx-low-vision me-1"></i> {{ object.drama_reviews.count }}
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="row mt-4 p-2 mt-2">
-                                    <div class="col-6">
-                                        <a href="{% url 'admins:drama-update' object.slug %}" data-bs-toggle="modal"
-                                           class="btn btn-warning w-100 ">Edit</a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a href="{% url 'admins:drama-detail' object.slug %}" data-bs-toggle="modal"
-                                           class="btn btn-danger w-100">Details</a>
-                                    </div>
+                                            </h5>
+                                            <p class="text-muted mb-0">{{ object.created_at }}</p>
+                                        </td>
+                                        <td>
+                                            <h5><i class="bx bxs-watch align-middle me-1 font-size-24"></i>
+                                                {{ object.view_count }}
+                                            </h5>
+                                        </td>
+                                        <td>
+                                            <h5><i class="bx bx-search align-middle me-1 font-size-24"></i>
+                                                {{ object.search_count }}
+                                            </h5>
+                                        </td>
+                                        <td>
+                                            <h5>
+                                                <i class="bx bx-star align-middle me-1 font-size-24"></i>
+                                                00 - (00)
+                                            </h5>
+                                        </td>
+                                        <td>
+                                            {% if object.is_featured %}
+                                                <p class="mb-0">
+                                                    <b class="text-success">FEATURED</b>
+                                                </p>
+                                                {% if object.featured_until %}
+                                                    <p class="mn-0 small">
+                                                        <b>{{ object.featured_until|check_null }}</b> (Features Until)
+                                                    </p>
+                                                {% endif %}
+                                            {% else %}
+                                                <p class="mb-0">
+                                                    <b class="text-danger">NOT-FEATURED</b>
+                                                </p>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <h5 class="mb-0">
+                                                <a href="{% url 'admins:drama-detail' object.slug %}">
+                                                    <i class="fa fa-eye"></i>
+                                                </a> |
+                                                <a href="{% url 'admins:drama-update' object.slug %}">
+                                                    <i class="fa fa-edit"></i>
+                                                </a> |
+                                                <a class="text-danger" href="{% url 'admins:drama-delete' object.slug %}">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </h5>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
 
-                                </div>
-
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="col-12 p-4">
+                            <div class="alert alert-danger" role="alert">
+                                <b>No serials available</b>
                             </div>
                         </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="col-12">
-                        <div class="alert alert-danger" role="alert">
-                            <b>No dramas available</b>
-                        </div>
-                    </div>
-                {% endif %}
+                    {% endif %}
+                </div>
+
             </div>
         </div>
     </div>
 
+    {# PAGINATOR #}
     <div class="row">
         <div class="col-md-12">
             <div class="mt-4">

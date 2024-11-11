@@ -2,38 +2,59 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% load humanize %}
+{% load core_tags %}
 
-{% block subtitle %} {{ request.user }} {% endblock %}
+{% block subtitle %} Actor Form {% endblock %}
 
 {% block content %}
-<div class="container">
-    {% if object %}
-    <h1>Update Actor</h1>
-    {% else %}
-    <h1>Create Actor</h1>
-    {% endif %}
-    <div class="mt-2">
-        <a href="{% url 'admins:actor-list' %}" class="mt-2 btn btn-sm btn-secondary"><i class="fa fa-arrow-left"
-                                                                                         aria-hidden="true"></i>
-            Back to Actors List</a>
-    </div>
-    <div class="row justify-content-center mt-4">
-        <div class="col-12 col-sm-12">
-            <div class="card shadow-lg">
-                <div class="card-body">
-                    <form method="post" novalidate>
-                        {% csrf_token %}
-                        {{ form.non_field_errors }}
-                        {{ form|crispy }}
+    <div class="container">
 
-                        <button type="submit" class="btn btn-primary">Confirm</button>
-                        <br>
-                    </form>
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p class="mb-0 font-size-24">
+                                Actor {% if object %}#{{ object }}{% else %}FORM{% endif %}
+                            </p>
+                        </div>
+                        <div class="col-sm-6 text-right">
+
+                            <button type="button" class="btn btn-primary mb-1"
+                                    onclick="window.location.href='{% url 'admins:actor-list' %}'">
+                                <i class="fa fa-arrow-left"></i> Back to Actors
+                            </button>
+
+                        </div>
+                    </div>
 
                 </div>
             </div>
         </div>
-    </div>
 
-</div>
+        <div class="row justify-content-center mt-4">
+            <div class="col-sm-8">
+                <div class="card shadow-lg">
+                    {% if object %}
+                        <div class="card-body border-bottom text-center">
+                            <img alt="poster-image" class="img-circle img-thumbnail"
+                                 height="150" width="150" src="{{ object.profile_image|image_or_placeholder:"150" }}">
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <form method="post" novalidate enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            {{ form|crispy }}
+
+                            <button type="submit" class="btn btn-primary">Confirm</button>
+                            <br>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 {% endblock %}

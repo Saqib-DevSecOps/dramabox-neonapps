@@ -459,8 +459,10 @@ class DramaSeriesListView(ListView):
 @method_decorator(staff_required_decorator, name='dispatch')
 class DramaSeriesCreateView(CreateView):
     model = DramaSeries
-    fields = ['title', 'description', 'release_date', 'director', 'rating', 'poster_image', 'trailer_url', 'slug',
-              'is_featured', 'featured_until', 'trending_threshold']
+    fields = ['poster_image', 'title', 'description',
+              'director', 'rating', 'trailer_url',
+              'featured_until', 'trending_threshold', 'release_date', 'is_featured'
+              ]
     template_name = 'admins/dramaseries_form.html'  # Update with your template path
     success_url = reverse_lazy('admins:drama-list')
 

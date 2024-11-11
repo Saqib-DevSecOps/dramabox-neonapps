@@ -3,26 +3,37 @@
 {% load crispy_forms_tags %}
 {% load humanize %}
 
-{% block subtitle %} {{ request.user }} {% endblock %}
+{% block subtitle %} Language Form {% endblock %}
 
 {% block content %}
-<div class="container">
-    {% if object %}
-    <h1>Update Language</h1>
-    {% else %}
-    <h1>Create Language</h1>
-    {% endif %}
+    <div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="mb-0 font-size-24">
+                            LANGUAGE {% if object %}#{{ object }}{% else %}FORM{% endif %}
+                        </p>
+                    </div>
+                    <div class="col-sm-6 text-right">
 
-     <div class="mt-2">
-        <a href="{% url 'admins:language-list' %}" class="mt-2 btn btn-sm btn-secondary"><i class="fa fa-arrow-left"
-                                                                                         aria-hidden="true"></i>
-            Back to List</a>
+                        <button type="button" class="btn btn-primary mb-1"
+                                onclick="window.location.href='{% url 'admins:language-list' %}'">
+                            <i class="fa fa-arrow-left"></i> Back to Languages
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
     <div class="row justify-content-center mt-4">
-        <div class="col-12 col-sm-12">
+        <div class="col-sm-8">
             <div class="card shadow-lg">
                 <div class="card-body">
-                    <form method="post" novalidate>
+                    <form method="post" novalidate enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form.non_field_errors }}
                         {{ form|crispy }}
@@ -34,5 +45,5 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>
 {% endblock %}
