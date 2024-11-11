@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 {% load humanize %}
 {% load core_tags %}
-{% block subtitle %} {{ request.user }} {% endblock %}
+{% block subtitle %} Drama Serials {% endblock %}
 
 {% block content %}
     <div class="row">
@@ -169,7 +169,7 @@
             <div class="mt-4">
                 <ul class="pagination">
                     {% if object_list.has_previous %}
-                        <li class="page-link rounded">
+                        <li>
                             <span>
                                 <a href="{% relative_url object_list.previous_page_number 'page' request.GET.urlencode %}">
                                     Previous
@@ -177,13 +177,11 @@
                             </span>
                         </li>
                     {% endif %}
-                    &nbsp;&nbsp;&nbsp;
-                    <li class="page-link rounded">
+                    <li class="">
                         <span>Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.</span>
                     </li>
-                    &nbsp;&nbsp;&nbsp;
                     {% if object_list.has_next %}
-                        <li class="page-link rounded">
+                        <li>
                             <span>
                                 <a href="{% relative_url object_list.next_page_number 'page' request.GET.urlencode %}">
                                     Next
@@ -195,5 +193,6 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
 

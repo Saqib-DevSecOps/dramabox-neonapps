@@ -3,168 +3,160 @@
 {% load core_tags %}
 
 {% block subtitle %}
-    Users List
+    Users
 {% endblock %}
 
 {% block content %}
 
-<div class="row">
-    <div class="col-12">
-        <div class="page-title-box">
-            <div class="row">
-                <div class="col-sm-6">
-                    <p class="mb-0 font-size-24">
-                        User Management
-                    </p>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="mb-0 font-size-24">
+                            USER MANAGEMENT
+                        </p>
+                    </div>
                 </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-<div class="row justify-content-between">
-    <div class="col-12 col-md-12 p-2 mt-2">
-        <form method="get">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control " placeholder="Enter Username Name"
-                       id="id_username"
-                       value="{% if user_filter_form.name.value %}{{ user_filter_form.username.value }}{% endif %}"
-                       name="username">
-                <input type="text" class="form-control " placeholder="Enter First Name"
-                       id="id_first_name"
-                       value="{% if user_filter_form.first_name.value %}{{ user_filter_form.first_name.value }}{% endif %}"
-                       name="first_name">
-                <input type="text" class="form-control " placeholder="Enter Last Name"
-                       id="id_last_name"
-                       value="{% if user_filter_form.last_name.value %}{{ user_filter_form.last_name.value }}{% endif %}"
-                       name="last_name">
-                <input type="text" class="form-control " placeholder="Enter Email"
-                       id="id_email"
-                       value="{% if user_filter_form.email.value %}{{ user_filter_form.email.value }}{% endif %}"
-                       name="email">
-                <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
-                <a class="btn btn-danger" href="{% url 'admins:language-list' %}">
-                    <i class="fas fa-brush"></i>
-                </a>
-            </div>
-
-        </form>
-    </div>
-</div>
-
-
-<div class="row">
-    <div class="col-md-12">
-        <div class="card shadow-lg rounded-lg">
-            <div class="card-body">
-
-
-                <div class="table-responsive">
-                    <table class="table table-borderless">
-                        <thead class="border-bottom">
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>
-                                User Type
-                            </th>
-                            <th>Is superuser</th>
-                            <th>Is staff</th>
-                            <th>Is active</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-
-                        {% for user in user_list %}
-                        <tr>
-                            <td>{{ user.pk }}</td>
-                            <td>{{ user.first_name }} {{ user.last_name }}</td>
-                            <td>{{ user.username }}</td>
-                            <td>{{ user.email }}</td>
-                            <td>{{ user.user_type }}</td>
-                            <td>
-                                {% if user.is_superuser %}
-                                    <b class="text-success"><i class="fa fa-check-circle"></i></b>
-
-                                {% else %}
-                                    <b class="text-danger"><i class="fa fa-times-circle"></i></b>
-
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if user.is_staff %}
-                                    <b class="text-success"><i class="fa fa-check-circle"></i></b>
-
-                                {% else %}
-                                    <b class="text-danger"><i class="fa fa-times-circle"></i></b>
-
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if user.is_active %}
-                                    <b class="text-success"><i class="fa fa-check-circle"></i></b>
-
-                                {% else %}
-                                    <b class="text-danger"><i class="fa fa-times-circle"></i></b>
-
-                                {% endif %}
-                            </td>
-
-                            <td>
-                                <a href="{% url 'admins:user-detail' user.pk %}"
-                                   class="text-decoration-none"><i
-                                        class="mdi mdi-eye icon-sm"></i> View
-                                </a>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <b>No users data available.</b>
-                        </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-
-
             </div>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="mt-4">
-            <ul class="pagination">
-                {% if user_list.has_previous %}
-                    <li>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-lg rounded-lg">
+                <div class="card-body border-bottom pb-0 mb-0">
+                    <form method="get">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control " placeholder="Enter Username Name"
+                                   id="id_username"
+                                   value="{% if user_filter_form.name.value %}{{ user_filter_form.username.value }}{% endif %}"
+                                   name="username">
+                            <input type="text" class="form-control " placeholder="Enter First Name"
+                                   id="id_first_name"
+                                   value="{% if user_filter_form.first_name.value %}{{ user_filter_form.first_name.value }}{% endif %}"
+                                   name="first_name">
+                            <input type="text" class="form-control " placeholder="Enter Last Name"
+                                   id="id_last_name"
+                                   value="{% if user_filter_form.last_name.value %}{{ user_filter_form.last_name.value }}{% endif %}"
+                                   name="last_name">
+                            <input type="text" class="form-control " placeholder="Enter Email"
+                                   id="id_email"
+                                   value="{% if user_filter_form.email.value %}{{ user_filter_form.email.value }}{% endif %}"
+                                   name="email">
+                            &nbsp;
+                            <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
+                            &nbsp;
+                            <a class="btn btn-danger" href="{% url 'admins:language-list' %}">
+                                <i class="fas fa-brush"></i>
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="card-body p-0">
+                    {% if user_list %}
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <thead class="border-bottom table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>
+                                        User Type
+                                    </th>
+                                    <th>Is superuser</th>
+                                    <th>Is staff</th>
+                                    <th>Is active</th>
+                                    <th>-</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {% for user in user_list %}
+                                    <tr>
+                                        <td>{{ user.pk }}</td>
+                                        <td>{{ user.first_name|check_null }} {{ user.last_name|check_null }}</td>
+                                        <td>{{ user.username }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td><b>{{ user.user_type }}</b></td>
+                                        <td>
+                                            {% if user.is_superuser %}
+                                                <b class="text-success"><i class="fa fa-check-circle"></i></b>
+                                            {% else %}
+                                                <b class="text-danger"><i class="fa fa-times-circle"></i></b>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if user.is_staff %}
+                                                <b class="text-success"><i class="fa fa-check-circle"></i></b>
+                                            {% else %}
+                                                <b class="text-danger"><i class="fa fa-times-circle"></i></b>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if user.is_active %}
+                                                <b class="text-success"><i class="fa fa-check-circle"></i></b>
+                                            {% else %}
+                                                <b class="text-danger"><i class="fa fa-times-circle"></i></b>
+                                            {% endif %}
+                                        </td>
+
+                                        <td>
+                                            <a href="{% url 'admins:user-detail' user.pk %}"
+                                               class="text-decoration-none"> <i class="mdi mdi-eye icon-sm"></i>
+                                                View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="m-4">
+                            <p class="mb-0 text-danger">
+                                <b>No users found.</b>
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mt-4">
+                <ul class="pagination">
+                    {% if user_list.has_previous %}
+                        <li>
                             <span>
                                 <a href="{% relative_url user_list.previous_page_number 'page' request.GET.urlencode %}">
                                     Previous
                                 </a>
                             </span>
+                        </li>
+                    {% endif %}
+                    <li class="">
+                        <span>Page {{ user_list.number }} of {{ user_list.paginator.num_pages }}.</span>
                     </li>
-                {% endif %}
-                <li class="">
-                    <span>Page {{ user_list.number }} of {{ user_list.paginator.num_pages }}.</span>
-                </li>
-                {% if user_list.has_next %}
-                    <li>
+                    {% if user_list.has_next %}
+                        <li>
                             <span>
                                 <a href="{% relative_url user_list.next_page_number 'page' request.GET.urlencode %}">
                                     Next
                                 </a>
                             </span>
-                    </li>
-                {% endif %}
-            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </div>
-</div>
 
 {% endblock %}
 

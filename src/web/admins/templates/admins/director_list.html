@@ -4,7 +4,7 @@
 {% load humanize %}
 {% load core_tags %}
 
-{% block subtitle %} {{ request.user }} {% endblock %}
+{% block subtitle %} Directors {% endblock %}
 
 {% block content %}
     <div class="row">
@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <p class="mb-0 font-size-24">
-                            Director Management
+                        DIRECTORS MANAGEMENT
                         </p>
                     </div>
                     <div class="col-sm-6 text-right">
@@ -37,7 +37,7 @@
                            id="id_name"
                            value="{% if director_filter_form.name.value %}{{ director_filter_form.name.value }}{% endif %}"
                            name="name">
-                    <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
+                    &nbsp;<button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>&nbsp;
                     <a class="btn btn-danger" href="{% url 'admins:director-list' %}">
                         <i class="fas fa-brush"></i>
                     </a>
@@ -57,10 +57,8 @@
                                     <thead class="thead-light">
                                     <tr>
                                         <th>PK</th>
-                                        <th>Profile Image</th>  <!-- New column for Profile Image -->
                                         <th>Name</th>
-                                        <th>Biography</th>
-                                        <th>Date of Birth</th>
+                                        <th>DOB</th>
                                         <th>Created At</th>
                                         <th>Action</th>
                                     </tr>
@@ -70,19 +68,10 @@
                                         <tr>
                                             <td>{{ object.pk }}</td>
                                             <td>
-                                                {% if object.profile_image %}
-                                                    <img src="{{ object.profile_image.url }}" alt="Profile Image"
-                                                         style="width: 30px; height: auto; border-radius: 50%;">
-                                                {% else %}
-                                                    <span>No Image</span>
-                                                {% endif %}
-                                            </td>
-                                            <td>
                                                 <a href="{% url 'admins:director-update' object.pk %}">
                                                     {{ object.name }}
                                                 </a>
                                             </td>
-                                            <td>{{ object.biography|truncatewords:10 }}</td>
                                             <td>{{ object.date_of_birth|date:"Y-m-d" }}</td>
                                             <td>{{ object.created_at|date:"Y-m-d H:i:s" }}</td>
                                             <th>
@@ -115,7 +104,7 @@
             <div class="mt-4">
                 <ul class="pagination">
                     {% if object_list.has_previous %}
-                        <li class="page-link rounded">
+                        <li>
                             <span>
                                 <a href="{% relative_url object_list.previous_page_number 'page' request.GET.urlencode %}">
                                     Previous
@@ -123,13 +112,11 @@
                             </span>
                         </li>
                     {% endif %}
-                    &nbsp;&nbsp;&nbsp;
-                    <li class="page-link rounded">
+                    <li class="">
                         <span>Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.</span>
                     </li>
-                    &nbsp;&nbsp;&nbsp;
                     {% if object_list.has_next %}
-                        <li class="page-link rounded">
+                        <li>
                             <span>
                                 <a href="{% relative_url object_list.next_page_number 'page' request.GET.urlencode %}">
                                     Next

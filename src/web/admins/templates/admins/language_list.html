@@ -4,7 +4,7 @@
 {% load humanize %}
 {% load core_tags %}
 
-{% block subtitle %} {{ request.user }} {% endblock %}
+{% block subtitle %} Languages {% endblock %}
 
 {% block content %}
 
@@ -38,7 +38,7 @@
                            id="id_name"
                            value="{% if language_filter_form.name.value %}{{ language_filter_form.name.value }}{% endif %}"
                            name="name">
-                    <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
+                    &nbsp;<button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>&nbsp;
                     <a class="btn btn-danger" href="{% url 'admins:language-list' %}">
                         <i class="fas fa-brush"></i>
                     </a>
@@ -61,7 +61,7 @@
                                         <th>Language Name</th>
                                         <th>Language Code</th>
                                         <th>Created At</th>
-                                        <th>Action</th>
+                                        <th>-</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -106,7 +106,7 @@
             <div class="mt-4">
                 <ul class="pagination">
                     {% if object_list.has_previous %}
-                        <li class="page-link rounded">
+                        <li>
                             <span>
                                 <a href="{% relative_url object_list.previous_page_number 'page' request.GET.urlencode %}">
                                     Previous
@@ -114,13 +114,11 @@
                             </span>
                         </li>
                     {% endif %}
-                    &nbsp;&nbsp;&nbsp;
-                    <li class="page-link rounded">
+                    <li class="">
                         <span>Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.</span>
                     </li>
-                    &nbsp;&nbsp;&nbsp;
                     {% if object_list.has_next %}
-                        <li class="page-link rounded">
+                        <li>
                             <span>
                                 <a href="{% relative_url object_list.next_page_number 'page' request.GET.urlencode %}">
                                     Next

@@ -4,11 +4,7 @@
 {% load core_tags %}
 
 {% block subtitle %}
-    Emails
-{% endblock %}
-
-{% block content_head_title %}
-    Email Management
+    Emails notifications
 {% endblock %}
 
 
@@ -19,7 +15,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <p class="mb-0 font-size-24">
-                            Emails Report
+                            EMAIL NOTIFICATIONS
                         </p>
                     </div>
 
@@ -28,58 +24,61 @@
             </div>
         </div>
     </div>
-    <div class="row justify-content-between">
-        <div class="col-12 col-md-12 p-2 mt-2">
-            <form method="get">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control " placeholder="Enter Recipient Name"
-                           id="id_recipient"
-                           value="{% if filter_form.recipient.value %}{{ filter_form.recipient.value }}{% endif %}"
-                           name="recipient">
-                    <select name="status" class="form-control" id="id_status">
-                        <
-                        <option value="" {% if filter_form.status.value == "" %}selected{% endif %}>---------</option>
-                        <option value="pending" {% if filter_form.status.value == "pending" %}selected{% endif %}>
-                            Pending
-                        </option>
-                        <option value="sent" {% if filter_form.status.value == "sent" %}selected{% endif %}>Sent
-                        </option>
-                        <option value="failed" {% if filter_form.status.value == "failed" %}selected{% endif %}>Failed
-                        </option>
-                        <option value="retry" {% if filter_form.status.value == "retry" %}selected{% endif %}>Retry
-                        </option>
-
-                    </select>
-                    <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
-                    <a class="btn btn-danger" href="{% url 'whisper:emailnotification-list' %}">
-                        <i class="fas fa-brush"></i>
-                    </a>
-                </div>
-
-            </form>
-        </div>
-    </div>
 
     <div class="row">
         <div class="col-md-12">
             <div class="card shadow-lg">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="thead-light">
-                        <tr>
-                            <th>ID</th>
-                            <th>Subject</th>
-                            <th>Recipient</th>
-                            <th>Status</th>
-                            <th>Failed Attempts</th>
-                            <th>Created at</th>
-                            <th>Active</th>
-                        </tr>
-                        </thead>
+                <div class="card-body mb-0 border-bottom">
+                    <form method="get">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control " placeholder="Enter Recipient Name"
+                                   id="id_recipient"
+                                   value="{% if filter_form.recipient.value %}{{ filter_form.recipient.value }}{% endif %}"
+                                   name="recipient">
+                            <select name="status" class="form-control" id="id_status">
+                                <
+                                <option value="" {% if filter_form.status.value == "" %}selected{% endif %}>---------
+                                </option>
+                                <option value="pending"
+                                        {% if filter_form.status.value == "pending" %}selected{% endif %}>
+                                    Pending
+                                </option>
+                                <option value="sent" {% if filter_form.status.value == "sent" %}selected{% endif %}>Sent
+                                </option>
+                                <option value="failed" {% if filter_form.status.value == "failed" %}selected{% endif %}>
+                                    Failed
+                                </option>
+                                <option value="retry" {% if filter_form.status.value == "retry" %}selected{% endif %}>
+                                    Retry
+                                </option>
 
-                        <tbody>
+                            </select>
+                            <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
+                            <a class="btn btn-danger" href="{% url 'whisper:emailnotification-list' %}">
+                                <i class="fas fa-brush"></i>
+                            </a>
+                        </div>
 
-                        {% for object in object_list %}
+                    </form>
+                </div>
+                {% if object_list %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Subject</th>
+                                <th>Recipient</th>
+                                <th>Status</th>
+                                <th>Failed Attempts</th>
+                                <th>Created at</th>
+                                <th>Active</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            {% for object in object_list %}
                             <tr>
                                 <td>{{ object.pk }}</td>
                                 <td>{{ object.subject }}</td>
@@ -120,14 +119,15 @@
                                     {% endif %}
                                 </td>
                             </tr>
-                        {% empty %}
-                            <tr>
-                                <td colspan="5" class="text-danger">No email found .</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="card-body">
+                        <p class="text-danger mb-0"><b>No objects available</b></p>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -137,7 +137,7 @@
             <div class="mt-4">
                 <ul class="pagination">
                     {% if object_list.has_previous %}
-                        <li class="page-link rounded">
+                        <li>
                             <span>
                                 <a href="{% relative_url object_list.previous_page_number 'page' request.GET.urlencode %}">
                                     Previous
@@ -145,13 +145,11 @@
                             </span>
                         </li>
                     {% endif %}
-                    &nbsp;&nbsp;&nbsp;
-                    <li class="page-link rounded">
+                    <li class="">
                         <span>Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.</span>
                     </li>
-                    &nbsp;&nbsp;&nbsp;
                     {% if object_list.has_next %}
-                        <li class="page-link rounded">
+                        <li>
                             <span>
                                 <a href="{% relative_url object_list.next_page_number 'page' request.GET.urlencode %}">
                                     Next
