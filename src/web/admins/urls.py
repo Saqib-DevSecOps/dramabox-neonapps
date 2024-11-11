@@ -35,9 +35,9 @@ urlpatterns += [
 
     path('drama-series/', DramaSeriesListView.as_view(), name='drama-list'),
     path('drama-series/create/', DramaSeriesCreateView.as_view(), name='drama-create'),
-    path('drama-series/delete/<slug:slug>/', DramaSeriesDeleteView.as_view(), name='drama-delete'),
-    path('drama-series/update/<slug:slug>/', DramaSeriesUpdateView.as_view(), name='drama-update'),
-    path('drama-series/<slug:slug>/', DramaSeriesDetailView.as_view(), name='drama-detail'),
+    path('drama-series/<int:pk>/delete/', DramaSeriesDeleteView.as_view(), name='drama-delete'),
+    path('drama-series/<int:pk>/update/', DramaSeriesUpdateView.as_view(), name='drama-update'),
+    path('drama-series/<int:pk>/', DramaSeriesDetailView.as_view(), name='drama-detail'),
 ]
 
 urlpatterns += [

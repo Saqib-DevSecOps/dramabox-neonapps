@@ -461,15 +461,18 @@ class DramaSeriesCreateView(CreateView):
     model = DramaSeries
     fields = ['poster_image', 'title', 'description',
               'director', 'rating', 'trailer_url',
-              'featured_until', 'trending_threshold', 'release_date', 'is_featured'
+              'release_date', 'is_featured', 'featured_until'
               ]
     template_name = 'admins/dramaseries_form.html'  # Update with your template path
-    success_url = reverse_lazy('admins:drama-list')
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.fields['release_date'].widget = forms.DateInput(attrs={'type': 'date'})
+        form.fields['featured_until'].widget = forms.DateInput(attrs={'type': 'date'})
         return form
+
+    def get_success_url(self):
+        return reverse('admins:drama-detail', kwargs={'slug': self.object.slug})
 
 
 @method_decorator(staff_required_decorator, name='dispatch')
