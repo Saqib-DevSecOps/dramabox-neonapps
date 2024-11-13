@@ -4,22 +4,36 @@
 {% load crispy_forms_tags %}
 {% load humanize %}
 
-{% block subtitle %} {{ request.user }} {% endblock %}
+{% block subtitle %} Episode Form {% endblock %}
 
 {% block content %}
     <div class="container">
-        {% if object %}
-            <h1>Update Drama Series</h1>
-        {% else %}
-            <h1>Create Series</h1>
-        {% endif %}
-        <div class="mt-2">
-            <button onclick="window.history.back()" class="mt-2 btn btn-sm btn-secondary">
-                <i class="fa fa-arrow-left" aria-hidden="true"></i> Back to List
-            </button>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% if object %}
+                                <h1>Episode Form</h1>
+                            {% else %}
+                                <h1>Episode Form</h1>
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-6 text-right">
+
+                            <button onclick="window.history.back()" class="mt-2 btn btn-sm btn-primary">
+                                <i class="fa fa-arrow-left" aria-hidden="true"></i> Back to Episodes
+                            </button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
-        <div class="row justify-content-center mt-4">
-            <div class="col-12 col-sm-12">
+        <div class="row justify-content-center">
+            <div class="col-sm-8">
                 <div class="card shadow-lg">
                     <div class="card-body">
                         <form method="post" enctype="multipart/form-data" novalidate>
@@ -27,7 +41,7 @@
                             {{ form.non_field_errors }}
                             {{ form|crispy }}
 
-                            <button type="submit"  class="btn btn-primary">Confirm</button>
+                            <button type="submit" class="btn btn-primary">Confirm</button>
                             <br>
                         </form>
                     </div>

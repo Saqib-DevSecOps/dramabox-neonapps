@@ -457,9 +457,10 @@ class DramaSeriesListView(ListView):
 @method_decorator(staff_required_decorator, name='dispatch')
 class DramaSeriesCreateView(CreateView):
     model = DramaSeries
-    fields = ['poster_image', 'title', 'description',
-              'director', 'trailer_url',
-              'release_date', 'is_featured', 'featured_until'
+    fields = [
+        'poster_image', 'title', 'description',
+        'director', 'trailer_url',
+        'release_date', 'is_featured', 'featured_until'
               ]
     template_name = 'admins/dramaseries_form.html'
 
@@ -483,8 +484,10 @@ class DramaSeriesCreateView(CreateView):
 @method_decorator(staff_required_decorator, name='dispatch')
 class DramaSeriesUpdateView(UpdateView):
     model = DramaSeries
-    fields = ['title', 'description', 'release_date', 'director', 'poster_image', 'trailer_url',
-              'is_featured', 'featured_until', 'trending_threshold']
+    fields = [
+        'poster_image', 'title', 'description', 'director', 'trailer_url',
+        'release_date', 'is_featured', 'featured_until'
+    ]
     template_name = 'admins/dramaseries_form.html'
     success_url = reverse_lazy('admins:drama-list')
 
@@ -500,12 +503,11 @@ class DramaSeriesUpdateView(UpdateView):
 @method_decorator(staff_required_decorator, name='dispatch')
 class DramaSeriesDeleteView(DeleteView):
     model = DramaSeries
-    success_url = reverse_lazy('admins:drama-list')
+    template_name = 'admins/dramaseries_confirm_delete.html'
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()  # Get the object to delete
-        self.object.delete()  # Delete the object directly
-        return HttpResponseRedirect(self.get_success_url())
+    def get_success_url(self):
+        messages.success(self.request, f"{self.object.title} drama series deleted successfully.")
+        return reverse('admins:drama-list')
 
 
 @method_decorator(staff_required_decorator, name='dispatch')
@@ -718,9 +720,10 @@ class SeasonEpisodeCreateView(CreateView):
 
     def get_success_url(self):
         season = self.object.season
-        # Ensure to get the slug field of the DramaSeries model
-        return reverse('admins:season-episode-list',
-                       kwargs={'pk': season.series.pk, 'season_pk': season.pk})
+        return reverse(
+            'admins:season-episode-list',
+            kwargs={'pk': season.series.pk, 'season_pk': season.pk}
+        )
 
     def form_valid(self, form):
         season_pk = self.kwargs.get('season_pk')
@@ -735,8 +738,10 @@ class SeasonEpisodeUpdateView(UpdateView):
 
     def get_success_url(self):
         season = self.object.season
-        return reverse('admins:season-episode-list',
-                       kwargs={'pk': season.series.pk, 'season_pk': season.pk})
+        return reverse(
+            'admins:season-episode-list',
+            kwargs={'pk': season.series.pk, 'season_pk': season.pk}
+        )
 
     def get_object(self, queryset=None):
         pk = self.kwargs.get('pk')
