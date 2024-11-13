@@ -27,10 +27,10 @@ class CrossAuthView(View):
 
         if request.user.is_staff:
             return redirect('admins:dashboard')
+
         messages.error(self.request, 'You are not authorized to access this page')
         logout(request)
         return redirect('website:home')
-
 
 
 class UserAccountBaseView(View):

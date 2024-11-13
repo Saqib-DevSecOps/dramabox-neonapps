@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load core_tags %}
+
+{% block subtitle %}
+    Delete {{ object }}
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p class="mb-0 font-size-24">
+                                Delete: {{ object }}
+                            </p>
+                        </div>
+                        <div class="col-sm-6 text-right">
+
+                            <button type="button" class="btn btn-primary mb-1"
+                                    onclick="window.location.href='{% url 'admins:category-list' %}'">
+                                <i class="fa fa-arrow-left"></i> Back to Categories
+                            </button>s
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg rounded-lg">
+                <div class="card-body">
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <p class="text-danger">
+                            Are you sure you want to delete <b>{{ object }}</b>? One you delete this there is no way to reverse this action.
+                        </p>
+                        <button class="btn btn-danger">
+                            <i class="fa fa-trash"></i> Delete Permanently
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

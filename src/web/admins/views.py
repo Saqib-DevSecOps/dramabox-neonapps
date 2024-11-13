@@ -152,7 +152,7 @@ class TagListView(ListView):
 @method_decorator(staff_required_decorator, name='dispatch')
 class TagUpdateView(UpdateView):
     model = Tag
-    fields = ['name', 'slug']
+    fields = ['name']
     template_name = 'admins/tag_form.html'  # Update with your template path
     success_url = reverse_lazy('admins:tag-list')
 
@@ -168,13 +168,11 @@ class TagCreateView(CreateView):
 @method_decorator(staff_required_decorator, name='dispatch')
 class TagDeleteView(DeleteView):
     model = Tag
-    success_url = reverse_lazy('admins:tag-list')
+    template_name = 'admins/tag_confirm_delete.html'
 
-    def get(self, request, *args, **kwargs):
-        # Directly call the delete method without confirmation
-        self.object = self.get_object()  # Get the object to delete
-        self.object.delete()  # Delete the object
-        return HttpResponseRedirect(self.get_success_url())
+    def get_success_url(self):
+        messages.success(self.request, f"{self.object.name} tag deleted successfully.")
+        return reverse('admins:tag-list')
 
 
 """ ACTORS -------------------------------------------------------- """
@@ -226,11 +224,11 @@ class ActorCreateView(CreateView):
 class ActorDeleteView(DeleteView):
     model = Actor
     success_url = reverse_lazy('admins:actor-list')
+    template_name = 'admins/actor_confirm_delete.html'
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.delete()
-        return HttpResponseRedirect(self.get_success_url())
+    def get_success_url(self):
+        messages.success(self.request, f"{self.object.name} actor deleted successfully.")
+        return reverse('admins:actor-list')
 
 
 """ Language ---------------------------------------------------------- """
@@ -274,12 +272,12 @@ class LanguageUpdateView(UpdateView):
 @method_decorator(staff_required_decorator, name='dispatch')
 class LanguageDeleteView(DeleteView):
     model = Language
-    success_url = reverse_lazy('admins:language-list')
+    template_name = 'admins/language_confirm_delete.html'
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()  # Get the object to delete
-        self.object.delete()  # Delete the object
-        return HttpResponseRedirect(self.get_success_url())
+    def get_success_url(self):
+        messages.success(self.request, f"{self.object.name} language deleted successfully.")
+        return reverse('admins:language-list')
+
 
 
 """ CATEGORY ---------------------------------------------------------- """
@@ -324,11 +322,11 @@ class CategoryUpdateView(UpdateView):
 class CategoryDeleteView(DeleteView):
     model = Category
     success_url = reverse_lazy('admins:category-list')
+    template_name = 'admins/category_confirm_delete.html'
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()  # Get the object to delete
-        self.object.delete()  # Delete the object
-        return HttpResponseRedirect(self.get_success_url())
+    def get_success_url(self):
+        messages.success(self.request, f"{self.object.name} category deleted successfully.")
+        return reverse('admins:category-list')
 
 
 """ DIRECTORS -------------------------------------------------------- """
@@ -383,11 +381,11 @@ class DirectorUpdateView(UpdateView):
 class DirectorDeleteView(DeleteView):
     model = Director
     success_url = reverse_lazy('admins:director-list')
+    template_name = 'admins/director_confirm_delete.html'
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()  # Get the object to delete
-        self.object.delete()  # Delete the object
-        return HttpResponseRedirect(self.get_success_url())
+    def get_success_url(self):
+        messages.success(self.request, f"{self.object.name} director deleted successfully.")
+        return reverse('admins:director-list')
 
 
 """ CONTENT RATING ---------------------------------------------------- """
@@ -429,11 +427,11 @@ class ContentRatingUpdateView(UpdateView):
 class ContentRatingDeleteView(DeleteView):
     model = ContentRating
     success_url = reverse_lazy('admins:content-rating-list')
+    template_name = 'admins/contentrating_confirm_delete.html'
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()  # Get the object to delete
-        self.object.delete()  # Delete the object
-        return HttpResponseRedirect(self.get_success_url())
+    def get_success_url(self):
+        messages.success(self.request, f"{self.object.code} content rating deleted successfully.")
+        return reverse('admins:content-rating-list')
 
 
 """ DRAMA SERIES -------------------------------------------------------- """

@@ -1,4 +1,5 @@
 from .models import Application
+from django.utils.text import slugify
 
 
 def get_or_create_application():

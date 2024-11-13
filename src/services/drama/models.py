@@ -21,8 +21,7 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
+        self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -39,8 +38,7 @@ class Tag(models.Model):
     updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the tag was last updated.")
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
+        self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -52,8 +50,9 @@ class Language(models.Model):
     Represents available languages for drama (e.g., 'English', 'Spanish').
     """
     name = models.CharField(max_length=100, unique=True, help_text="Name of the language.")
-    code = models.CharField(max_length=10, unique=True,
-                            help_text="Language code, such as 'en' for English or 'es' for Spanish.")
+    code = models.CharField(
+        max_length=10, unique=True, help_text="Language code, such as 'en' for English or 'es' for Spanish."
+    )
     created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the language was added.")
     updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the language was last updated.")
 
@@ -183,7 +182,6 @@ class DramaSeries(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
-
 
 
 class DramaSeriesTag(models.Model):
