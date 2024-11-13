@@ -33,12 +33,14 @@ from .models import (
 csrf_protect_m = method_decorator(csrf_protect)
 sensitive_post_parameters_m = method_decorator(sensitive_post_parameters())
 
+
 class UserCustomAdmin(admin.ModelAdmin):
     add_form_template = 'admin/auth/user/add_form.html'
     change_user_password_template = None
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'email')}),
+        ('Contact', {'fields': ('phone_number', 'address', 'bio')}),
         ('Permissions', {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
@@ -46,7 +48,7 @@ class UserCustomAdmin(admin.ModelAdmin):
     )
     filter_horizontal = ('groups', 'user_permissions',)
     list_display = [
-        'username', 'email', 'date_joined', 'is_superuser', 'is_staff', 'is_active'
+        'username', 'email', 'first_name', 'last_name', 'phone_number', 'date_joined', 'is_superuser', 'is_staff', 'is_active'
     ]
     search_fields = [
         'username', 'first_name', 'last_name',

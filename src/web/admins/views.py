@@ -511,7 +511,7 @@ class DramaSeriesDeleteView(DeleteView):
 @method_decorator(staff_required_decorator, name='dispatch')
 class DramaSeriesDetailView(DetailView):
     model = DramaSeries
-    template_name = 'admins/dramaseries_detail.html'  # Update with your template path
+    template_name = 'admins/dramaseries_detail.html'
 
     def get_object(self, queryset=None):
         return get_object_or_404(DramaSeries, id=self.kwargs['pk'])
@@ -610,6 +610,7 @@ def link_categories_dramaseries(request, pk):
         'form': form
     })
 
+
 def link_cast_dramaseries(request, pk):
     # Fetch the drama series based on the primary key
     drama_series = get_object_or_404(DramaSeries, pk=pk)
@@ -638,6 +639,7 @@ def link_cast_dramaseries(request, pk):
         'drama_series': drama_series,
         'form': form
     })
+
 
 """ SEASONS ----------------------------------------------------------------------------------------------  """
 
@@ -671,7 +673,6 @@ class SeasonCreateView(CreateView):
 
     def get_success_url(self):
         return reverse_lazy('admins:drama-detail', kwargs={'pk': self.object.series.pk})
-
 
 
 class SeasonUpdateView(UpdateView):

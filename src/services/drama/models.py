@@ -131,6 +131,23 @@ class DramaSeries(models.Model):
     search_count = models.PositiveIntegerField(default=0,
                                                help_text="Number of times the drama series has been searched.")
 
+    casts = models.ManyToManyField(
+        Actor, through='DramaSeriesCast', related_name='dramas',
+        help_text="Actors who play roles in the drama series."
+    )
+    categories = models.ManyToManyField(
+        Category, through='DramaSeriesCategory', related_name='dramas',
+        help_text="Genres or categories of the drama series."
+    )
+    tags = models.ManyToManyField(
+        Tag, through='DramaSeriesTag', related_name='dramas',
+        help_text="Tags associated with the drama series."
+    )
+    languages = models.ManyToManyField(
+        Language, through='DramaSeriesLanguage', related_name='dramas',
+        help_text="Languages available for the drama series."
+    )
+
     is_featured = models.BooleanField(default=False, help_text="Mark as featured for promotional purposes.")
     featured_until = models.DateField(blank=True, null=True, help_text="Date until this drama is featured.")
 
@@ -178,6 +195,12 @@ class DramaSeries(models.Model):
         Returns the total number of episodes.
         """
         return Episode.objects.filter(season__series=self).count()
+
+    def get_total_seasons(self):
+        return Season.objects.filter(series=self).count()
+
+    def likes_count(self):
+        return Like.objects.filter(drama_series=self).count()
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
