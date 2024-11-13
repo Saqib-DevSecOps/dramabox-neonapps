@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load core_tags %}
+
+{% block subtitle %} Content Ratings {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="mb-0 font-size-24">
+                            CONTENT RATINGS MANAGEMENT
+                        </p>
+                    </div>
+                    <div class="col-sm-6 text-right">
+
+                        <button type="button" class="btn btn-primary mb-1"
+                                onclick="window.location.href='{% url 'admins:content-rating-create' %}'">
+                            <i class="fa fa-plus"></i> Add Content Rating
+                        </button>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+   <div class="row justify-content-between">
+        <div class="col-12 col-md-12 p-2 mt-2">
+            <form method="get">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control " placeholder="Enter Content Rating Code"
+                           id="id_code"
+                           value="{% if contentrating_filter_form.code.value %}{{ contentrating_filter_form.code.value }}{% endif %}"
+                           name="code">
+                    &nbsp;<button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>&nbsp;
+                    <a class="btn btn-danger" href="{% url 'admins:content-rating-list' %}">
+                        <i class="fas fa-brush"></i>
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card  shadow-lg card">
+                {% if object_list %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>PK</th>
+                                <th>Rating Code</th>
+                                <th>Description</th>
+                                <th>Created At</th>
+                                <th>-</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for object in object_list %}
+                                <tr>
+                                    <td>{{ object.pk }}</td>
+                                    <td>
+                                        <a href="{% url 'admins:content-rating-update' object.pk %}">
+                                            {{ object.code }}
+                                        </a>
+                                    </td>
+                                    <td>{{ object.description }}</td>
+                                    <td>{{ object.created_at }}</td>
+                                    <th>
+                                        <a href="{% url 'admins:content-rating-update' object.pk %}">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'admins:content-rating-delete' object.pk %}"
+                                           class="text-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </th>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="card-body">
+                        <p class="text-danger mb-0"><b>No content ratings available</b></p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mt-4">
+                <ul class="pagination">
+                    {% if object_list.has_previous %}
+                        <li>
+                            <span>
+                                <a href="{% relative_url object_list.previous_page_number 'page' request.GET.urlencode %}">
+                                    Previous
+                                </a>
+                            </span>
+                        </li>
+                    {% endif %}
+                    <li class="">
+                        <span>Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.</span>
+                    </li>
+                    {% if object_list.has_next %}
+                        <li>
+                            <span>
+                                <a href="{% relative_url object_list.next_page_number 'page' request.GET.urlencode %}">
+                                    Next
+                                </a>
+                            </span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

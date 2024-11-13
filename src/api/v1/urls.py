@@ -1,7 +1,7 @@
 from django.urls import path
 
 from src.api.v1.views import (HomeDramaListAPIView, DramaSeriesListAPIView, DramaSeriesDetailAPIView,
-                              ReviewListView, ReviewCreateView, LikeCreateView
+                              ReviewListView, ReviewCreateView, LikeCreateView, CategoryTagHelperAPIView
                               )
 
 app_name = 'v1'
@@ -13,11 +13,11 @@ urlpatterns = [
 ]
 
 urlpatterns += [
+    path('like/', LikeCreateView.as_view(), name='like-create'),
     path('drama-series/<str:drama_series_id>/reviews/', ReviewListView.as_view(), name='review-list'),
-    path('reviews/add/', ReviewCreateView.as_view(), name='review-create'),
+    path('review/add/', ReviewCreateView.as_view(), name='review-create'),
 ]
 
-urlpatterns +=[
-    path('likes/', LikeCreateView.as_view(), name='like-create'),
-
+urlpatterns += [
+    path('category-tag/helper/', CategoryTagHelperAPIView.as_view(), name='category-tag-helper'),
 ]

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+    {% if season %}
+    <h1>Update Season for {{ season.series.title }}</h1>
+    <div class="mt-2">
+        <a href="{% url 'admins:drama-detail' pk=season.series.pk %}" class="mt-2 btn btn-sm btn-secondary"><i
+                class="fa fa-arrow-left"
+                aria-hidden="true"></i>
+            Back to List</a>
+    </div>
+    {% else %}
+     <h1>Create Season {{ object }}</h1>
+    <div class="mt-2">
+        <a href="{% url 'admins:drama-detail' pk=object.pk %}" class="mt-2 btn btn-sm btn-secondary"><i
+                class="fa fa-arrow-left"
+                aria-hidden="true"></i>
+            Back to List</a>
+    </div>
+    {% endif %}
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-12 col-sm-12">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        {{ form|crispy }}
+
+                        <button type="submit" class="btn btn-primary">Confirm</button>
+                        <br>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}
+
+

@@ -1,6 +1,9 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 
+
+# ---------------------------- Utility Models ---------------------------- #
 
 class Category(models.Model):
     """
@@ -17,6 +20,11 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = "Categories"
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
@@ -30,6 +38,11 @@ class Tag(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the tag was created.")
     updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the tag was last updated.")
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
@@ -39,10 +52,8 @@ class Language(models.Model):
     Represents available languages for drama (e.g., 'English', 'Spanish').
     """
     name = models.CharField(max_length=100, unique=True, help_text="Name of the language.")
-    code = models.CharField(
-        max_length=10, unique=True,
-        help_text="Language code, such as 'en' for English or 'es' for Spanish."
-    )
+    code = models.CharField(max_length=10, unique=True,
+                            help_text="Language code, such as 'en' for English or 'es' for Spanish.")
     created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the language was added.")
     updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the language was last updated.")
 
@@ -55,9 +66,8 @@ class ContentRating(models.Model):
     Represents age ratings, such as 'PG', 'R', to enforce drama restrictions.
     """
     code = models.CharField(max_length=10, unique=True, help_text="Content rating code, such as 'PG', 'R'.")
-    description = models.CharField(
-        max_length=255, blank=True, null=True, help_text="Description of the drama rating."
-    )
+    description = models.CharField(max_length=255, blank=True, null=True,
+                                   help_text="Description of the drama rating.")
     created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the rating was created.")
     updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the rating was last updated.")
 
@@ -70,16 +80,13 @@ class Person(models.Model):
     Abstract base model for both actors and directors to reuse common fields.
     """
     name = models.CharField(max_length=255, help_text="Full name of the person.")
-    profile_image = models.ImageField(
-        upload_to='profiles/', blank=True, null=True,
-        help_text="Profile image of the person."
-    )
+    profile_image = models.ImageField(upload_to='profiles/', blank=True, null=True,
+                                      help_text="Profile image of the person.")
     biography = models.TextField(blank=True, null=True, help_text="Biography of the person.")
     date_of_birth = models.DateField(blank=True, null=True, help_text="Date of birth of the person.")
     created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the person was added.")
-    updated_at = models.DateTimeField(
-        auto_now=True, help_text="Date and time when the person's details were last updated."
-    )
+    updated_at = models.DateTimeField(auto_now=True,
+                                      help_text="Date and time when the person's details were last updated.")
 
     class Meta:
         abstract = True
@@ -113,13 +120,17 @@ class DramaSeries(models.Model):
     release_date = models.DateField(help_text="Release date of the drama series.")
     director = models.ForeignKey(Director, on_delete=models.SET_NULL, null=True,
                                  help_text="Director of the drama series.")
-    rating = models.ForeignKey(ContentRating, on_delete=models.SET_NULL, null=True,
-                               help_text="Content rating of the drama series.")
+    content_rating = models.ForeignKey(ContentRating, on_delete=models.SET_NULL, null=True,
+                                       help_text="Content rating of the drama series.")
+    rating = models.DecimalField(max_digits=2, decimal_places=1, null=True, help_text="Average rating of the drama series.")
     poster_image = models.ImageField(upload_to='dramas/posters/', blank=True, null=True,
                                      help_text="Poster image of the drama series.")
     trailer_url = models.URLField(blank=True, null=True, help_text="Trailer URL for the drama series.")
     slug = models.SlugField(max_length=255, unique=True, help_text="URL-friendly identifier for the drama series.")
+
     view_count = models.PositiveIntegerField(default=0, help_text="Number of views the drama series has received.")
+    search_count = models.PositiveIntegerField(default=0,
+                                               help_text="Number of times the drama series has been searched.")
 
     is_featured = models.BooleanField(default=False, help_text="Mark as featured for promotional purposes.")
     featured_until = models.DateField(blank=True, null=True, help_text="Date until this drama is featured.")
@@ -161,6 +172,18 @@ class DramaSeries(models.Model):
         Returns top three series based on view count.
         """
         return DramaSeries.objects.order_by('-view_count')[:3]
+
+    @property
+    def get_total_episodes(self):
+        """
+        Returns the total number of episodes.
+        """
+        return Episode.objects.filter(season__series=self).count()
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
 
 
 class DramaSeriesTag(models.Model):
@@ -253,10 +276,12 @@ class Episode(models.Model):
     description = models.TextField(blank=True, null=True, help_text="Detailed description of the episode.")
     release_date = models.DateField(help_text="Release date of the episode.")
     duration = models.DurationField(help_text="Duration of the episode (hh:mm:ss).")
-    video_file = models.FileField(upload_to='dramas/episodes/', help_text="Video file of the episode.")
+    video_file_name = models.CharField(max_length=255, blank=True, null=True)
+    video_file = models.URLField(null=True, blank=False, help_text="Video file of the episode.")
     is_free = models.BooleanField(default=False, help_text="Mark if the episode is free to watch.")
     view_count = models.PositiveIntegerField(default=0, help_text="Number of views the episode has received.")
 
+    is_active = models.BooleanField(default=False, help_text="Mark if the episode is active.")
     created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the episode was added.")
     updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the episode was last updated.")
 
@@ -308,6 +333,7 @@ class Like(models.Model):
     def __str__(self):
         return f"{self.user.username} liked {self.drama_series.title}"
 
+
 class Testimonials(models.Model):
     """
     Represents user testimonials for drama series.
@@ -322,4 +348,3 @@ class Testimonials(models.Model):
     class Meta:
         verbose_name = "Drama Series Testimonial"
         verbose_name_plural = "Drama Series Testimonials"
-

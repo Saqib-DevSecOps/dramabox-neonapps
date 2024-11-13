@@ -139,3 +139,7 @@ class LikeAdmin(admin.ModelAdmin):
 class TestimonialsAdmin(admin.ModelAdmin):
     list_display = ('user_name', 'comment', 'created_at')
     search_fields = ('user_name', 'comment', 'message')
+
+
+
+admin.site.register(DramaSeriesTag)

@@ -13,7 +13,7 @@
  */
 (function( window, undefined ) {
 var
-	// A central reference to the root jQuery(document)
+	// A central reference to the core jQuery(document)
 	rootjQuery,
 
 	// The deferred used on DOM ready
@@ -30,7 +30,7 @@ var
 	// Map over the $ in case of overwrite
 	_$ = window.$,
 
-	// Save a reference to some root methods
+	// Save a reference to some core methods
 	core_push = Array.prototype.push,
 	core_slice = Array.prototype.slice,
 	core_indexOf = Array.prototype.indexOf,
@@ -411,7 +411,7 @@ jQuery.extend({
 		}
 	},
 
-	// See test/unit/root.js for details concerning isFunction.
+	// See test/unit/core.js for details concerning isFunction.
 	// Since version 1.3, DOM methods and functions like alert
 	// aren't supported. They return false on IE (#2968).
 	isFunction: function( obj ) {
@@ -5117,7 +5117,7 @@ function select( selector, context, results, seed, xml ) {
 		// Try to minimize operations if there is only one group
 		if ( match.length === 1 ) {
 
-			// Take a shortcut and set the context if the root selector is an ID
+			// Take a shortcut and set the context if the core selector is an ID
 			tokens = match[0] = match[0].slice( 0 );
 			if ( tokens.length > 2 && (token = tokens[0]).type === "ID" &&
 					context.nodeType === 9 && !xml &&
@@ -5250,7 +5250,7 @@ if ( document.querySelectorAll ) {
 					newSelector = context.nodeType === 9 && selector;
 
 				// qSA works strangely on Element-rooted queries
-				// We can work around this by specifying an extra ID on the root
+				// We can work around this by specifying an extra ID on the core
 				// and working up from there (Thanks to Andrew Dupont for the technique)
 				// IE 8 doesn't work on object elements
 				if ( context.nodeType === 1 && context.nodeName.toLowerCase() !== "object" ) {

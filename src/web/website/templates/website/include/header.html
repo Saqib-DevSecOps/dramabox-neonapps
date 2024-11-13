@@ -60,9 +60,17 @@
                         </li>
                     </ul>
                     <div class="header-button mt-4">
-                        <a href="pricing.html" class="theme-btn text-center">
-                            subscribe
+                        {% if not request.user.is_authenticated %}
+                            <a href="{% url 'account_login' %}" class="theme-btn text-center">
+                                Login
+                            </a>
+                        {% else %}
+                            <a href="{% url 'admins:dashboard' %}" class="theme-btn text-center">
+                                Dashboard
+                            </a> <a href="{% url 'account_logout' %}" class="theme-btn text-center mt-2">
+                            Logout
                         </a>
+                        {% endif %}
                     </div>
                     <div class="social-icon d-flex align-items-center">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>

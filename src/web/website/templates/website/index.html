@@ -28,19 +28,10 @@
                                                     . {{ s.genre }}</li>  <!-- Assuming you have these fields -->
                                             </ul>
                                             <p>
-                                                {{ s.description|truncatewords:20 }}
+                                                {{ s.description|truncatewords:100 }}
                                                 <!-- Truncate description to 20 words -->
                                             </p>
-                                            <div class="hero-button">
-                                                <a href="{% url 'website:home' %}" class="theme-btn">+ Add to
-                                                    list</a>  <!-- Assuming you have a detail page -->
-                                                <span class="button-text">
-                                    <a href="{{ s.trailer_url }}" class="video-btn video-popup">
-                                        <i class="fa-solid fa-play"></i>
-                                    </a>
-                                    <span class="ms-4 d-line">Watch The Trailer</span>
-                                </span>
-                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -89,9 +80,7 @@
                                 <div class="movie-content">
                                     <ul class="post-time">
                                         <li>
-                                            <i class="fa-regular fa-clock"></i>
                                             {{ series.duration|default:"N/A" }}
-                                            <!-- Assuming you have a duration field -->
                                         </li>
                                         <li>
                                             <i class="fa-sharp fa-regular fa-tv"></i>
@@ -144,12 +133,8 @@
                                     <div class="movie-content">
                                         <ul class="post-time">
                                             <li>
-                                                <i class="fa-regular fa-clock"></i>
-                                                {{ series.duration }}
-                                            </li>
-                                            <li>
-                                                <i class="fa-sharp fa-regular fa-tv"></i>
-                                                {{ series.quality }}
+                                               <i class="fa-sharp fa-regular fa-tv"></i>
+                                            4K Quality  <!-- Update this if you have a quality field -->
                                             </li>
                                         </ul>
                                         <h3>{{ series.title }}</h3>
@@ -200,13 +185,8 @@
                                     <div class="movie-content">
                                         <ul class="post-time">
                                             <li>
-                                                <i class="fa-regular fa-clock"></i>
-                                                {{ series.duration }}
-                                                <!-- Assuming duration is a property of series -->
-                                            </li>
-                                            <li>
-                                                <i class="fa-sharp fa-regular fa-tv"></i>
-                                                {{ series.quality }}  <!-- Assuming quality is a property of series -->
+                                               <i class="fa-sharp fa-regular fa-tv"></i>
+                                            4K Quality  <!-- Update this if you have a quality field -->
                                             </li>
                                         </ul>
                                         <h3>{{ series.title }}</h3>
@@ -282,7 +262,8 @@
                                         {% endfor %}
                                     </div>
                                     <p>
-                                        {{ testimonial.comment|truncatewords:50 }} <!-- Use the comment from the model -->
+                                        {{ testimonial.comment|truncatewords:50 }}
+                                        <!-- Use the comment from the model -->
                                     </p>
                                     <div class="client-info">
                                         <div class="client-img bg-cover"

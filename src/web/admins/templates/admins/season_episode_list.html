@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load core_tags %}
+{% block subtitle %} {{ request.user }} {% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3>Episodes of {{ season.series.title }} - Season {{ season.season_number }}</h3>
+        <a href="{% url 'admins:episode-create' season.pk %}" class="btn btn-warning">Add Episode +</a>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-lg rounded-lg">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Episode Number</th>
+                            <th scope="col">Duration (HH:MM:SS)</th>
+                            <th scope="col">Release Date</th>
+                            <th scope="col">View Count</th>
+                            <th scope="col">Is Free</th>
+                            <th scope="col">Is Active</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for episode in episodes %}
+                            <tr>
+                                <td><b>{{ forloop.counter }}</b></td>
+                                <td>{{ episode.title }}</td>
+                                <td>{{ episode.episode_number }}</td>
+                                <td>{{ episode.duration }}</td>
+                                <td>{{ episode.release_date }}</td>
+                                <td>{{ episode.view_count }}</td>
+                                <td><span
+                                        class="badge  text-white {% if episode.is_free %}  bg-success {% else %}bg-warning{% endif %}">{{ episode.is_free }}</span>
+                                </td>
+                                <td><span
+                                        class="badge  text-white {% if episode.is_active %}  bg-primary {% else %}bg-danger{% endif %}">{{ episode.is_active }}</span>
+                                </td>
+
+                                <td>
+                                    {% if not episode.is_active %}
+                                        <a href="{% url 'admins:episode-media-update' season.pk episode.pk %}"
+                                           ><i class="fa fa-upload"></i></a>
+                                    {% endif %}
+                                    <a href="{% url 'admins:episode-update' season.pk episode.pk %}"
+                                       ><i class="fa fa-edit"></i></a>
+                                    <a href="{% url 'admins:episode-delete' season.pk episode.pk %}"
+                                       ><i class="fa fa-trash text-danger"></i></a>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-danger">No episodes found for this season.</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mt-4">
+                <ul class="pagination">
+                    {% if object_list.has_previous %}
+                        <li class="page-link rounded">
+                            <span>
+                                <a href="{% relative_url object_list.previous_page_number 'page' request.GET.urlencode %}">
+                                    Previous
+                                </a>
+                            </span>
+                        </li>
+                    {% endif %}
+                    &nbsp;&nbsp;&nbsp;
+                    <li class="page-link rounded">
+                        <span>Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.</span>
+                    </li>
+                    &nbsp;&nbsp;&nbsp;
+                    {% if object_list.has_next %}
+                        <li class="page-link rounded">
+                            <span>
+                                <a href="{% relative_url object_list.next_page_number 'page' request.GET.urlencode %}">
+                                    Next
+                                </a>
+                            </span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

@@ -25,7 +25,7 @@ LOGIN_REDIRECT_URL = '/accounts/cross-auth/'
 GOOGLE_CALLBACK_ADDRESS = f"{BASE_URL}/accounts/google/login/callback/"
 APPLE_CALLBACK_ADDRESS = f"{BASE_URL}/accounts/apple/login/callback/"
 
-ROOT_URLCONF = 'root.urls'
+ROOT_URLCONF = 'core.urls'
 AUTH_USER_MODEL = 'users.User'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -77,7 +77,6 @@ INSTALLED_APPS = [
 
     # mailchimp
     'mailchimp_transactional',
-    # 'notifications',
 ]
 # MAILCHIMP SETTINGS
 MAILCHIMP_API_KEY = env('MAILCHIMP_API_KEY')
@@ -132,7 +131,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'root.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 if ENVIRONMENT == 'server':
     DATABASES = {
@@ -176,7 +175,7 @@ USE_L10N = True
 USE_TZ = True
 
 """ EMAIL CONFIGURATION --------------------------------------------------------------------------------"""
-EMAIL_BACKEND = 'django.root.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
@@ -216,6 +215,16 @@ OLD_PASSWORD_FIELD_ENABLED = True
 LOGOUT_ON_PASSWORD_CHANGE = False
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
+""" S3 BUCKET SETUP --------------------------------------------------------------------------------"""
+
+AWS_USERNAME=env('AWS_USERNAME')
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
+AWS_S3_ENDPOINT_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+
+
 """ DEBUGGING TOOLS """
 
 # Make sure to remove this in live server - use it on local server
@@ -227,31 +236,8 @@ if ENVIRONMENT != 'server':
         'django_browser_reload.middleware.BrowserReloadMiddleware'
     ]
 
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'CLIENT_ID': '1021579594890-6m3kiukcsku6j5lpcv0293sjc3qq4830.apps.googleusercontent.com',
-        'SECRET': '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',
-        'SCOPE': ['profile', 'email', 'openid'],
-        'AUTH_PARAMS': {'access_type': 'online'},
-    }
-}
-
 """ MFA SETUP --------------------------------------------------------------------------------"""
 MFA_ADAPTER = "allauth.mfa.adapter.DefaultMFAAdapter"
-
-""" GMAIL SMTP ---------------------------------------------------------------------------------"""
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# SMTP  configuration
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-
-EMAIL_HOST_USER = 'gwtw.mhn@gmail.com'
-EMAIL_HOST_PASSWORD = 'jyrq jbmd grlu vvzs'
-
-# Default from email address
-DEFAULT_FROM_EMAIL = 'exarth@info.com'  # Replace with the email address to appear in the 'from' field
 
 """  ACCOUNT ADAPTER Modify Login/Signup Redirect UR----------------------------------------------------"""
 ACCOUNT_ADAPTER = "src.web.accounts.adapters.MyAccountAdapter"

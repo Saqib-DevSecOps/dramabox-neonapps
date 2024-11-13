@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load core_tags %}
+{% block subtitle %} Drama Serials {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="mb-0 font-size-24">
+                            DRAMA SERIES
+                        </p>
+                    </div>
+                    <div class="col-sm-6 text-right">
+
+                        <button type="button" class="btn btn-primary mb-1"
+                                onclick="window.location.href='{% url 'admins:drama-create' %}'">
+                            <i class="fa fa-plus"></i> Start New Series
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+
+            <div class="card">
+
+                {# FILTER #}
+                <div class="card-body border-bottom">
+                    <form method="get">
+                        <div class="input-group">
+                            <input type="text" class="form-control " placeholder="Enter Drama Series Title"
+                                   id="id_title"
+                                   value="
+
+
+
+
+
+                                           {% if drama_series_filter.title.value %}{{ drama_series_filter.title.value }}{% endif %}"
+                                   name="title">&nbsp;
+                            <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>&nbsp;
+                            <a class="btn btn-danger" href="{% url 'admins:drama-list' %}">
+                                <i class="fas fa-brush"></i>
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+
+                {# CONTENT #}
+                <div class="card-body p-0">
+                    {% if object_list %}
+                        <div class="table-responsive">
+                            <table class="table align-middle table-nowrap mb-0">
+                                <tbody>
+                                <tr>
+                                    <th scope="col" colspan="2">Serial</th>
+                                    <th scope="col">Views</th>
+                                    <th scope="col">Search</th>
+                                    <th scope="col">Rating</th>
+                                    <th scope="col">Featured</th>
+                                    <th scope="col">-</th>
+                                </tr>
+                                </tbody>
+                                <tbody>
+
+                                {% for object in object_list %}
+                                    <tr>
+                                        <td style="width: 100px;">
+                                            <img src="{{ object.poster_image.url }}" alt="" height="50" width="50"
+                                                 class="h-auto d-block rounded">
+                                        </td>
+                                        <td>
+                                            <h5 class="font-size-13 text-trunc ate mb-1">
+                                                <a href="{% url 'admins:drama-detail' object.pk %}" class="text-dark">
+                                                    {{ object.title }}
+                                                </a>
+                                            </h5>
+                                            <p class="text-muted mb-0">{{ object.created_at }}</p>
+                                        </td>
+                                        <td>
+                                            <h5><i class="bx bxs-watch align-middle me-1 font-size-24"></i>
+                                                {{ object.view_count }}
+                                            </h5>
+                                        </td>
+                                        <td>
+                                            <h5><i class="bx bx-search align-middle me-1 font-size-24"></i>
+                                                {{ object.search_count }}
+                                            </h5>
+                                        </td>
+                                        <td>
+                                            <h5>
+                                                <i class="bx bx-star align-middle me-1 font-size-24"></i>
+                                                00 - (00)
+                                            </h5>
+                                        </td>
+                                        <td>
+                                            {% if object.is_featured %}
+                                                <p class="mb-0">
+                                                    <b class="text-success">FEATURED</b>
+                                                </p>
+                                                {% if object.featured_until %}
+                                                    <p class="mn-0 small">
+                                                        <b>{{ object.featured_until|check_null }}</b> (Features Until)
+                                                    </p>
+                                                {% endif %}
+                                            {% else %}
+                                                <p class="mb-0">
+                                                    <b class="text-danger">NOT-FEATURED</b>
+                                                </p>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <h5 class="mb-0">
+                                                <a href="{% url 'admins:drama-detail' object.pk %}">
+                                                    <i class="fa fa-eye"></i>
+                                                </a> |
+                                                <a href="{% url 'admins:drama-update' object.pk %}">
+                                                    <i class="fa fa-edit"></i>
+                                                </a> |
+                                                <a class="text-danger" href="{% url 'admins:drama-delete' object.pk %}">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </h5>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="col-12 p-4">
+                            <div class="alert alert-danger" role="alert">
+                                <b>No serials available</b>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {# PAGINATOR #}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mt-4">
+                <ul class="pagination">
+                    {% if object_list.has_previous %}
+                        <li>
+                            <span>
+                                <a href="{% relative_url object_list.previous_page_number 'page' request.GET.urlencode %}">
+                                    Previous
+                                </a>
+                            </span>
+                        </li>
+                    {% endif %}
+                    <li class="">
+                        <span>Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.</span>
+                    </li>
+                    {% if object_list.has_next %}
+                        <li>
+                            <span>
+                                <a href="{% relative_url object_list.next_page_number 'page' request.GET.urlencode %}">
+                                    Next
+                                </a>
+                            </span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

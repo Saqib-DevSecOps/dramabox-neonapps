@@ -1,20 +1,14 @@
-from django.contrib import messages
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import ListView, View
-
 from src.apps.whisper.filters import EmailNotificationFilter
 from src.apps.whisper.main import NotificationService
 from src.apps.whisper.models import EmailNotification
 
 
-
-class EmailNotificationListView( ListView):
+class EmailNotificationListView(ListView):
     model = EmailNotification
     template_name = 'whisper/emailnotification_list.html'
-
-    def get_permission_name(self):
-        return "whisper.view_emailnotification"
 
     def get_queryset(self):
         return self.model.objects.order_by('created_at')
@@ -33,8 +27,6 @@ class EmailNotificationListView( ListView):
 
 
 class EmailNotificationRetryView(View):
-    def get_permission_name(self):
-        return "whisper.change_emailnotification"
 
     def get(self, request, *args, **kwargs):
         email_notification_id = kwargs.get('pk')
@@ -52,7 +44,6 @@ class EmailNotificationRetryView(View):
             'body': email_notification.body
         }
 
-        # Retry sending the email
         notification_service.send_email_notification(email_notification.template_name, context,
                                                      [email_notification.recipient])
 

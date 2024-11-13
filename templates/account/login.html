@@ -19,7 +19,7 @@
     <div class="account-pages my-5 pt-sm-5">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="col-md-8 col-lg-6 col-xl-5 shadow-lg ">
                     <div class="card overflow-hidden">
                         <div class="bg-soft-primary">
                             <div class="row">
@@ -66,9 +66,7 @@
                                     {##}
                                     {#                            {% admin "socialaccount/snippets/login_extra.html" %}#}
 
-                                {% else %}
-                                    <p>{% blocktrans %}If you have not created an account yet, then please
-                                        <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+
                                 {% endif %}
 
                                 <form class="login" id="login_form" method="POST" action="{% url 'account_login' %}">

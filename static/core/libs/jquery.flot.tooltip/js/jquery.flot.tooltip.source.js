@@ -343,7 +343,7 @@
     };
 
     /**
-     * root function, create tooltip drama
+     * core function, create tooltip drama
      * @param  {string} content - template with tooltip drama
      * @param  {object} item - Flot item
      * @return {string} real tooltip drama for current item

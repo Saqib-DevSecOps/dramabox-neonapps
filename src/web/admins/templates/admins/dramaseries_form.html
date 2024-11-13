@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load core_tags %}
+
+{% block subtitle %} DRAMA SERIES {% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p class="mb-0 font-size-24">
+                                DRAMA SERIES {% if object %}#{{ object }}{% else %}FORM{% endif %}
+                            </p>
+                        </div>
+                        <div class="col-sm-6 text-right">
+
+                            <button type="button" class="btn btn-primary mb-1"
+                                    onclick="window.location.href='{% url 'admins:drama-list' %}'">
+                                <i class="fa fa-arrow-left"></i> Back to Drama Series
+                            </button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-4">
+            <div class="col-sm-8">
+                <div class="card shadow-lg">
+                    {% if object %}
+                        <div class="card-body border-bottom text-center">
+                            <img alt="poster-image" class="img-circle img-thumbnail"
+                                 height="150" width="150" src="{{ object.poster_image|image_or_placeholder:"150" }}">
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <form method="post" novalidate enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            {{ form|crispy }}
+
+                            <button type="submit" class="btn btn-primary">Confirm</button>
+                            <br>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block js_code %}
+    <script>
+        $(document).ready(function () {
+            $('#id_director').addClass('form-control');
+
+        });
+    </script>
+{% endblock %}
