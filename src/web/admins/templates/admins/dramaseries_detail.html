@@ -83,7 +83,7 @@
                 <div class="card-body shadow-lg">
 
                     <h4 class="card-title m-0 mb-3 p-2">Cast Members &nbsp;
-                        <a href="{% url 'admins:link-languages' object.slug %}">
+                        <a href="{% url 'admins:link-cast-dramaseries' object.pk %}">
                             <i class="fa fa-plus text-success"></i>
                         </a>
                     </h4>
@@ -112,7 +112,7 @@
 
                     </div>
                     <h4 class="card-title m-0 mb-1 p-2">Tags &nbsp;
-                        <a href="{% url 'admins:link-tags-dramaseries' object.slug %}">
+                        <a href="{% url 'admins:link-tags-dramaseries' object.pk %}">
                             <i class="fa fa-plus text-success pt-1"></i>
                         </a>
                     </h4>
@@ -131,7 +131,7 @@
                     </div>
 
                     <h4 class="card-title m-0 mb-1 p-2">Categories &nbsp;
-                        <a href="{% url 'admins:link-categories-dramaseries' object.slug %}">
+                        <a href="{% url 'admins:link-categories-dramaseries' object.pk %}">
                             <i class="fa fa-plus text-success pt-1"></i>
                         </a>
                     </h4>
@@ -149,7 +149,7 @@
                     </div>
 
                     <h4 class="card-title m-0 mb-1 p-2">Languages &nbsp;
-                        <a href="{% url 'admins:link-languages' object.slug %}">
+                        <a href="{% url 'admins:link-languages' object.pk %}">
                             <i class="fa fa-plus text-success pt-1"></i>
                         </a>
                     </h4>
@@ -176,7 +176,7 @@
         <div class="d-flex align-items-center">
             <h3 class="mb-0 card-title flex-grow-1">Seasons</h3>
             <div class="flex-shrink-0">
-                <a href="{% url 'admins:season-create' object.slug %}" class="btn btn-warning">Add Season +</a>
+                <a href="{% url 'admins:season-create' object.pk %}" class="btn btn-warning">Add Season +</a>
             </div>
         </div>
     </div>
@@ -219,11 +219,11 @@
                             <div class="mt-4 hstack gap-2">
                                 <div class="row">
                                     <div class="col-sm-8 col-6">
-                                        <a href="{% url 'admins:season-update' object.slug season.pk %}"
+                                        <a href="{% url 'admins:season-update' object.pk season.pk %}"
                                            class="btn btn-danger w-100">Manage</a>
                                     </div>
                                     <div class="col-sm-4 col-6">
-                                        <a href="{% url 'admins:season-episode-list' drama_series_slug=season.series.slug season_pk=season.pk %}"
+                                        <a href="{% url 'admins:season-episode-list' pk=season.series.pk season_pk=season.pk %}"
                                            class="btn btn-warning">Episodes</a>
                                     </div>
                                 </div>

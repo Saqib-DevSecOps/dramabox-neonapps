@@ -3,7 +3,7 @@ import json
 
 import boto3
 from allauth.socialaccount.models import SocialAccount
-from botocore.exceptions import ClientError
+from core import settings
 from django import forms
 from django.contrib import messages
 from django.contrib.auth.forms import AdminPasswordChangeForm
@@ -17,17 +17,17 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import (
     TemplateView, ListView, DetailView, UpdateView, CreateView, DeleteView
 )
-
-from core import settings
 from src.services.drama.models import (
     Tag, Actor, Language, Category, Director, ContentRating, DramaSeries, DramaSeriesTag, DramaSeriesLanguage,
-    DramaSeriesCategory, Season, Episode
+    DramaSeriesCategory, Season, Episode, DramaSeriesCast
 )
 from src.services.users.models import User
 from src.web.accounts.decorators import staff_required_decorator
 from src.web.admins.filters import UserFilter, TagFilter, ActorFilter, LanguageFilter, CategoryFilter, DirectorFilter, \
     ContentRatingFilter, DramaSeriesFilter
-from .forms import DramaSeriesTagForm, DramaSeriesLanguageForm, DramaSeriesCategoryForm, SeasonForm, EpisodeForm
+
+from .forms import DramaSeriesTagForm, DramaSeriesLanguageForm, DramaSeriesCategoryForm, SeasonForm, EpisodeForm, \
+    DramaSeriesCastForm
 
 
 @method_decorator(staff_required_decorator, name='dispatch')
@@ -460,10 +460,10 @@ class DramaSeriesListView(ListView):
 class DramaSeriesCreateView(CreateView):
     model = DramaSeries
     fields = ['poster_image', 'title', 'description',
-              'director', 'rating', 'trailer_url',
+              'director', 'trailer_url',
               'release_date', 'is_featured', 'featured_until'
               ]
-    template_name = 'admins/dramaseries_form.html'  # Update with your template path
+    template_name = 'admins/dramaseries_form.html'
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -471,17 +471,32 @@ class DramaSeriesCreateView(CreateView):
         form.fields['featured_until'].widget = forms.DateInput(attrs={'type': 'date'})
         return form
 
+    def form_valid(self, form):
+        slug = form.cleaned_data.get('title').lower().replace(" ", "-")
+        if DramaSeries.objects.filter(slug=slug).exists():
+            form.add_error('title', "This title is already in use. Please choose a different one.")
+            return self.form_invalid(form)
+        return super().form_valid(form)
+
     def get_success_url(self):
-        return reverse('admins:drama-detail', kwargs={'slug': self.object.slug})
+        return reverse('admins:drama-detail', kwargs={'pk': self.object.pk})
 
 
 @method_decorator(staff_required_decorator, name='dispatch')
 class DramaSeriesUpdateView(UpdateView):
     model = DramaSeries
-    fields = ['title', 'description', 'release_date', 'director', 'rating', 'poster_image', 'trailer_url', 'slug',
+    fields = ['title', 'description', 'release_date', 'director', 'poster_image', 'trailer_url',
               'is_featured', 'featured_until', 'trending_threshold']
-    template_name = 'admins/dramaseries_form.html'  # Update with your template path
+    template_name = 'admins/dramaseries_form.html'
     success_url = reverse_lazy('admins:drama-list')
+
+    def form_valid(self, form):
+        slug = form.cleaned_data.get('title').lower().replace(" ", "-")
+
+        if DramaSeries.objects.exclude(pk=self.object.pk).filter(slug=slug).exists():
+            form.add_error('title', "This title is already in use. Please choose a different one.")
+            return self.form_invalid(form)
+        return super().form_valid(form)
 
 
 @method_decorator(staff_required_decorator, name='dispatch')
@@ -499,20 +514,17 @@ class DramaSeriesDeleteView(DeleteView):
 class DramaSeriesDetailView(DetailView):
     model = DramaSeries
     template_name = 'admins/dramaseries_detail.html'  # Update with your template path
-    context_object_name = 'drama_series'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # You can add extra context if needed, like related objects
-        return context
+    def get_object(self, queryset=None):
+        return get_object_or_404(DramaSeries, id=self.kwargs['pk'])
 
 
-""" Drama Series Utils ---------------------------------------------------------------------- """
+""" Drama Series Link Views  ----------------------------------------------------------------------"""
 
 
-def link_tags_dramaseries(request, slug):
+def link_tags_dramaseries(request, pk):
     # Fetch the drama series based on the ID
-    drama_series = get_object_or_404(DramaSeries, slug=slug)
+    drama_series = get_object_or_404(DramaSeries, pk=pk)
 
     if request.method == 'POST':
         # Process form submission
@@ -528,7 +540,7 @@ def link_tags_dramaseries(request, slug):
                 DramaSeriesTag.objects.create(drama_series=drama_series, tag=tag)
 
             # Redirect to a success page or the drama series page
-            return redirect('admins:drama-detail', slug=drama_series.slug)
+            return redirect('admins:drama-detail', pk=drama_series.pk)
     else:
         # Pre-fill the form with already linked tags
         preselected_tags = Tag.objects.filter(drama_tags__drama_series=drama_series)
@@ -540,9 +552,9 @@ def link_tags_dramaseries(request, slug):
     })
 
 
-def link_languages_dramaseries(request, drama_series_slug):
+def link_languages_dramaseries(request, pk):
     # Fetch the drama series based on the slug
-    drama_series = get_object_or_404(DramaSeries, slug=drama_series_slug)
+    drama_series = get_object_or_404(DramaSeries, pk=pk)
 
     if request.method == 'POST':
         # Process form submission
@@ -558,7 +570,7 @@ def link_languages_dramaseries(request, drama_series_slug):
                 DramaSeriesLanguage.objects.create(drama_series=drama_series, language=language)
 
             # Redirect to a success page or the drama series page
-            return redirect('admins:drama-detail', slug=drama_series.slug)
+            return redirect('admins:drama-detail', pk=drama_series.pk)
     else:
         # Pre-fill the form with already linked languages
         preselected_languages = Language.objects.filter(drama_languages__drama_series=drama_series)
@@ -570,9 +582,9 @@ def link_languages_dramaseries(request, drama_series_slug):
     })
 
 
-def link_categories_dramaseries(request, drama_series_slug):
+def link_categories_dramaseries(request, pk):
     # Fetch the drama series based on the slug
-    drama_series = get_object_or_404(DramaSeries, slug=drama_series_slug)
+    drama_series = get_object_or_404(DramaSeries, pk=pk)
 
     if request.method == 'POST':
         # Process form submission
@@ -588,7 +600,7 @@ def link_categories_dramaseries(request, drama_series_slug):
                 DramaSeriesCategory.objects.create(drama_series=drama_series, category=category)
 
             # Redirect to the drama series detail page
-            return redirect('admins:drama-detail', slug=drama_series.slug)
+            return redirect('admins:drama-detail', pk=drama_series.pk)
     else:
         # Pre-fill the form with already linked categories
         preselected_categories = DramaSeriesCategory.objects.filter(drama_series=drama_series).values_list('category',
@@ -600,6 +612,34 @@ def link_categories_dramaseries(request, drama_series_slug):
         'form': form
     })
 
+def link_cast_dramaseries(request, pk):
+    # Fetch the drama series based on the primary key
+    drama_series = get_object_or_404(DramaSeries, pk=pk)
+
+    if request.method == 'POST':
+        # Process form submission
+        form = DramaSeriesCastForm(request.POST)
+        if form.is_valid():
+            selected_actors = form.cleaned_data['actors']
+
+            # Clear existing cast for this drama series
+            DramaSeriesCast.objects.filter(drama_series=drama_series).delete()
+
+            # Link selected actors to the drama series
+            for actor in selected_actors:
+                DramaSeriesCast.objects.create(drama_series=drama_series, actor=actor)
+
+            # Redirect to the drama series detail page
+            return redirect('admins:drama-detail', pk=drama_series.pk)
+    else:
+        # Pre-fill the form with already linked actors
+        preselected_actors = DramaSeriesCast.objects.filter(drama_series=drama_series).values_list('actor', flat=True)
+        form = DramaSeriesCastForm(initial={'actors': preselected_actors})
+
+    return render(request, 'admins/link_cast_dramaseries.html', {
+        'drama_series': drama_series,
+        'form': form
+    })
 
 """ SEASONS ----------------------------------------------------------------------------------------------  """
 
@@ -609,17 +649,16 @@ class SeasonCreateView(CreateView):
     model = Season
     form_class = SeasonForm
     template_name = 'admins/season_form.html'
-    success_url = reverse_lazy('admins:drama-list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        drama_series_slug = self.kwargs['drama_series_slug']
-        context['object'] = get_object_or_404(DramaSeries, slug=drama_series_slug)
+        drama_series_slug = self.kwargs['pk']
+        context['object'] = get_object_or_404(DramaSeries, id=drama_series_slug)
         return context
 
     def form_valid(self, form):
-        drama_series_slug = self.kwargs['drama_series_slug']
-        drama_series = get_object_or_404(DramaSeries, slug=drama_series_slug)
+        drama_series_slug = self.kwargs['pk']
+        drama_series = get_object_or_404(DramaSeries, id=drama_series_slug)
 
         # Check if a season with the same number already exists
         season_number = form.cleaned_data['season_number']
@@ -632,6 +671,10 @@ class SeasonCreateView(CreateView):
         form.instance.series = drama_series
         return super().form_valid(form)
 
+    def get_success_url(self):
+        return reverse_lazy('admins:drama-detail', kwargs={'pk': self.object.series.pk})
+
+
 
 class SeasonUpdateView(UpdateView):
     model = Season
@@ -640,11 +683,11 @@ class SeasonUpdateView(UpdateView):
     context_object_name = 'season'
 
     def get_success_url(self):
-        return reverse_lazy('admins:drama-detail', kwargs={'slug': self.object.series.slug})
+        return reverse_lazy('admins:drama-detail', kwargs={'pk': self.object.series.pk})
 
     def get_object(self, queryset=None):
-        pk = self.kwargs.get('pk')
-        return get_object_or_404(Season, pk=pk)
+        pk = self.kwargs.get('season_pk')
+        return get_object_or_404(Season, id=pk)
 
     def form_valid(self, form):
         return super().form_valid(form)
@@ -659,9 +702,9 @@ class SeasonEpisodeListView(DetailView):
     context_object_name = 'season'
 
     def get_object(self, queryset=None):
-        drama_series_slug = self.kwargs['drama_series_slug']
+        drama_series_slug = self.kwargs['pk']
         season_pk = self.kwargs['season_pk']
-        return get_object_or_404(Season, pk=season_pk, series__slug=drama_series_slug)
+        return get_object_or_404(Season, pk=season_pk)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -678,7 +721,7 @@ class SeasonEpisodeCreateView(CreateView):
         season = self.object.season
         # Ensure to get the slug field of the DramaSeries model
         return reverse('admins:season-episode-list',
-                       kwargs={'drama_series_slug': season.series.slug, 'season_pk': season.pk})
+                       kwargs={'pk': season.series.pk, 'season_pk': season.pk})
 
     def form_valid(self, form):
         season_pk = self.kwargs.get('season_pk')
@@ -694,7 +737,7 @@ class SeasonEpisodeUpdateView(UpdateView):
     def get_success_url(self):
         season = self.object.season
         return reverse('admins:season-episode-list',
-                       kwargs={'drama_series_slug': season.series.slug, 'season_pk': season.pk})
+                       kwargs={'pk': season.series.pk, 'season_pk': season.pk})
 
     def get_object(self, queryset=None):
         pk = self.kwargs.get('pk')

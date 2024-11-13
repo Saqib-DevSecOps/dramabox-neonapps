@@ -4,7 +4,7 @@
 {% load humanize %}
 {% load core_tags %}
 
-{% block subtitle %} DRAMA SERIAL {% endblock %}
+{% block subtitle %} DRAMA SERIES {% endblock %}
 
 {% block content %}
     <div class="container">
@@ -15,14 +15,14 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <p class="mb-0 font-size-24">
-                                DRAMA SERIAL {% if object %}#{{ object }}{% else %}FORM{% endif %}
+                                DRAMA SERIES {% if object %}#{{ object }}{% else %}FORM{% endif %}
                             </p>
                         </div>
                         <div class="col-sm-6 text-right">
 
                             <button type="button" class="btn btn-primary mb-1"
                                     onclick="window.location.href='{% url 'admins:drama-list' %}'">
-                                <i class="fa fa-arrow-left"></i> Back to Drama Serials
+                                <i class="fa fa-arrow-left"></i> Back to Drama Series
                             </button>
 
                         </div>
@@ -42,7 +42,7 @@
                         </div>
                     {% endif %}
                     <div class="card-body">
-                        <form method="post" novalidate>
+                        <form method="post" novalidate enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ form.non_field_errors }}
                             {{ form|crispy }}

@@ -11,7 +11,8 @@ from .views import (
     DirectorCreateView, DirectorUpdateView, DirectorDeleteView, DirectorListView,
     ContentRatingListView, ContentRatingCreateView, ContentRatingDeleteView, ContentRatingUpdateView,
     DramaSeriesListView, DramaSeriesDeleteView, DramaSeriesUpdateView, DramaSeriesCreateView, DramaSeriesDetailView,
-    link_tags_dramaseries, link_languages_dramaseries, link_categories_dramaseries, SeasonCreateView, SeasonUpdateView,
+    link_tags_dramaseries, link_languages_dramaseries, link_categories_dramaseries, link_cast_dramaseries,
+    SeasonCreateView, SeasonUpdateView,
     SeasonEpisodeListView, SeasonEpisodeCreateView, SeasonEpisodeMediaUpdate, SeasonEpisodeUpdateView, SaveFileAPIView,
     SeasonEpisodeDeleteView
 )
@@ -35,22 +36,24 @@ urlpatterns += [
 
     path('drama-series/', DramaSeriesListView.as_view(), name='drama-list'),
     path('drama-series/create/', DramaSeriesCreateView.as_view(), name='drama-create'),
-    path('drama-series/<int:pk>/delete/', DramaSeriesDeleteView.as_view(), name='drama-delete'),
-    path('drama-series/<int:pk>/update/', DramaSeriesUpdateView.as_view(), name='drama-update'),
-    path('drama-series/<int:pk>/', DramaSeriesDetailView.as_view(), name='drama-detail'),
+    path('drama-series/<str:pk>/delete/', DramaSeriesDeleteView.as_view(), name='drama-delete'),
+    path('drama-series/<str:pk>/update/', DramaSeriesUpdateView.as_view(), name='drama-update'),
+    path('drama-series/<str:pk>/', DramaSeriesDetailView.as_view(), name='drama-detail'),
 ]
 
 urlpatterns += [
-    path('drama-series/<slug:drama_series_slug>/link-languages/', link_languages_dramaseries, name='link-languages'),
-    path('drama-series/<slug:slug>/link-tags/', link_tags_dramaseries, name='link-tags-dramaseries'),
-    path('drama-series/<slug:drama_series_slug>/link-categories/', link_categories_dramaseries,
+    path('drama-series/<str:pk>/link-languages/', link_languages_dramaseries, name='link-languages'),
+    path('drama-series/<str:pk>/link-cast/', link_cast_dramaseries, name='link-cast-dramaseries'),
+    path('drama-series/<str:pk>/link-tags/', link_tags_dramaseries, name='link-tags-dramaseries'),
+    path('drama-series/<str:pk>/link-categories/', link_categories_dramaseries,
          name='link-categories-dramaseries'),
 
-    path('drama-series/<slug:drama_series_slug>/add-season/', SeasonCreateView.as_view(), name='season-create'),
-    path('drama-series/<slug:drama_series_slug>/season/<int:pk>/update/', SeasonUpdateView.as_view(),
+
+    path('drama-series/<int:pk>/add-season/', SeasonCreateView.as_view(), name='season-create'),
+    path('drama-series/<int:pk>/season/<int:season_pk>/update/', SeasonUpdateView.as_view(),
          name='season-update'),
 
-    path('drama-series/<slug:drama_series_slug>/season/<int:season_pk>/episodes/', SeasonEpisodeListView.as_view(),
+    path('drama-series/<str:pk>/season/<int:season_pk>/episodes/', SeasonEpisodeListView.as_view(),
          name='season-episode-list'),
     path('drama-series/season/<str:season_pk>/episode/create/', SeasonEpisodeCreateView.as_view(),
          name='episode-create'),

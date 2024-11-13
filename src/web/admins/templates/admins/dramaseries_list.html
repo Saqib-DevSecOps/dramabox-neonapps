@@ -19,7 +19,7 @@
 
                         <button type="button" class="btn btn-primary mb-1"
                                 onclick="window.location.href='{% url 'admins:drama-create' %}'">
-                            <i class="fa fa-plus"></i> Start New Serial
+                            <i class="fa fa-plus"></i> Start New Series
                         </button>
 
                     </div>
@@ -76,12 +76,12 @@
                                 {% for object in object_list %}
                                     <tr>
                                         <td style="width: 100px;">
-                                            <img src="https://placehold.co/50" alt="" height="50" width="50"
+                                            <img src="{{ object.poster_image.url }}" alt="" height="50" width="50"
                                                  class="h-auto d-block rounded">
                                         </td>
                                         <td>
-                                            <h5 class="font-size-13 text-truncate mb-1">
-                                                <a href="javascript: void(0);" class="text-dark">
+                                            <h5 class="font-size-13 text-trunc ate mb-1">
+                                                <a href="{% url 'admins:drama-detail' object.pk %}" class="text-dark">
                                                     {{ object.title }}
                                                 </a>
                                             </h5>
@@ -121,13 +121,13 @@
                                         </td>
                                         <td>
                                             <h5 class="mb-0">
-                                                <a href="{% url 'admins:drama-detail' object.slug %}">
+                                                <a href="{% url 'admins:drama-detail' object.pk %}">
                                                     <i class="fa fa-eye"></i>
                                                 </a> |
-                                                <a href="{% url 'admins:drama-update' object.slug %}">
+                                                <a href="{% url 'admins:drama-update' object.pk %}">
                                                     <i class="fa fa-edit"></i>
                                                 </a> |
-                                                <a class="text-danger" href="{% url 'admins:drama-delete' object.slug %}">
+                                                <a class="text-danger" href="{% url 'admins:drama-delete' object.pk %}">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
                                             </h5>

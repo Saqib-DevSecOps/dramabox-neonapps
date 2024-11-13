@@ -122,7 +122,7 @@ class DramaSeries(models.Model):
                                  help_text="Director of the drama series.")
     content_rating = models.ForeignKey(ContentRating, on_delete=models.SET_NULL, null=True,
                                        help_text="Content rating of the drama series.")
-    rating = models.DecimalField(max_digits=2, decimal_places=1, help_text="Average rating of the drama series.")
+    rating = models.DecimalField(max_digits=2, decimal_places=1, null=True, help_text="Average rating of the drama series.")
     poster_image = models.ImageField(upload_to='dramas/posters/', blank=True, null=True,
                                      help_text="Poster image of the drama series.")
     trailer_url = models.URLField(blank=True, null=True, help_text="Trailer URL for the drama series.")
@@ -179,6 +179,11 @@ class DramaSeries(models.Model):
         Returns the total number of episodes.
         """
         return Episode.objects.filter(season__series=self).count()
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
 
 
 class DramaSeriesTag(models.Model):

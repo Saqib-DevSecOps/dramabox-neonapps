@@ -1,5 +1,5 @@
 from django import forms
-from src.services.drama.models import Tag, Language, Category, Season, Episode
+from src.services.drama.models import Tag, Language, Category, Season, Episode, Actor
 
 
 class DramaSeriesTagForm(forms.Form):
@@ -28,6 +28,15 @@ class DramaSeriesCategoryForm(forms.Form):
         help_text="Select categories to link to this drama series."
     )
 
+
+
+class DramaSeriesCastForm(forms.Form):
+    actors = forms.ModelMultipleChoiceField(
+        queryset=Actor.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        help_text="Select actors to add to the cast."
+    )
 
 class SeasonForm(forms.ModelForm):
     release_date = forms.DateField(
