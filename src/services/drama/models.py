@@ -122,8 +122,14 @@ class DramaSeries(models.Model):
     content_rating = models.ForeignKey(ContentRating, on_delete=models.SET_NULL, null=True,
                                        help_text="Content rating of the drama series.")
     rating = models.DecimalField(max_digits=2, decimal_places=1, null=True, help_text="Average rating of the drama series.")
-    poster_image = models.ImageField(upload_to='dramas/posters/', blank=True, null=True,
-                                     help_text="Poster image of the drama series.")
+    poster_image = models.ImageField(
+        upload_to='dramas/posters/', blank=True, null=True,
+        help_text="Poster image of the drama series."
+    )
+    banner_image = models.ImageField(
+        upload_to='dramas/banners/', blank=True, null=True,
+        help_text="Banners image of the drama series."
+    )
     trailer_url = models.URLField(blank=True, null=True, help_text="Trailer URL for the drama series.")
     slug = models.SlugField(max_length=255, unique=True, help_text="URL-friendly identifier for the drama series.")
 

@@ -15,7 +15,7 @@
                     <div class="swiper-slide">
                         <div class="hero-items">
                             <div class="hero-slider-bg bg-cover"
-                                 style="background-image: url('{{ s.poster_image|image_or_placeholder:'1024x762' }}');"></div>
+                                 style="background-image: url('{{ s.banner_image|image_or_placeholder:'1024x762' }}');"></div>
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-lg-7">
@@ -25,8 +25,7 @@
                                                 <!-- Show first part of title, or use |truncatewords -->
                                             </h1>
                                             <ul>
-                                                <li>{{ s.release_date.year }} . {{ s.duration }} . {{ s.language }}
-                                                    . {{ s.genre }}</li>  <!-- Assuming you have these fields -->
+                                                <li>Added On: {{ s.release_date }}</li>  <!-- Assuming you have these fields -->
                                             </ul>
                                             <p>
                                                 {{ s.description|truncatewords:100 }}
