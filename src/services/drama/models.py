@@ -21,8 +21,7 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
+        self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -39,8 +38,7 @@ class Tag(models.Model):
     updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the tag was last updated.")
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
+        self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -52,8 +50,9 @@ class Language(models.Model):
     Represents available languages for drama (e.g., 'English', 'Spanish').
     """
     name = models.CharField(max_length=100, unique=True, help_text="Name of the language.")
-    code = models.CharField(max_length=10, unique=True,
-                            help_text="Language code, such as 'en' for English or 'es' for Spanish.")
+    code = models.CharField(
+        max_length=10, unique=True, help_text="Language code, such as 'en' for English or 'es' for Spanish."
+    )
     created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when the language was added.")
     updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the language was last updated.")
 
@@ -118,7 +117,7 @@ class DramaSeries(models.Model):
     title = models.CharField(max_length=255, help_text="Title of the drama series.")
     description = models.TextField(blank=True, null=True, help_text="Detailed description of the drama series.")
     release_date = models.DateField(help_text="Release date of the drama series.")
-    director = models.ForeignKey(Director, on_delete=models.SET_NULL, null=True,
+    director = models.ForeignKey(Director, on_delete=models.SET_NULL, null=True, blank=True,
                                  help_text="Director of the drama series.")
     content_rating = models.ForeignKey(ContentRating, on_delete=models.SET_NULL, null=True,
                                        help_text="Content rating of the drama series.")
@@ -131,6 +130,23 @@ class DramaSeries(models.Model):
     view_count = models.PositiveIntegerField(default=0, help_text="Number of views the drama series has received.")
     search_count = models.PositiveIntegerField(default=0,
                                                help_text="Number of times the drama series has been searched.")
+
+    casts = models.ManyToManyField(
+        Actor, through='DramaSeriesCast', related_name='dramas',
+        help_text="Actors who play roles in the drama series."
+    )
+    categories = models.ManyToManyField(
+        Category, through='DramaSeriesCategory', related_name='dramas',
+        help_text="Genres or categories of the drama series."
+    )
+    tags = models.ManyToManyField(
+        Tag, through='DramaSeriesTag', related_name='dramas',
+        help_text="Tags associated with the drama series."
+    )
+    languages = models.ManyToManyField(
+        Language, through='DramaSeriesLanguage', related_name='dramas',
+        help_text="Languages available for the drama series."
+    )
 
     is_featured = models.BooleanField(default=False, help_text="Mark as featured for promotional purposes.")
     featured_until = models.DateField(blank=True, null=True, help_text="Date until this drama is featured.")
@@ -180,10 +196,15 @@ class DramaSeries(models.Model):
         """
         return Episode.objects.filter(season__series=self).count()
 
+    def get_total_seasons(self):
+        return Season.objects.filter(series=self).count()
+
+    def likes_count(self):
+        return Like.objects.filter(drama_series=self).count()
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
-
 
 
 class DramaSeriesTag(models.Model):

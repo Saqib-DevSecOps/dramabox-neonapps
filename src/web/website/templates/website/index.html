@@ -1,5 +1,6 @@
 {% extends 'website/base.html' %}
 {% load static %}
+{% load core_tags %}
 
 
 {% block content %}
@@ -14,7 +15,7 @@
                     <div class="swiper-slide">
                         <div class="hero-items">
                             <div class="hero-slider-bg bg-cover"
-                                 style="background-image: url('{{ s.poster_image.url|default:"{% static 'website/img/hero/default.jpg' %}" }}');"></div>
+                                 style="background-image: url('{{ s.poster_image|image_or_placeholder:'1024x762' }}');"></div>
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-lg-7">
@@ -49,7 +50,7 @@
                         <div class="swiper-slide">
                             <div class="banner-img" style="width: 300px; height: 220px; overflow: hidden;">
                                 <img style="width: 100%; height: 100%; object-fit: cover;"
-                                     src="{{ s.poster_image.url }}" alt="img">
+                                     src="{{ s.poster_image|image_or_placeholder:'300x220' }}" alt="img">
                             </div>
 
                         </div>
@@ -72,7 +73,7 @@
                     <div class="swiper-slide">
                         <div class="movie-box-items-2">
                             <div class="movie-image">
-                                <img src="{{ series.poster_image.url }}"
+                                <img src="{{ series.poster_image|image_or_placeholder:'1024x762' }}"
                                      alt="{{ series.title }}">
                                 <div class="number">
                                     {{ forloop.counter }}  <!-- Shows the index of the series -->
@@ -179,7 +180,7 @@
                                 <div class="movie-box-items style-2">
                                     <div class="movie-image"
                                          style="max-width: 300px; max-height: 170px; overflow: hidden; border-radius: 10px;">
-                                        <img src="{{ series.poster_image.url }}" alt="{{ series.title }}"
+                                        <img src="{{ series.poster_image|image_or_placeholder:'300x170' }}" alt="{{ series.title }}"
                                              style="width: 100%; height: auto; max-height: 100%; object-fit: cover; border-radius: 10px;">
                                     </div>
                                     <div class="movie-content">

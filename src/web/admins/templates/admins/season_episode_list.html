@@ -4,12 +4,32 @@
 {% load crispy_forms_tags %}
 {% load humanize %}
 {% load core_tags %}
-{% block subtitle %} {{ request.user }} {% endblock %}
+{% block subtitle %}{{ season.series.title }} - Season {{ season.season_number }}{% endblock %}
 
 {% block content %}
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <h3>Episodes of {{ season.series.title }} - Season {{ season.season_number }}</h3>
-        <a href="{% url 'admins:episode-create' season.pk %}" class="btn btn-warning">Add Episode +</a>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="mb-0 font-size-24">
+                            {{ season.series.title }} - Season {{ season.season_number }}
+                        </p>
+                    </div>
+                    <div class="col-sm-6 text-right">
+
+                        <a href="{% url 'admins:episode-create' season.pk %}" class="btn btn-primary">
+                            <i class="fa fa-plus"></i> Add Episode
+                        </a>&nbsp;
+                        <a class="btn btn-outline-primary" href="{% url 'admins:drama-detail' season.series.id %}">
+                            <i class="fa fa-arrow-left"></i> Go Back
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <div class="row">
@@ -21,12 +41,13 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Title</th>
-                            <th scope="col">Episode Number</th>
+                            <th scope="col">Media</th>
+                            <th scope="col">Ep No</th>
                             <th scope="col">Duration (HH:MM:SS)</th>
-                            <th scope="col">Release Date</th>
-                            <th scope="col">View Count</th>
-                            <th scope="col">Is Free</th>
-                            <th scope="col">Is Active</th>
+                            <th scope="col">Released</th>
+                            <th scope="col">Views</th>
+                            <th scope="col">Free</th>
+                            <th scope="col">Active</th>
                             <th scope="col">Action</th>
                         </tr>
                         </thead>
@@ -36,6 +57,15 @@
                             <tr>
                                 <td><b>{{ forloop.counter }}</b></td>
                                 <td>{{ episode.title }}</td>
+                                <td>
+                                    <p class="h6 mb-0">
+                                        {% if episode.video_file %}
+                                            <a href="{{ episode.video_file }}">{{ episode.video_file_name|truncatechars:10 }}</a>
+                                        {% else %}
+
+                                        {% endif %}
+                                    </p>
+                                </td>
                                 <td>{{ episode.episode_number }}</td>
                                 <td>{{ episode.duration }}</td>
                                 <td>{{ episode.release_date }}</td>
@@ -50,17 +80,17 @@
                                 <td>
                                     {% if not episode.is_active %}
                                         <a href="{% url 'admins:episode-media-update' season.pk episode.pk %}"
-                                           ><i class="fa fa-upload"></i></a>
+                                        ><i class="fa fa-upload"></i></a>
                                     {% endif %}
                                     <a href="{% url 'admins:episode-update' season.pk episode.pk %}"
-                                       ><i class="fa fa-edit"></i></a>
+                                    ><i class="fa fa-edit"></i></a>
                                     <a href="{% url 'admins:episode-delete' season.pk episode.pk %}"
-                                       ><i class="fa fa-trash text-danger"></i></a>
+                                    ><i class="fa fa-trash text-danger"></i></a>
                                 </td>
                             </tr>
                         {% empty %}
                             <tr>
-                                <td colspan="5" class="text-danger">No episodes found for this season.</td>
+                                <td colspan="5" class="text-danger"><b>No episodes found for this season.</b></td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -75,7 +105,7 @@
             <div class="mt-4">
                 <ul class="pagination">
                     {% if object_list.has_previous %}
-                        <li class="page-link rounded">
+                        <li>
                             <span>
                                 <a href="{% relative_url object_list.previous_page_number 'page' request.GET.urlencode %}">
                                     Previous
@@ -83,13 +113,11 @@
                             </span>
                         </li>
                     {% endif %}
-                    &nbsp;&nbsp;&nbsp;
-                    <li class="page-link rounded">
+                    <li class="">
                         <span>Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.</span>
                     </li>
-                    &nbsp;&nbsp;&nbsp;
                     {% if object_list.has_next %}
-                        <li class="page-link rounded">
+                        <li>
                             <span>
                                 <a href="{% relative_url object_list.next_page_number 'page' request.GET.urlencode %}">
                                     Next

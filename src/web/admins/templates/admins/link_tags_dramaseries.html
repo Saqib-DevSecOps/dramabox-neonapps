@@ -4,26 +4,21 @@
 {% load crispy_forms_tags %}
 {% load humanize %}
 
-{% block subtitle %} {{ request.user }} {% endblock %}
+{% block subtitle %} Serial Tags {% endblock %}
 
 {% block content %}
-    <div class="container">
-                <div class="row">
-            <div class="col">
-                <h1> Series Tags: {{ drama_series.title }}</h1>
-            </div>
-            <div class="col text-right">
-                <a href="{% url 'admins:drama-detail' drama_series.pk %}"
-                   class="mt-2 btn btn-sm btn-secondary"><i
-                        class="fa fa-arrow-left"
-                        aria-hidden="true"></i>
-                    Back to List</a>
-            </div>
-        </div>
-
         <div class="row justify-content-center mt-4">
-            <div class="col-12 col-sm-12">
+            <div class="col-sm-6">
                 <div class="card shadow-lg">
+
+                    <div class="card-body border-bottom">
+                        <p class="mb-0 card-title">
+                            <a href="{% url 'admins:drama-detail' drama_series.id %}">
+                                <i class="fa fa-arrow-left"></i> back to {{ drama_series }}
+                            </a>
+                        </p>
+                    </div>
+
                     <div class="card-body">
                         <form method="post" novalidate>
                             {% csrf_token %}
@@ -38,5 +33,4 @@
                 </div>
             </div>
         </div>
-    </div>
 {% endblock %}
