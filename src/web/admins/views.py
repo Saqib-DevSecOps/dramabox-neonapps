@@ -458,10 +458,10 @@ class DramaSeriesListView(ListView):
 class DramaSeriesCreateView(CreateView):
     model = DramaSeries
     fields = [
-        'poster_image', 'title', 'description',
+        'poster_image', 'banner_image', 'title', 'description',
         'director', 'trailer_url',
         'release_date', 'is_featured', 'featured_until'
-              ]
+    ]
     template_name = 'admins/dramaseries_form.html'
 
     def get_form(self, form_class=None):
@@ -485,7 +485,8 @@ class DramaSeriesCreateView(CreateView):
 class DramaSeriesUpdateView(UpdateView):
     model = DramaSeries
     fields = [
-        'poster_image', 'title', 'description', 'director', 'trailer_url',
+        'poster_image', 'banner_image', 'title', 'description',
+        'director', 'trailer_url',
         'release_date', 'is_featured', 'featured_until'
     ]
     template_name = 'admins/dramaseries_form.html'
@@ -498,6 +499,12 @@ class DramaSeriesUpdateView(UpdateView):
             form.add_error('title', "This title is already in use. Please choose a different one.")
             return self.form_invalid(form)
         return super().form_valid(form)
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['release_date'].widget = forms.DateInput(attrs={'type': 'date'})
+        form.fields['featured_until'].widget = forms.DateInput(attrs={'type': 'date'})
+        return form
 
 
 @method_decorator(staff_required_decorator, name='dispatch')
