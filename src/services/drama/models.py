@@ -117,7 +117,7 @@ class DramaSeries(models.Model):
     title = models.CharField(max_length=255, help_text="Title of the drama series.")
     description = models.TextField(blank=True, null=True, help_text="Detailed description of the drama series.")
     release_date = models.DateField(help_text="Release date of the drama series.")
-    director = models.ForeignKey(Director, on_delete=models.SET_NULL, null=True,
+    director = models.ForeignKey(Director, on_delete=models.SET_NULL, null=True, blank=True,
                                  help_text="Director of the drama series.")
     content_rating = models.ForeignKey(ContentRating, on_delete=models.SET_NULL, null=True,
                                        help_text="Content rating of the drama series.")

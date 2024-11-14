@@ -71,7 +71,7 @@
                         <div class="col text-center">
                             <p class="mb-0 text-center h3"><i class="mdi mdi-security"></i></p>
                             <p class="mb-0 text-center h5">Last Login</p>
-                            <p class="mb-0 text-center">{{ user.last_login }}</p>
+                            <p class="mb-0 text-center">{{ user.last_login|check_null }}</p>
                         </div>
 
                         <div class="col">
@@ -90,49 +90,6 @@
                             </p>
                         </div>
                     </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {# STATISTICS #}
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card shadow-lg rounded-lg">
-                <div class="card-body border-bottom">
-                    <p class="card-title mb-0">User Statistics</p>
-                </div>
-                <div class="card-body">
-
-                    {% if statistic %}
-                        <div class="row">
-
-                            <div class="col border-right">
-                                <p class="mb-0 text-center h3 text-success"><i class="mdi mdi-arrow-up"></i></p>
-                                <p class="mb-0 text-center small">Current TRX</p>
-                                <p class="mb-0 text-center h4">00</p>
-                            </div>
-
-                            <div class="col">
-                                <p class="mb-0 text-center h3 text-danger"><i class="mdi mdi-arrow-down"></i>
-                                </p>
-                                <p class="mb-0 text-center small">Withdrawal TRX</p>
-                                <p class="mb-0 text-center h4">00</p>
-                            </div>
-
-                            <div class="col">
-                                <p class="mb-0 text-center h3"><i class="fa fa-coins text-warning"></i></p>
-                                <p class="mb-0 text-center small">Generated TRX</p>
-                                <p class="mb-0 text-center h4">00</p>
-                            </div>
-
-                        </div>
-                    {% else %}
-                        <p class="text-danger h4 mb-0">Statistics are not available for this account - please
-                            consult
-                            developers</p>
-                    {% endif %}
 
                 </div>
             </div>

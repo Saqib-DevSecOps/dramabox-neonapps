@@ -4,7 +4,9 @@
 {% load humanize %}
 {% load core_tags %}
 
-{% block subtitle %} DRAMA SERIES {% endblock %}
+{% block subtitle %}
+    {% if object %}{{ object }}{% else %}Drama Series Form{% endif %}
+{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -15,7 +17,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <p class="mb-0 font-size-24">
-                                DRAMA SERIES {% if object %}#{{ object }}{% else %}FORM{% endif %}
+                                {% if object %}{{ object }}{% else %}Drama Series Form{% endif %}
                             </p>
                         </div>
                         <div class="col-sm-6 text-right">
