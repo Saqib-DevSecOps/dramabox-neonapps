@@ -228,13 +228,13 @@ AWS_S3_ENDPOINT_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 """ DEBUGGING TOOLS """
 
 # Make sure to remove this in live server - use it on local server
-if ENVIRONMENT != 'server':
-    INSTALLED_APPS += [
-        'django_browser_reload'
-    ]
-    MIDDLEWARE += [
-        'django_browser_reload.middleware.BrowserReloadMiddleware'
-    ]
+# if ENVIRONMENT != 'server':
+#     INSTALLED_APPS += [
+#         'django_browser_reload'
+#     ]
+#     MIDDLEWARE += [
+#         'django_browser_reload.middleware.BrowserReloadMiddleware'
+#     ]
 
 """ MFA SETUP --------------------------------------------------------------------------------"""
 MFA_ADAPTER = "allauth.mfa.adapter.DefaultMFAAdapter"

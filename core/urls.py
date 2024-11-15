@@ -35,11 +35,11 @@ urlpatterns += [
 ]
 
 """ DEVELOPMENT ONLY -------------------------------------------------------------------------------------------- """
-if ENVIRONMENT != 'server':
-    urlpatterns += [
-        path("__reload__/", include("django_browser_reload.urls"))
-    ]
-
-    urlpatterns += [
-        path('', TemplateView.as_view(template_name='dev/starter-page.html')),  # use: for home page/remove this
-    ]
+# if ENVIRONMENT != 'server':
+#     urlpatterns += [
+#         path("__reload__/", include("django_browser_reload.urls"))
+#     ]
+#
+#     urlpatterns += [
+#         path('', TemplateView.as_view(template_name='dev/starter-page.html')),  # use: for home page/remove this
+#     ]
