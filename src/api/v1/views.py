@@ -32,7 +32,8 @@ class HomeDramaListAPIView(ListAPIView):
         Filters dramas into various categories: featured, trending, upcoming, etc.
         """
         all_dramas = DramaSeries.objects.all()
-        trending_dramas = [drama for drama in all_dramas if drama.is_trending][:3]
+        # trending_dramas = [drama for drama in all_dramas if drama.is_trending][:3]
+        trending_dramas = all_dramas[:3]
         seasons_for_slider = trending_dramas[:3]
         top_10_dramas = DramaSeries.objects.order_by('-rating')[:10]
         continue_watching = Episode.objects.all()[:10]

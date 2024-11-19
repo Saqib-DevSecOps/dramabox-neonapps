@@ -297,8 +297,10 @@ class Episode(models.Model):
     Represents individual episodes in a specific season of a drama series.
     """
     title = models.CharField(max_length=255, help_text="Title of the episode.")
-    season = models.ForeignKey(Season, on_delete=models.CASCADE, related_name='episodes',
-                               help_text="Season the episode belongs to.")
+    season = models.ForeignKey(
+        Season, on_delete=models.CASCADE, related_name='episodes',
+        help_text="Season the episode belongs to."
+    )
     episode_number = models.IntegerField(help_text="Episode number within the season.")
     description = models.TextField(blank=True, null=True, help_text="Detailed description of the episode.")
     release_date = models.DateField(help_text="Release date of the episode.")
@@ -313,7 +315,6 @@ class Episode(models.Model):
     updated_at = models.DateTimeField(auto_now=True, help_text="Date and time when the episode was last updated.")
 
     class Meta:
-        unique_together = ('season', 'episode_number')
         verbose_name = "Drama Series Season Episode"
         verbose_name_plural = "Drama Series Seasons Episode"
 
