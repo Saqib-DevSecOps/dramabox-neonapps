@@ -132,11 +132,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 if ENVIRONMENT == 'server':
+    print("server")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'myproject1',
-            'USER': 'myprojectuser1',
+            'NAME': 'myproject',
+            'USER': 'myprojectuser',
             'PASSWORD': 'password',
             'HOST': 'localhost',
             'PORT': '',
@@ -144,6 +145,7 @@ if ENVIRONMENT == 'server':
     }
 
 else:
+    print("local")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
