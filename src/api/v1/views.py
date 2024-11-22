@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from src.api.v1.filters import DramaSeriesFilter
 from src.api.v1.pagination import DramaSeriesPagination
 from src.api.v1.serializers import HomeDramaSeriesListSerializer, DramaSeriesSerializer, DramaSeriesDetailSerializer, \
-    ReviewSerializer, LikeSerializer, CategorySerializer, TagSerializer
+    ReviewSerializer, LikeSerializer, CategorySerializer, TagSerializer, EpisodeSerializer
 from src.services.drama.models import DramaSeries, Review, Like, Episode, Category, Tag
 
 
@@ -72,7 +72,6 @@ class DramaSeriesListAPIView(ListAPIView):
     pagination_class = DramaSeriesPagination
     filter_backends = [DjangoFilterBackend]
     filterset_class = DramaSeriesFilter
-
 
     def get_queryset(self):
         """
@@ -160,3 +159,18 @@ class CategoryTagHelperAPIView(APIView):
             'category': serialize_category.data,
             'tag': serialize_tag.data
         })
+
+
+class SeasonEpisodeListAPIView(ListAPIView):
+    """
+    Provides detailed information about a specific drama series.
+    """
+    serializer_class = EpisodeSerializer
+    permission_classes = [AllowAny]
+    pagination_class = DramaSeriesPagination
+
+    def get_queryset(self):
+        """
+        Retrieves all drama series for detail view.
+        """
+        return Episode.objects.filter(season_id=self.kwargs.get('season_id'))
