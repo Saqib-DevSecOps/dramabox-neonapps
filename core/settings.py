@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'allauth.mfa',
+    # 'allauth.mfa',
 
     # REST APPS
     'rest_framework',
