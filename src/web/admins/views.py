@@ -840,6 +840,6 @@ class SaveFileAPIView(View):
         episode = get_object_or_404(Episode, pk=episode_id)
         episode.video_file_name = video_file_name
         episode.video_file = file_url
-        # episode.is_active = True
+        episode.is_active = True
         episode.save()
         return JsonResponse({'status': 'success', 'message': 'File URL saved successfully.'})
