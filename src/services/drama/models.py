@@ -317,6 +317,7 @@ class Episode(models.Model):
     class Meta:
         verbose_name = "Drama Series Season Episode"
         verbose_name_plural = "Drama Series Seasons Episode"
+        ordering = ['episode_number']
 
     def __str__(self):
         return f"{self.season.series.title} - Season {self.season.season_number}, Episode {self.episode_number}"
