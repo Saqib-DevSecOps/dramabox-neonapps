@@ -1,6 +1,7 @@
 # all_auth
 import json
 import logging
+import os
 
 import boto3
 from allauth.socialaccount.models import SocialAccount
@@ -829,6 +830,8 @@ class SeasonEpisodeMediaUpdate(TemplateView):
         context['episode'] = get_object_or_404(Episode, pk=self.kwargs.get('pk'))
         return context
 
+from urllib.parse import unquote, urlparse, quote
+import urllib.parse
 
 @method_decorator(csrf_exempt, name='dispatch')
 class SaveFileAPIView(View):
@@ -839,6 +842,11 @@ class SaveFileAPIView(View):
         video_file_name = data.get('file_name')
         episode = get_object_or_404(Episode, pk=episode_id)
         episode.video_file_name = video_file_name
+        cloud_front_distribution = "https://d1sd8vkiwxccfh.cloudfront.net/output"
+        file_url = file_url.replace("https://dramaboxbucket.s3.amazonaws.com", cloud_front_distribution)
+        file_name = os.path.basename(urlparse(file_url).path)
+        file_extension = os.path.splitext(file_name)[1]
+        file_url = file_url.replace(file_extension,'.m3u8')
         episode.video_file = file_url
         episode.is_active = True
         episode.save()
