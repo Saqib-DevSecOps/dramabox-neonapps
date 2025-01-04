@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from src.services.drama.models import Category, Tag, Language, ContentRating, Actor, Director, DramaSeries, \
-    DramaSeriesTag, DramaSeriesLanguage, DramaSeriesCast, DramaSeriesCategory, Season, Episode, Review, Like
+    Season, Episode, Review, Like, EpisodeWatchProgress
 
 
 # -------------------------GenericSerializer--------------------------------------------
@@ -209,3 +209,29 @@ class LikeSerializer(serializers.ModelSerializer):
         model = Like
         fields = ['drama_series']  # Make sure to adjust the field name according to your model
         read_only_fields = ['user']
+
+
+class EpisodeWatchProgressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EpisodeWatchProgress
+        fields = ['id', 'user', 'episode', 'progress', 'timestamp']
+        read_only_fields = ['id', 'user', 'episode', 'timestamp']
+
+    def validate(self, data):
+        """
+        Check that the user has not already submitted a watch progress for the specified episode.
+        """
+        user = self.context['request'].user
+        episode_id = self.context['view'].kwargs.get('episode_id')
+
+        # Add Check For Create not for Update
+        if EpisodeWatchProgress.objects.filter(user=user, episode_id=episode_id).exists():
+            raise ValidationError("You have already submitted a watch progress for this episode.")
+        return data
+
+
+class EpisodeWatchProgressUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EpisodeWatchProgress
+        fields = ['progress']
+        read_only_fields = ['id', 'user', 'episode', 'timestamp']

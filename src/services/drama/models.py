@@ -121,7 +121,8 @@ class DramaSeries(models.Model):
                                  help_text="Director of the drama series.")
     content_rating = models.ForeignKey(ContentRating, on_delete=models.SET_NULL, null=True,
                                        help_text="Content rating of the drama series.")
-    rating = models.DecimalField(max_digits=2, decimal_places=1, null=True, help_text="Average rating of the drama series.")
+    rating = models.DecimalField(max_digits=2, decimal_places=1, null=True,
+                                 help_text="Average rating of the drama series.")
     poster_image = models.ImageField(
         upload_to='dramas/posters/', blank=True, null=True,
         help_text="Poster image of the drama series."
@@ -321,6 +322,33 @@ class Episode(models.Model):
 
     def __str__(self):
         return f"{self.season.series.title} - Season {self.season.season_number}, Episode {self.episode_number}"
+
+    def get_watch_progress(self, user):
+        try:
+            watch_progress = EpisodeWatchProgress.objects.get(user=user, episode=self)
+            if watch_progress.progress == 0.0 or watch_progress.progress == 100.0:
+                return 0
+            return watch_progress.progress
+        except EpisodeWatchProgress.DoesNotExist:
+            return 0
+
+
+class EpisodeWatchProgress(models.Model):
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    episode = models.ForeignKey(Episode, on_delete=models.CASCADE)
+    progress = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'episode')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.episode.title} - {self.progress}%"
+
+    def watch_complete(self):
+        return self.progress == 100.0
+
+
 
 
 # ---------------------------- User Interaction Models ---------------------------- #
