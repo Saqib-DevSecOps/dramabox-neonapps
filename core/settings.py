@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'src.core.apps.CoreConfig',
     'src.services.users.apps.UsersConfig',
     'src.services.drama.apps.DramaConfig',
+    'src.services.wallet.apps.WalletConfig',
 
     # WEB APPS
     'src.web.website',
