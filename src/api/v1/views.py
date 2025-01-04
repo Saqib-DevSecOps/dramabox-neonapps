@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from src.api.v1.filters import DramaSeriesFilter
-from src.api.v1.pagination import DramaSeriesPagination
+from src.api.v1.pagination import DramaSeriesPagination, ContinueWatchingPagination
 from src.api.v1.serializers import HomeDramaSeriesListSerializer, DramaSeriesSerializer, DramaSeriesDetailSerializer, \
     ReviewSerializer, LikeSerializer, CategorySerializer, TagSerializer, EpisodeSerializer, \
     EpisodeWatchProgressSerializer, EpisodeWatchProgressUpdateSerializer
@@ -185,7 +185,7 @@ class ContinueWatchingListAPIView(ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = EpisodeSerializer
     queryset = Episode.objects.all()
-
+    pagination_class = ContinueWatchingPagination
     def get_queryset(self):
         user = self.request.user
         watch_episode = EpisodeWatchProgress.objects.filter(user=user)
