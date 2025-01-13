@@ -3,7 +3,8 @@ from django.urls import path
 from src.api.v1.views import (HomeDramaListAPIView, DramaSeriesListAPIView, DramaSeriesDetailAPIView,
                               ReviewListView, ReviewCreateView, LikeCreateView, CategoryTagHelperAPIView,
                               SeasonEpisodeListAPIView, EpisodeWatchProgressCreateApiView,
-                              EpisodeWatchProgressUpdateApiView, ContinueWatchingListAPIView
+                              EpisodeWatchProgressUpdateApiView, ContinueWatchingListAPIView,
+                              ContinueWatchingDeleteAPIView
                               )
 
 app_name = 'v1'
@@ -18,6 +19,7 @@ urlpatterns = [
 urlpatterns += [
 
     path('continue-watching/', ContinueWatchingListAPIView.as_view(), name='continue-watching'),
+    path('continue-watching/<str:episode_id>/', ContinueWatchingDeleteAPIView.as_view(), name='continue-watching-delete'),
     path('episode/watch-progress/<str:episode_id>/', EpisodeWatchProgressCreateApiView.as_view(),
          name='episode-watch-progress-create'),
     path('episode/watch-progress/<str:episode_id>/update/', EpisodeWatchProgressUpdateApiView.as_view(),

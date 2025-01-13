@@ -221,20 +221,9 @@ class ContinueWatchingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EpisodeWatchProgress
-        fields = ['episode_id', 'season_id', 'series_id', 'series_name', 'total_episodes', 'image', 'progress',
+        fields = ['id','episode_id', 'season_id', 'series_id', 'series_name', 'total_episodes', 'image', 'progress',
                   'timestamp']
 
-    def validate(self, data):
-        """
-        Check that the user has not already submitted a watch progress for the specified episode.
-        """
-        user = self.context['request'].user
-        episode_id = data.get('episode')
-
-        if EpisodeWatchProgress.objects.filter(user=user, episode_id=episode_id).exists():
-            raise ValidationError("You have already submitted a watch progress for this episode.")
-
-        return data
 
 
 class EpisodeWatchProgressSerializer(serializers.ModelSerializer):

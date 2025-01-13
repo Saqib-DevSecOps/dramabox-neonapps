@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView, CreateAPIView, get_object_or_404, \
-    UpdateAPIView
+    UpdateAPIView, DestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -190,9 +190,23 @@ class ContinueWatchingListAPIView(ListAPIView):
     def get_queryset(self):
         user = self.request.user
         watch_episode = EpisodeWatchProgress.objects.filter(user=user)
-        watch_episode = watch_episode.filter(progress__gt=0, progress__lt=100).order_by('-timestamp')
-        episodes = [watch_episode.episode for watch_episode in watch_episode]
-        return episodes
+        watch_episode = watch_episode.filter(progress__range=(1, 99)).order_by('-timestamp')
+        return watch_episode
+
+
+class ContinueWatchingDeleteAPIView(DestroyAPIView):
+    """
+    Allows users to delete an episode from their 'Continue Watching' list.
+    """
+    permission_classes = [IsAuthenticated]
+    queryset = EpisodeWatchProgress.objects.all()
+
+    def delete(self, request, *args, **kwargs):
+        user = request.user
+        episode_id = kwargs.get('episode_id')
+        episode_progress = get_object_or_404(EpisodeWatchProgress, episode_id=episode_id, user=user)
+        episode_progress.delete()
+        return Response({"detail": "Deleted successfully"}, status=status.HTTP_200_OK)
 
 
 class EpisodeWatchProgressCreateApiView(CreateAPIView):
