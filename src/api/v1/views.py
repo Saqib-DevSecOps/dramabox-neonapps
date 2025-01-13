@@ -13,7 +13,7 @@ from src.api.v1.filters import DramaSeriesFilter
 from src.api.v1.pagination import DramaSeriesPagination, ContinueWatchingPagination
 from src.api.v1.serializers import HomeDramaSeriesListSerializer, DramaSeriesSerializer, DramaSeriesDetailSerializer, \
     ReviewSerializer, LikeSerializer, CategorySerializer, TagSerializer, EpisodeSerializer, \
-    EpisodeWatchProgressSerializer, EpisodeWatchProgressUpdateSerializer
+    EpisodeWatchProgressSerializer, EpisodeWatchProgressUpdateSerializer, ContinueWatchingSerializer
 from src.services.drama.models import DramaSeries, Review, Like, Episode, Category, Tag, EpisodeWatchProgress
 
 
@@ -183,9 +183,10 @@ class ContinueWatchingListAPIView(ListAPIView):
     Provides a list of episodes that the user has started watching.
     """
     permission_classes = [IsAuthenticated]
-    serializer_class = EpisodeSerializer
-    queryset = Episode.objects.all()
+    serializer_class = ContinueWatchingSerializer
     pagination_class = ContinueWatchingPagination
+    queryset = EpisodeWatchProgress.objects.all()
+
     def get_queryset(self):
         user = self.request.user
         watch_episode = EpisodeWatchProgress.objects.filter(user=user)
