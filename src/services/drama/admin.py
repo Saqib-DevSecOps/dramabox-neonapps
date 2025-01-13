@@ -131,13 +131,11 @@ class ReviewAdmin(admin.ModelAdmin):
 class LikeAdmin(admin.ModelAdmin):
     list_display = ('user', 'drama_series', 'liked_on')
     list_filter = ('liked_on',)
-    search_fields = ('user__username', 'episode__title', 'series__title')
 
 
 @admin.register(Testimonials)
 class TestimonialsAdmin(admin.ModelAdmin):
     list_display = ('user_name', 'comment', 'created_at')
-    search_fields = ('user_name', 'comment', 'message')
 
 
 @admin.register(EpisodeWatchProgress)
