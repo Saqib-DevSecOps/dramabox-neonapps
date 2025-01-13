@@ -719,7 +719,7 @@ class SeasonEpisodeListView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['episodes'] = self.object.episodes.order_by('id')
+        context['episodes'] = self.object.episodes.order_by('episode_number')
         return context
 
 

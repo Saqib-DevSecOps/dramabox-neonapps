@@ -190,8 +190,16 @@ class ContinueWatchingListAPIView(ListAPIView):
     def get_queryset(self):
         user = self.request.user
         watch_episode = EpisodeWatchProgress.objects.filter(user=user)
-        watch_episode = watch_episode.filter(progress__range=(1, 99)).order_by('-timestamp')
-        return watch_episode
+        # watch_episode = watch_episode.filter(progress__range=(1, 99)).order_by('-timestamp')
+        # return watch_episode
+
+
+        # Group by series and get the latest watched episode for each series
+        return (
+            EpisodeWatchProgress.objects.filter(user=user, progress__range=(1, 100))
+            .order_by('episode__season__series', '-timestamp')
+            .distinct('episode__season__series')
+        )
 
 
 class ContinueWatchingDeleteAPIView(DestroyAPIView):
