@@ -336,22 +336,16 @@ class Episode(models.Model):
 class EpisodeWatchProgress(models.Model):
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
     episode = models.ForeignKey(Episode, on_delete=models.CASCADE)
-    progress = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     timestamp = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ('user', 'episode')
 
     def __str__(self):
-        return f"{self.user.username} - {self.episode.title} - {self.progress}%"
+        return f"{self.user.username} - {self.episode.title}"
 
-    def watch_complete(self):
-        return self.progress == 100.0
+    # ---------------------------- User Interaction Models ---------------------------- #
 
-
-
-
-# ---------------------------- User Interaction Models ---------------------------- #
 
 class Review(models.Model):
     """

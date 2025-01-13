@@ -140,7 +140,7 @@ class TestimonialsAdmin(admin.ModelAdmin):
 
 @admin.register(EpisodeWatchProgress)
 class EpisodeWatchProgressAdmin(admin.ModelAdmin):
-    list_display = ('user', 'episode', 'progress', 'timestamp')
+    list_display = ('user', 'episode', 'timestamp')
 
 
 admin.site.register(DramaSeriesTag)

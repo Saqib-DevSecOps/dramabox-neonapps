@@ -217,36 +217,26 @@ class ContinueWatchingSerializer(serializers.ModelSerializer):
     series_id = serializers.IntegerField(source='episode.season.series.id', read_only=True)
     series_name = serializers.CharField(source='episode.season.series.title', read_only=True)
     total_episodes = serializers.IntegerField(source='episode.season.series.get_total_episodes', read_only=True)
-    image = serializers.CharField(source='episode.season.series.poster_image', read_only=True)
+    image = serializers.ImageField(source='episode.season.series.poster_image', read_only=True)
 
     class Meta:
         model = EpisodeWatchProgress
-        fields = ['id','episode_id', 'season_id', 'series_id', 'series_name', 'total_episodes', 'image', 'progress',
-                  'timestamp']
-
+        fields = ['id', 'episode_id', 'season_id', 'series_id', 'series_name', 'total_episodes', 'image', 'timestamp']
 
 
 class EpisodeWatchProgressSerializer(serializers.ModelSerializer):
     class Meta:
         model = EpisodeWatchProgress
-        fields = ['id', 'user', 'episode', 'progress', 'timestamp']
-        read_only_fields = ['id', 'user', 'episode', 'timestamp']
+        fields = ['id', 'user', 'episode', 'timestamp']
+        read_only_fields = ['id', 'user', 'timestamp']
 
     def validate(self, data):
         """
         Check that the user has not already submitted a watch progress for the specified episode.
         """
         user = self.context['request'].user
-        episode_id = self.context['view'].kwargs.get('episode_id')
-
+        episode_id = data.get('episode')
         # Add Check For Create not for Update
         if EpisodeWatchProgress.objects.filter(user=user, episode_id=episode_id).exists():
             raise ValidationError("You have already submitted a watch progress for this episode.")
         return data
-
-
-class EpisodeWatchProgressUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EpisodeWatchProgress
-        fields = ['progress']
-        read_only_fields = ['id', 'user', 'episode', 'timestamp']

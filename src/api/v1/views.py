@@ -1,3 +1,4 @@
+from django.db.models import Max
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
@@ -13,7 +14,7 @@ from src.api.v1.filters import DramaSeriesFilter
 from src.api.v1.pagination import DramaSeriesPagination, ContinueWatchingPagination
 from src.api.v1.serializers import HomeDramaSeriesListSerializer, DramaSeriesSerializer, DramaSeriesDetailSerializer, \
     ReviewSerializer, LikeSerializer, CategorySerializer, TagSerializer, EpisodeSerializer, \
-    EpisodeWatchProgressSerializer, EpisodeWatchProgressUpdateSerializer, ContinueWatchingSerializer
+    EpisodeWatchProgressSerializer, ContinueWatchingSerializer
 from src.services.drama.models import DramaSeries, Review, Like, Episode, Category, Tag, EpisodeWatchProgress
 
 
@@ -189,17 +190,16 @@ class ContinueWatchingListAPIView(ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        watch_episode = EpisodeWatchProgress.objects.filter(user=user)
-        # watch_episode = watch_episode.filter(progress__range=(1, 99)).order_by('-timestamp')
-        # return watch_episode
+        latest_progress = EpisodeWatchProgress.objects.filter(user=user).values(
+            'episode__season__series'
+        ).annotate(
+            latest_timestamp=Max('timestamp')
+        ).order_by('-latest_timestamp')
+        return EpisodeWatchProgress.objects.filter(
+            user=user,
+            timestamp__in=[entry['latest_timestamp'] for entry in latest_progress]
+        ).order_by('-timestamp')
 
-
-        # Group by series and get the latest watched episode for each series
-        return (
-            EpisodeWatchProgress.objects.filter(user=user, progress__range=(1, 100))
-            .order_by('episode__season__series', '-timestamp')
-            .distinct('episode__season__series')
-        )
 
 
 class ContinueWatchingDeleteAPIView(DestroyAPIView):
@@ -226,20 +226,4 @@ class EpisodeWatchProgressCreateApiView(CreateAPIView):
     queryset = EpisodeWatchProgress.objects.all()
 
     def perform_create(self, serializer):
-        episode_id = self.kwargs.get('episode_id')
-        serializer.save(user=self.request.user, episode_id=episode_id)
-
-
-class EpisodeWatchProgressUpdateApiView(UpdateAPIView):
-    """
-    API view to create a new review.
-    """
-    serializer_class = EpisodeWatchProgressUpdateSerializer
-    permission_classes = [IsAuthenticated]
-    queryset = EpisodeWatchProgress.objects.all()
-
-    def get_object(self):
-        episode_id = self.kwargs.get('episode_id')
-        user = self.request.user
-        watch_progress = EpisodeWatchProgress.objects.filter(user=user, episode_id=episode_id).first()
-        return watch_progress
+        serializer.save(user=self.request.user)
