@@ -238,5 +238,5 @@ class EpisodeWatchProgressSerializer(serializers.ModelSerializer):
         episode_id = data.get('episode')
         # Add Check For Create not for Update
         if EpisodeWatchProgress.objects.filter(user=user, episode_id=episode_id).exists():
-            raise ValidationError("You have already submitted a watch progress for this episode.")
+            raise ValidationError("You have already watch this episode.")
         return data
