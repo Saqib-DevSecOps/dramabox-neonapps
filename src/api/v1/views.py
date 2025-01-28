@@ -6,6 +6,7 @@ from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView, CreateAPIView, get_object_or_404, \
     UpdateAPIView, DestroyAPIView
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -72,7 +73,7 @@ class DramaSeriesListAPIView(ListAPIView):
     """
     serializer_class = DramaSeriesSerializer
     permission_classes = [AllowAny]
-    # pagination_class = DramaSeriesPagination
+    pagination_class = LimitOffsetPagination
     filter_backends = [DjangoFilterBackend]
     filterset_class = DramaSeriesFilter
 
