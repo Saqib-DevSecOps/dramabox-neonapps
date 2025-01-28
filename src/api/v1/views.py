@@ -72,7 +72,7 @@ class DramaSeriesListAPIView(ListAPIView):
     """
     serializer_class = DramaSeriesSerializer
     permission_classes = [AllowAny]
-    pagination_class = DramaSeriesPagination
+    # pagination_class = DramaSeriesPagination
     filter_backends = [DjangoFilterBackend]
     filterset_class = DramaSeriesFilter
 
