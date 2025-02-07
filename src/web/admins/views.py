@@ -852,7 +852,7 @@ class SaveFileAPIView(View):
             episode.video_file = file_url
             episode.is_active = True
             episode.save()
-
             return JsonResponse({'status': 'success', 'message': 'File URL saved successfully.'})
         except Exception as e:
+            print("Error",e)
             return JsonResponse({'status': 'error', 'message': str(e)})
