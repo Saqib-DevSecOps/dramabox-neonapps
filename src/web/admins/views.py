@@ -840,21 +840,19 @@ class SaveFileAPIView(View):
         file_url = data.get('file_url')
         episode_id = data.get('episode_id')
         video_file_name = data.get('file_name')
-        print("File Url ",file_url)
+        try:
+            episode = get_object_or_404(Episode, pk=episode_id)
+            episode.video_file_name = video_file_name
+            cloud_front_distribution = "https://d1sd8vkiwxccfh.cloudfront.net/output"
+            file_url = file_url.replace("https://dramaboxbucket.s3.amazonaws.com", cloud_front_distribution)
+            file_name = os.path.basename(urlparse(file_url).path)
+            file_extension = os.path.splitext(file_name)[1]
+            file_url = file_url.replace(file_extension, '.m3u8')
 
-        episode = get_object_or_404(Episode, pk=episode_id)
-        episode.video_file_name = video_file_name
-        cloud_front_distribution = "https://d1sd8vkiwxccfh.cloudfront.net/output"
-        file_url = file_url.replace("https://dramaboxbucket.s3.amazonaws.com", cloud_front_distribution)
-        file_name = os.path.basename(urlparse(file_url).path)
-        file_extension = os.path.splitext(file_name)[1]
-        file_url = file_url.replace(file_extension,'.m3u8')
+            episode.video_file = file_url
+            episode.is_active = True
+            episode.save()
 
-        print("File Url ",file_url)
-        print("File Name ",file_name)
-        print("File Extension ",file_extension)
-
-        episode.video_file = file_url
-        episode.is_active = True
-        episode.save()
-        return JsonResponse({'status': 'success', 'message': 'File URL saved successfully.'})
+            return JsonResponse({'status': 'success', 'message': 'File URL saved successfully.'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
