@@ -297,7 +297,7 @@ class Episode(models.Model):
     """
     Represents individual episodes in a specific season of a drama series.
     """
-    title = models.CharField(max_length=255, help_text="Title of the episode.")
+    title = models.CharField(max_length=1000, help_text="Title of the episode.")
     season = models.ForeignKey(
         Season, on_delete=models.CASCADE, related_name='episodes',
         help_text="Season the episode belongs to."
@@ -306,7 +306,7 @@ class Episode(models.Model):
     description = models.TextField(blank=True, null=True, help_text="Detailed description of the episode.")
     release_date = models.DateField(help_text="Release date of the episode.")
     duration = models.DurationField(help_text="Duration of the episode (hh:mm:ss).")
-    video_file_name = models.CharField(max_length=255, blank=True, null=True)
+    video_file_name = models.CharField(max_length=1000, blank=True, null=True)
     video_file = models.URLField(null=True, blank=False, help_text="Video file of the episode.")
     is_free = models.BooleanField(default=False, help_text="Mark if the episode is free to watch.")
     view_count = models.PositiveIntegerField(default=0, help_text="Number of views the episode has received.")
