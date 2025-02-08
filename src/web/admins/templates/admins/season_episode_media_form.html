@@ -107,7 +107,7 @@
 
         const getSignedUrl = async () => {
             const params = {
-                Bucket: 'dramaboxbucket/{{ episode.season.series }}/{{ episode.season }}/{{ episode.episode_number }}', // Replace with your bucket name
+                Bucket: 'dramaboxbucket/{{ episode.season.series.get_alpha_numeric_title }}/{{ episode.season }}/{{ episode.episode_number }}', // Replace with your bucket name
                 Key: file.name,              // The file name you want to save as
                 ContentType: file.type,      // The file type
                 Expires: 60                   // URL expiration time in seconds

@@ -1,3 +1,5 @@
+import re
+
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
@@ -170,6 +172,10 @@ class DramaSeries(models.Model):
         return self.title
 
     @property
+    def get_alpha_numeric_title(self):
+        return re.sub(r'[^a-zA-Z0-9çğıİöşüÇĞİÖŞÜ ]', '', self.title).replace(' ', '-')
+
+    @property
     def is_currently_featured(self):
         if self.is_featured and self.featured_until:
             return self.featured_until >= timezone.now().date()
@@ -307,7 +313,7 @@ class Episode(models.Model):
     release_date = models.DateField(help_text="Release date of the episode.")
     duration = models.DurationField(help_text="Duration of the episode (hh:mm:ss).")
     video_file_name = models.CharField(max_length=1000, blank=True, null=True)
-    video_file = models.URLField( max_length=1000,null=True, blank=False, help_text="Video file of the episode.")
+    video_file = models.URLField(max_length=1000, null=True, blank=False, help_text="Video file of the episode.")
     is_free = models.BooleanField(default=False, help_text="Mark if the episode is free to watch.")
     view_count = models.PositiveIntegerField(default=0, help_text="Number of views the episode has received.")
 
