@@ -296,7 +296,7 @@ class Season(models.Model):
         verbose_name_plural = "Drama Series Seasons"
 
     def __str__(self):
-        return f"{self.series.title} - Season {self.season_number}"
+        return f"Season {self.season_number}"
 
 
 class Episode(models.Model):
