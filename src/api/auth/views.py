@@ -7,12 +7,13 @@ from dj_rest_auth.views import LoginView
 from django.contrib.auth import authenticate
 from rest_framework import permissions, status
 from rest_framework.authtoken.models import Token
-from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, GenericAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.settings import GOOGLE_CALLBACK_ADDRESS, APPLE_CALLBACK_ADDRESS
-from src.api.auth.serializer import PasswordSerializer, UserSerializer
+from src.api.auth.serializer import PasswordSerializer, UserSerializer, CoinSerializer
+
 
 class GoogleLogin(SocialLoginView):
     """ Handles Google social login """
@@ -20,11 +21,13 @@ class GoogleLogin(SocialLoginView):
     callback_url = GOOGLE_CALLBACK_ADDRESS
     client_class = OAuth2Client
 
+
 class GoogleConnect(SocialConnectView):
     """ Handles Google social account connection """
     adapter_class = GoogleOAuth2Adapter
     callback_url = GOOGLE_CALLBACK_ADDRESS
     client_class = OAuth2Client
+
 
 class AppleLogin(SocialLoginView):
     """ Handles Apple social login """
@@ -32,11 +35,13 @@ class AppleLogin(SocialLoginView):
     callback_url = APPLE_CALLBACK_ADDRESS
     client_class = OAuth2Client
 
+
 class AppleConnect(SocialConnectView):
     """ Handles Apple social account connection """
     adapter_class = AppleOAuth2Adapter
     callback_url = APPLE_CALLBACK_ADDRESS
     client_class = OAuth2Client
+
 
 class CustomLoginView(LoginView):
     """ Custom login view that generates a new auth token for the user """
@@ -51,6 +56,7 @@ class CustomLoginView(LoginView):
             response.data['key'] = new_token.key
         return response
 
+
 class UserRetrieveChangeAPIView(RetrieveUpdateAPIView):
     """ Retrieve and update user account information """
     serializer_class = UserSerializer
@@ -59,6 +65,48 @@ class UserRetrieveChangeAPIView(RetrieveUpdateAPIView):
     def get_object(self):
         """ Get the current authenticated user """
         return self.request.user
+
+
+class UserWalletUpdateAPIView(GenericAPIView):
+    """ Increment or decrement user wallet coins
+    CHOICES = (
+        ('increment', 'Increment'),
+        ('decrement', 'Decrement'),
+    )
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = CoinSerializer
+
+    def post(self, request, *args, **kwargs):
+        coins = request.data.get('coins')
+        coin_type = request.data.get('type')
+        user_wallet = request.user.get_wallet()
+        if coin_type == 'increment':
+            user_wallet.total_coins += coins
+            user_wallet.available_coins += coins
+            user_wallet.save()
+            return Response(
+                data={'message': 'Coins added successfully'},
+                status=status.HTTP_200_OK
+            )
+        elif coin_type == 'decrement':
+            if user_wallet.available_coins < coins:
+                return Response(
+                    data={'error': 'Insufficient coins'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            user_wallet.available_coins -= coins
+            user_wallet.used_coins += coins
+            user_wallet.save()
+            return Response(
+                data={'message': 'Coins deducted successfully'},
+                status=status.HTTP_200_OK
+            )
+        return Response(
+            data={'error': 'Invalid coin type'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
 
 class DeactivateUserAPIView(APIView):
     """ Deactivate user account """
@@ -89,6 +137,7 @@ class DeactivateUserAPIView(APIView):
             data={'message': 'User account has been deactivated'},
             status=status.HTTP_200_OK
         )
+
 
 class DeleteUserAPIView(APIView):
     """ Delete user account """

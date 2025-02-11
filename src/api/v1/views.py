@@ -1,18 +1,22 @@
+from django.db.models import Max
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.filters import SearchFilter
-from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView, CreateAPIView, get_object_or_404
+from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView, CreateAPIView, get_object_or_404, \
+    UpdateAPIView, DestroyAPIView
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from src.api.v1.filters import DramaSeriesFilter
-from src.api.v1.pagination import DramaSeriesPagination
+from src.api.v1.pagination import DramaSeriesPagination, ContinueWatchingPagination
 from src.api.v1.serializers import HomeDramaSeriesListSerializer, DramaSeriesSerializer, DramaSeriesDetailSerializer, \
-    ReviewSerializer, LikeSerializer, CategorySerializer, TagSerializer, EpisodeSerializer
-from src.services.drama.models import DramaSeries, Review, Like, Episode, Category, Tag
+    ReviewSerializer, LikeSerializer, CategorySerializer, TagSerializer, EpisodeSerializer, \
+    EpisodeWatchProgressSerializer, ContinueWatchingSerializer
+from src.services.drama.models import DramaSeries, Review, Like, Episode, Category, Tag, EpisodeWatchProgress
 
 
 # Create your views here.
@@ -69,7 +73,7 @@ class DramaSeriesListAPIView(ListAPIView):
     """
     serializer_class = DramaSeriesSerializer
     permission_classes = [AllowAny]
-    pagination_class = DramaSeriesPagination
+    pagination_class = LimitOffsetPagination
     filter_backends = [DjangoFilterBackend]
     filterset_class = DramaSeriesFilter
 
@@ -174,3 +178,53 @@ class SeasonEpisodeListAPIView(ListAPIView):
         Retrieves all drama series for detail view.
         """
         return Episode.objects.filter(season_id=self.kwargs.get('season_id'))
+
+
+class ContinueWatchingListAPIView(ListAPIView):
+    """
+    Provides a list of episodes that the user has started watching.
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = ContinueWatchingSerializer
+    pagination_class = ContinueWatchingPagination
+    queryset = EpisodeWatchProgress.objects.all()
+
+    def get_queryset(self):
+        user = self.request.user
+        latest_progress = EpisodeWatchProgress.objects.filter(user=user).values(
+            'episode__season__series'
+        ).annotate(
+            latest_timestamp=Max('timestamp')
+        ).order_by('-latest_timestamp')
+        return EpisodeWatchProgress.objects.filter(
+            user=user,
+            timestamp__in=[entry['latest_timestamp'] for entry in latest_progress]
+        ).order_by('-timestamp')
+
+
+
+class ContinueWatchingDeleteAPIView(DestroyAPIView):
+    """
+    Allows users to delete an episode from their 'Continue Watching' list.
+    """
+    permission_classes = [IsAuthenticated]
+    queryset = EpisodeWatchProgress.objects.all()
+
+    def delete(self, request, *args, **kwargs):
+        user = request.user
+        episode_id = kwargs.get('episode_id')
+        episode_progress = get_object_or_404(EpisodeWatchProgress, episode_id=episode_id, user=user)
+        episode_progress.delete()
+        return Response({"detail": "Deleted successfully"}, status=status.HTTP_200_OK)
+
+
+class EpisodeWatchProgressCreateApiView(CreateAPIView):
+    """
+    API view to create a new review.
+    """
+    serializer_class = EpisodeWatchProgressSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = EpisodeWatchProgress.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

@@ -1,8 +1,12 @@
 # all_auth
 import json
+import logging
+import os
 
 import boto3
 from allauth.socialaccount.models import SocialAccount
+from botocore.exceptions import ClientError
+
 from core import settings
 from django import forms
 from django.contrib import messages
@@ -277,7 +281,6 @@ class LanguageDeleteView(DeleteView):
     def get_success_url(self):
         messages.success(self.request, f"{self.object.name} language deleted successfully.")
         return reverse('admins:language-list')
-
 
 
 """ CATEGORY ---------------------------------------------------------- """
@@ -716,7 +719,7 @@ class SeasonEpisodeListView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['episodes'] = self.object.episodes.order_by('id')
+        context['episodes'] = self.object.episodes.order_by('episode_number')
         return context
 
 
@@ -760,13 +763,22 @@ class SeasonEpisodeUpdateView(UpdateView):
 
 class SeasonEpisodeDeleteView(DeleteView):
     model = Episode
+    template_name = 'admins/episode_confirm_delete.html'
 
     def get_success_url(self):
+        """
+        Returns the URL to redirect to after successfully deleting the episode.
+        """
         season = self.object.season
-        return reverse('admins:season-episode-list',
-                       kwargs={'drama_series_slug': season.series.slug, 'season_pk': season.pk})
+        return reverse(
+            'admins:season-episode-list',
+            kwargs={'pk': season.series.id, 'season_pk': season.pk}
+        )
 
     def delete_s3_objects(self, episode):
+        """
+        Deletes objects in the S3 bucket associated with the given episode.
+        """
         s3_client = boto3.client(
             's3',
             aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
@@ -774,14 +786,32 @@ class SeasonEpisodeDeleteView(DeleteView):
             region_name=settings.AWS_S3_REGION_NAME
         )
         bucket_name = 'dramaboxbucket'
-        key_prefix = f"{episode.season.series}/{episode.season}/{episode.video_file_name}"
+        key_prefix = f"{episode.season.series.slug}/{episode.season.pk}/{episode.video_file_name}"
 
-        response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=key_prefix)
-        if 'Contents' in response:
-            keys_to_delete = [{'Key': obj['Key']} for obj in response['Contents']]
-            s3_client.delete_objects(Bucket=bucket_name, Delete={'Objects': keys_to_delete})
+        try:
+            # List objects under the key_prefix
+            response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=key_prefix)
 
-    def get(self, request, *args, **kwargs):
+            if 'Contents' in response:
+                # Prepare the list of keys to delete
+                keys_to_delete = [{'Key': obj['Key']} for obj in response['Contents']]
+                delete_response = s3_client.delete_objects(
+                    Bucket=bucket_name,
+                    Delete={'Objects': keys_to_delete}
+                )
+                logging.info(f"Deleted S3 objects: {delete_response.get('Deleted', [])}")
+            else:
+                logging.warning(f"No objects found in S3 bucket with prefix: {key_prefix}")
+        except ClientError as e:
+            logging.error(f"ClientError during S3 operations: {e}")
+        except Exception as e:
+            logging.error(f"Unexpected error during S3 deletion: {e}")
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Overrides the delete method to handle the deletion of S3 objects before
+        deleting the episode object.
+        """
         self.object = self.get_object()
         self.delete_s3_objects(self.object)
         self.object.delete()
@@ -800,6 +830,8 @@ class SeasonEpisodeMediaUpdate(TemplateView):
         context['episode'] = get_object_or_404(Episode, pk=self.kwargs.get('pk'))
         return context
 
+from urllib.parse import unquote, urlparse, quote
+import urllib.parse
 
 @method_decorator(csrf_exempt, name='dispatch')
 class SaveFileAPIView(View):
@@ -810,6 +842,11 @@ class SaveFileAPIView(View):
         video_file_name = data.get('file_name')
         episode = get_object_or_404(Episode, pk=episode_id)
         episode.video_file_name = video_file_name
+        cloud_front_distribution = "https://d1sd8vkiwxccfh.cloudfront.net/output"
+        file_url = file_url.replace("https://dramaboxbucket.s3.amazonaws.com", cloud_front_distribution)
+        file_name = os.path.basename(urlparse(file_url).path)
+        file_extension = os.path.splitext(file_name)[1]
+        file_url = file_url.replace(file_extension,'.m3u8')
         episode.video_file = file_url
         episode.is_active = True
         episode.save()

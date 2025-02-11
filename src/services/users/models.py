@@ -6,6 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django_resized import ResizedImageField
 from phonenumber_field.modelfields import PhoneNumberField
+from django.apps import apps
 
 USER_TYPE = (
     ('admin', 'Admin'),
@@ -40,6 +41,10 @@ class User(AbstractUser):
             self.user_type = 'user'
         super(User, self).save(*args, **kwargs)
 
+    def get_wallet(self):
+        wallet = apps.get_model('wallet', 'Wallet')
+        return wallet.objects.get_or_create(user=self)[0]
+
     def delete(self, *args, **kwargs):
         self.profile_image.delete(save=True)
         super(User, self).delete(*args, **kwargs)
@@ -47,12 +52,6 @@ class User(AbstractUser):
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL, dispatch_uid="user_registered")
 def on_user_registration(sender, instance, created, **kwargs):
-    """
-    :TOPIC if user creates at any point the statistics model will be initialized
-    :param sender:
-    :param instance:
-    :param created:
-    :param kwargs:
-    :return:
-    """
-    pass
+    if created:
+        wallet = apps.get_model('wallet', 'Wallet')
+        wallet.objects.create(user=instance)

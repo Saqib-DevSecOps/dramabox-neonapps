@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from src.services.drama.models import Category, Tag, Language, ContentRating, Actor, Director, DramaSeries, \
-    DramaSeriesTag, DramaSeriesLanguage, DramaSeriesCast, DramaSeriesCategory, Season, Episode, Review, Like
+    Season, Episode, Review, Like, EpisodeWatchProgress
 
 
 # -------------------------GenericSerializer--------------------------------------------
@@ -209,3 +209,34 @@ class LikeSerializer(serializers.ModelSerializer):
         model = Like
         fields = ['drama_series']  # Make sure to adjust the field name according to your model
         read_only_fields = ['user']
+
+
+class ContinueWatchingSerializer(serializers.ModelSerializer):
+    episode_id = serializers.IntegerField(source='episode.id', read_only=True)
+    season_id = serializers.IntegerField(source='episode.season.id', read_only=True)
+    series_id = serializers.IntegerField(source='episode.season.series.id', read_only=True)
+    series_name = serializers.CharField(source='episode.season.series.title', read_only=True)
+    total_episodes = serializers.IntegerField(source='episode.season.series.get_total_episodes', read_only=True)
+    image = serializers.ImageField(source='episode.season.series.poster_image', read_only=True)
+
+    class Meta:
+        model = EpisodeWatchProgress
+        fields = ['id', 'episode_id', 'season_id', 'series_id', 'series_name', 'total_episodes', 'image', 'timestamp']
+
+
+class EpisodeWatchProgressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EpisodeWatchProgress
+        fields = ['id', 'user', 'episode', 'timestamp']
+        read_only_fields = ['id', 'user', 'timestamp']
+
+    def validate(self, data):
+        """
+        Check that the user has not already submitted a watch progress for the specified episode.
+        """
+        user = self.context['request'].user
+        episode_id = data.get('episode')
+        # Add Check For Create not for Update
+        if EpisodeWatchProgress.objects.filter(user=user, episode_id=episode_id).exists():
+            raise ValidationError("You have already watch this episode.")
+        return data

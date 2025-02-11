@@ -1,3 +1,5 @@
+import re
+
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
@@ -121,7 +123,8 @@ class DramaSeries(models.Model):
                                  help_text="Director of the drama series.")
     content_rating = models.ForeignKey(ContentRating, on_delete=models.SET_NULL, null=True,
                                        help_text="Content rating of the drama series.")
-    rating = models.DecimalField(max_digits=2, decimal_places=1, null=True, help_text="Average rating of the drama series.")
+    rating = models.DecimalField(max_digits=2, decimal_places=1, null=True,
+                                 help_text="Average rating of the drama series.")
     poster_image = models.ImageField(
         upload_to='dramas/posters/', blank=True, null=True,
         help_text="Poster image of the drama series."
@@ -167,6 +170,10 @@ class DramaSeries(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def get_alpha_numeric_title(self):
+        return re.sub(r'[^a-zA-Z0-9çğıİöşüÇĞİÖŞÜ ]', '', self.title).replace(' ', '-')
 
     @property
     def is_currently_featured(self):
@@ -289,14 +296,14 @@ class Season(models.Model):
         verbose_name_plural = "Drama Series Seasons"
 
     def __str__(self):
-        return f"{self.series.title} - Season {self.season_number}"
+        return f"Season {self.season_number}"
 
 
 class Episode(models.Model):
     """
     Represents individual episodes in a specific season of a drama series.
     """
-    title = models.CharField(max_length=255, help_text="Title of the episode.")
+    title = models.CharField(max_length=1000, help_text="Title of the episode.")
     season = models.ForeignKey(
         Season, on_delete=models.CASCADE, related_name='episodes',
         help_text="Season the episode belongs to."
@@ -305,8 +312,8 @@ class Episode(models.Model):
     description = models.TextField(blank=True, null=True, help_text="Detailed description of the episode.")
     release_date = models.DateField(help_text="Release date of the episode.")
     duration = models.DurationField(help_text="Duration of the episode (hh:mm:ss).")
-    video_file_name = models.CharField(max_length=255, blank=True, null=True)
-    video_file = models.URLField(null=True, blank=False, help_text="Video file of the episode.")
+    video_file_name = models.CharField(max_length=1000, blank=True, null=True)
+    video_file = models.URLField(max_length=1000, null=True, blank=False, help_text="Video file of the episode.")
     is_free = models.BooleanField(default=False, help_text="Mark if the episode is free to watch.")
     view_count = models.PositiveIntegerField(default=0, help_text="Number of views the episode has received.")
 
@@ -317,12 +324,34 @@ class Episode(models.Model):
     class Meta:
         verbose_name = "Drama Series Season Episode"
         verbose_name_plural = "Drama Series Seasons Episode"
+        ordering = ['episode_number']
 
     def __str__(self):
         return f"{self.season.series.title} - Season {self.season.season_number}, Episode {self.episode_number}"
 
+    def get_watch_progress(self, user):
+        try:
+            watch_progress = EpisodeWatchProgress.objects.get(user=user, episode=self)
+            if watch_progress.progress == 0.0 or watch_progress.progress == 100.0:
+                return 0
+            return watch_progress.progress
+        except EpisodeWatchProgress.DoesNotExist:
+            return 0
 
-# ---------------------------- User Interaction Models ---------------------------- #
+
+class EpisodeWatchProgress(models.Model):
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    episode = models.ForeignKey(Episode, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'episode')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.episode.title}"
+
+    # ---------------------------- User Interaction Models ---------------------------- #
+
 
 class Review(models.Model):
     """

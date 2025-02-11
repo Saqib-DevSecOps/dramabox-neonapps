@@ -11,7 +11,7 @@
     <div class="container">
         <h1>Update Media File</h1>
         <div class="mt-2">
-            <button  onclick="window.history.back()" class="mt-2 btn btn-sm btn-secondary">
+            <button onclick="window.history.back()" class="mt-2 btn btn-sm btn-secondary">
                 <i class="fa fa-arrow-left" aria-hidden="true"></i> Back to List
             </button>
         </div>
@@ -107,7 +107,7 @@
 
         const getSignedUrl = async () => {
             const params = {
-                Bucket: 'dramaboxbucket/{{ episode.season.series }}/{{ episode.season }}', // Replace with your bucket name
+                Bucket: 'dramaboxbucket/{{ episode.season.series.get_alpha_numeric_title }}/{{ episode.season }}/{{ episode.episode_number }}', // Replace with your bucket name
                 Key: file.name,              // The file name you want to save as
                 ContentType: file.type,      // The file type
                 Expires: 60                   // URL expiration time in seconds
@@ -124,6 +124,7 @@
                 });
             });
         };
+
         const uploadFile = async (signedUrl) => {
             const config = {
                 headers: {
@@ -147,8 +148,10 @@
                 _("progressBar").innerText = "0%";
 
                 // Save the S3 URL and file name to the model
-                const fileUrl = signedUrl.split('?')[0]; // Get the URL without query params
-                await saveFileUrlToModel(fileUrl, file.name); // Pass the file name here
+                const fileUrl = signedUrl.split('?')[0];
+                const seasonNumber = "{{ episode.season }}";
+                const seasonName = "{{ episode.season.series }}";
+                await saveFileUrlToModel(fileUrl, file.name, seasonNumber, seasonName);
 
                 _("submitBtn").disabled = false;
             } catch (error) {
@@ -159,13 +162,15 @@
             }
         };
 
-        // Function to save the file URL and file name in the Django model
-        const saveFileUrlToModel = async (fileUrl, fileName) => {  // Add fileName parameter
+        // Function to save the file URL, file name, season number, and season name in the Django model
+        const saveFileUrlToModel = async (fileUrl, fileName, seasonNumber, seasonName) => {  // Add seasonNumber and seasonName parameters
             try {
                 await axios.post("{% url 'admins:save-file' %}", {
                     file_url: fileUrl,
                     file_name: fileName,  // Send the file name
-                    episode_id: "{{ episode.pk }}"  // Pass the episode ID
+                    episode_id: "{{ episode.pk }}",  // Pass the episode ID
+                    season_number: seasonNumber,  // Pass the season number
+                    season_name: seasonName  // Pass the season name
                 });
                 _("message-status").innerHTML += "<br>File URL and name saved to model.";
                 location.href = "{% url 'admins:season-episode-list' episode.season.series.slug episode.season.pk %}";
@@ -175,6 +180,5 @@
                 throw error;
             }
         };
-
     </script>
 {% endblock content %}
